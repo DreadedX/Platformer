@@ -24,7 +24,6 @@ public class Game extends Canvas implements Runnable {
 	public static final int		TPS			= 60;
 	public static final int		WIDTH		= 256;
 	public static final int		HEIGHT		= WIDTH / 4 * 3;
-	public static final int		SCALE		= 4;
 	public static final String	NAME		= "FireRPG";
 	
 	private JFrame				frame;
@@ -33,6 +32,7 @@ public class Game extends Canvas implements Runnable {
 	public boolean				running		= false;
 	public int					tickCount	= 0;
 	public int					fps			= 0;
+	public static int			scale;
 	
 	private BufferedImage		image		= new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[]				pixels		= ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -44,9 +44,9 @@ public class Game extends Canvas implements Runnable {
 	public Level				level;
 	
 	public Game() {
-		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		
 		frame = new JFrame(NAME);
 		
@@ -184,6 +184,11 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public static void main(String[] args) {
+		if (args.length != 0) {
+		scale = Integer.parseInt(args[0]);
+		} else {
+			scale = 4;
+		}
 		new Game().start();
 	}
 }
