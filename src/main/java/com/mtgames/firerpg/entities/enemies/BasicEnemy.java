@@ -13,7 +13,6 @@ public class BasicEnemy extends Mob {
 	public boolean	canJump		= false;
 	public boolean	canDash		= true;
 	public boolean	isStaggered	= false;
-	public boolean	isJumping	= false;
 	public boolean	isDashing	= false;
 	
 	public BasicEnemy(Level level, int x, int y) {
@@ -53,7 +52,6 @@ public class BasicEnemy extends Mob {
 		
 		move(xa, ya);
 		ya = gravity(ya);
-		
 	}
 	
 	public void render(Screen screen) {
@@ -74,6 +72,18 @@ public class BasicEnemy extends Mob {
 				dir = 0x00;
 				modifier = 0;
 				break;
+		}
+		
+		if (isJumping) {
+			xTile = 8;
+		}
+
+		if (animationFrame == 1) {
+			xTile += 2;
+		} else if (animationFrame == 2) {
+			xTile += 4;
+		} else if (animationFrame == 3) {
+			xTile += 6;
 		}
 		
 		screen.render(xOffset + modifier, yOffset, xTile + yTile * 32, dir);

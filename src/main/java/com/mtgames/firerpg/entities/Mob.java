@@ -5,17 +5,21 @@ import com.mtgames.firerpg.level.Tile;
 
 public abstract class Mob extends Entity {
 	
+	protected final int	ANIMATIONWAIT			= 7;
+	
 	protected String	name;
 	protected int		speed;
-	protected int		gravity		= 1;
-	protected int		gravityWait	= 0;
+	protected int		gravity					= 1;
+	protected int		gravityWait				= 0;
 	protected int		movingDir;
-	protected int		scale		= 1;
-	protected boolean	isMoving;
+	protected int		scale					= 1;
 	protected int		xMin;
 	protected int		xMax;
 	protected int		yMin;
 	protected int		yMax;
+	protected int		animationFrame			= 0;
+	protected int		walkingAnimationFrame	= 0;
+	protected boolean	isJumping				= false;
 	
 	public Mob(Level level, String name, int x, int y, int speed) {
 		super(level);
@@ -58,6 +62,24 @@ public abstract class Mob extends Entity {
 					x += 1;
 				}
 			}
+		}
+
+		if (!hasCollided(0, 1)) {
+			isJumping = true;
+		} else {
+			isJumping = false;
+		}
+		
+		if (xa != 0 && ya == 0) {
+			walkingAnimation();
+		} else {
+			animationFrame = 0;
+		}
+		
+		if (ya < 0 && !hasCollided(0, 1)) {
+			animationFrame = 0;
+		} else if (!hasCollided(0, 1)) {
+			animationFrame = 1;
 		}
 	}
 	
@@ -128,6 +150,18 @@ public abstract class Mob extends Entity {
 		
 		gravityWait++;
 		return ya;
+	}
+	
+	protected void walkingAnimation() {
+		if (walkingAnimationFrame >= ANIMATIONWAIT) {
+			walkingAnimationFrame = 0;
+			animationFrame++;
+			if (animationFrame == 4) {
+				animationFrame = 0;
+			}
+		} else {
+			walkingAnimationFrame++;
+		}
 	}
 	
 	public String getName() {

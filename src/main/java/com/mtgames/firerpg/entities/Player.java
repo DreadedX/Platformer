@@ -8,21 +8,26 @@ import com.mtgames.firerpg.level.Level;
 
 public class Player extends Mob {
 	
+	private final int		JUMPWAIT		= 2;
+	private final int		JUMPSPEED		= 5;
+	private final int		DASHSPEED		= 5;
+	private final int		DASHWAIT		= 72;
+	private final int		STAGGERLENGTH	= 20;
+	
 	private InputHandler	input;
-	private int				xa			= 0;
-	private int				xaDash		= 0;
-	private int				ya			= 0;
+	private int				xa				= 0;
+	private int				xaDash			= 0;
+	private int				ya				= 0;
 	private int				dir;
 	private int				modifier;
-	private int				jumpWait	= 0;
-	private int				dashWait	= 0;
-	private int				dashTime	= 0;
-	private int				staggerTime	= 0;
-	public boolean			canJump		= false;
-	public boolean			canDash		= true;
-	public boolean			isStaggered	= false;
-	public boolean			isJumping	= false;
-	public boolean			isDashing	= false;
+	private int				jumpWait		= 0;
+	private int				dashWait		= 0;
+	private int				dashTime		= 0;
+	private int				staggerTime		= 0;
+	public boolean			canJump			= false;
+	public boolean			canDash			= true;
+	public boolean			isStaggered		= false;
+	public boolean			isDashing		= false;
 	
 	public Player(Level level, int x, int y, InputHandler input) {
 		super(level, "Player", x, y, 2);
@@ -43,7 +48,7 @@ public class Player extends Mob {
 		}
 		
 		if (!isStaggered) {
-			if (hasCollided(0, 1) && jumpWait > 2) {
+			if (hasCollided(0, 1) && jumpWait > JUMPWAIT) {
 				canJump = true;
 				jumpWait = 0;
 			}
@@ -57,14 +62,16 @@ public class Player extends Mob {
 			}
 			
 			if (input.space.isPressed() && canJump) {
-				ya = -5;
+				ya = -JUMPSPEED;
 				canJump = false;
+				animationFrame = 0;
 			}
 			
 			if (input.up.isPressed() && canDash) {
-				xaDash = 5;
+				xaDash = DASHSPEED;
 				canDash = false;
 				dashWait = 0;
+				animationFrame = 0;
 			}
 			
 			if (input.left.isPressed()) {
@@ -77,16 +84,7 @@ public class Player extends Mob {
 			
 		} else {
 			staggerTime -= 1;
-		}
-		
-		if (staggerTime > 20) {
 			ya = 0;
-		}
-		
-		if (!hasCollided(0, 1)) {
-			isJumping = true;
-		} else {
-			isJumping = false;
 		}
 		
 		if (xaDash != 0) {
@@ -114,6 +112,8 @@ public class Player extends Mob {
 		}
 	}
 	
+
+	
 	public void render(Screen screen) {
 		int xTile = 0;
 		int yTile = 27;
@@ -134,16 +134,22 @@ public class Player extends Mob {
 				break;
 		}
 		
-		if (isJumping && !isDashing) {
-			xTile = 2;
+		if (isJumping && !isDashing && !isStaggered) {
+			xTile = 8;
+		} else if (isDashing) {
+			xTile = 12;
+			animationFrame = 0;
+		} else if (isStaggered) {
+			xTile = 14;
+			animationFrame = 0;
 		}
 		
-		if (isDashing) {
-			xTile = 4;
-		}
-		
-		if (isStaggered) {
-			xTile = 6;
+		if (animationFrame == 1) {
+			xTile += 2;
+		} else if (animationFrame == 2) {
+			xTile += 4;
+		} else if (animationFrame == 3) {
+			xTile += 6;
 		}
 		
 		screen.render(xOffset + modifier, yOffset, xTile + yTile * 32, dir);
@@ -165,13 +171,13 @@ public class Player extends Mob {
 	}
 	
 	private void dash() {
-		if (dashWait >= 72 || canDash == true) {
-			dashWait = 72;
+		if (dashWait >= DASHWAIT || canDash == true) {
+			dashWait = DASHWAIT;
 		} else {
 			dashWait++;
 		}
 		
-		if (dashWait == 72 && !hasCollided(0, 1)) {
+		if (dashWait == DASHWAIT && !hasCollided(0, 1)) {
 			canDash = true;
 		} else {
 			canDash = false;
@@ -183,7 +189,7 @@ public class Player extends Mob {
 		}
 		
 		if (hasCollided(-1, 0) || hasCollided(1, 0)) {
-			staggerTime = 30;
+			staggerTime = STAGGERLENGTH;
 			xaDash = 0;
 		}
 		
