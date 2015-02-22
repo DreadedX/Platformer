@@ -58,14 +58,13 @@ public class BasicEnemy extends Mob {
 		int xTile = 0;
 		int yTile = 25;
 		
-		int xOffset = x - 9;
-		int yOffset = y - 8;
+		int xOffset = x;
+		int yOffset = y;
 		
 		switch (movingDir) {
 			case 0:
 				dir = 0x01;
 				modifier = 8;
-				xOffset += 2;
 				break;
 			
 			case 1:
@@ -86,9 +85,9 @@ public class BasicEnemy extends Mob {
 			xTile += 6;
 		}
 		
-		screen.render(xOffset + modifier, yOffset, xTile + yTile * 32, dir);
-		screen.render(xOffset + 8 - modifier, yOffset, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset + modifier, yOffset + 8, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset + 8 - modifier, yOffset + 8, (xTile + 1) + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 8 + modifier, yOffset - 8, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 8, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 8 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
 	}
 }

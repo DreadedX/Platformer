@@ -34,9 +34,9 @@ public class Player extends Mob {
 		this.level = level;
 		this.input = input;
 		movingDir = 1;
-		xMin = -4;
-		xMax = 3;
-		yMin = -7;
+		xMin = -5;
+		xMax = 4;
+		yMin = -8;
 		yMax = 7;
 	}
 	
@@ -112,20 +112,17 @@ public class Player extends Mob {
 		}
 	}
 	
-
-	
 	public void render(Screen screen) {
 		int xTile = 0;
 		int yTile = 27;
 		
-		int xOffset = x - 9;
-		int yOffset = y - 8;
+		int xOffset = x;
+		int yOffset = y;
 		
 		switch (movingDir) {
 			case 0:
 				dir = 0x01;
 				modifier = 8;
-				xOffset += 2;
 				break;
 			
 			case 1:
@@ -152,10 +149,10 @@ public class Player extends Mob {
 			xTile += 6;
 		}
 		
-		screen.render(xOffset + modifier, yOffset, xTile + yTile * 32, dir);
-		screen.render(xOffset + 8 - modifier, yOffset, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset + modifier, yOffset + 8, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset + 8 - modifier, yOffset + 8, (xTile + 1) + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 8 + modifier, yOffset - 8, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 8, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 8 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
 		
 		/* Draw overlay on character */
 		/*
