@@ -7,16 +7,14 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import com.sun.org.apache.bcel.internal.util.ClassLoader;
-
 public class ScriptLoader {
 	
 	private String script;
 	
 	private ScriptEngine	engine;
 	
-	public ScriptLoader(String script) {
-		this.script = script;
+	public ScriptLoader(String scriptPath) {
+		this.script = scriptPath;
 		ScriptEngineManager manager = new ScriptEngineManager();
 		engine = manager.getEngineByName("JavaScript");
 		
@@ -36,6 +34,14 @@ public class ScriptLoader {
 	public Object get(String object) {
 		Object value = engine.get(object);
 		return value;
+	}
+	
+	public void init() {
+		invoke("init");
+	}
+	
+	public void tick() {
+		invoke("tick");
 	}
 	
 	public void invoke(String function) {

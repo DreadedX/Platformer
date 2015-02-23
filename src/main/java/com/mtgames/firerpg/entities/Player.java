@@ -9,48 +9,56 @@ import com.mtgames.firerpg.level.ScriptLoader;
 
 public class Player extends Mob {
 	
-	private final static String	NAME			= "Player";
+	private final static String	NAME		= "Player";
 	
-	private ScriptLoader		script			= new ScriptLoader("scripts/player.js");
-	private final int			SPEED			= (int) script.get("SPEED");
-	private final int			JUMPWAIT		= (int) script.get("JUMPWAIT");
-	private final int			JUMPSPEED		= (int) script.get("JUMPSPEED");
-	private final int			DASHSPEED		= (int) script.get("DASHSPEED");
-	private final int			DASHWAIT		= (int) script.get("DASHWAIT");
-	private final int			STAGGERLENGTH	= (int) script.get("STAGGERLENGTH");
+	private final int			JUMPWAIT;
+	private final int			JUMPSPEED;
+	private final int			DASHSPEED;
+	private final int			DASHWAIT;
+	private final int			STAGGERLENGTH;
 	
 	private InputHandler		input;
-	private int					xa				= 0;
-	private int					xaDash			= 0;
-	private int					ya				= 0;
+	private ScriptLoader		script;
+	private int					xa			= 0;
+	private int					xaDash		= 0;
+	private int					ya			= 0;
 	private int					dir;
 	private int					modifier;
-	private int					jumpWait		= 0;
-	private int					dashWait		= 0;
-	private int					dashTime		= 0;
-	private int					staggerTime		= 0;
-	public boolean				canJump			= false;
-	public boolean				canDash			= true;
-	public boolean				isStaggered		= false;
-	public boolean				isDashing		= false;
+	private int					jumpWait	= 0;
+	private int					dashWait	= 0;
+	private int					dashTime	= 0;
+	private int					staggerTime	= 0;
+	public boolean				canJump		= false;
+	public boolean				canDash		= true;
+	public boolean				isStaggered	= false;
+	public boolean				isDashing	= false;
 	
 	public Player(Level level, int x, int y, InputHandler input) {
 		super(level, NAME, x, y);
+		
+		this.script = new ScriptLoader("scripts/player.js");
+		
+		JUMPWAIT = (int) script.get("JUMPWAIT");
+		JUMPSPEED = (int) script.get("JUMPSPEED");
+		DASHSPEED = (int) script.get("DASHSPEED");
+		DASHWAIT = (int) script.get("DASHWAIT");
+		STAGGERLENGTH = (int) script.get("STAGGERLENGTH");
+
+		speed = (int) script.get("speed");
+		xMin = (int) script.get("xMin");
+		xMax = (int) script.get("xMax");
+		yMin = (int) script.get("yMin");
+		yMax = (int) script.get("yMax");
+		
 		this.level = level;
 		this.input = input;
-		movingDir = 1;
-		xMin = -5;
-		xMax = 4;
-		yMin = -8;
-		yMax = 7;
-		speed = SPEED;	
-
-		script.invoke("init");
+		
+		script.init();
 	}
 	
 	public void tick() {
-		script.invoke("tick");
-		
+		script.tick();
+
 		if (input.reload.isPressed()) {
 			script.load();
 		}

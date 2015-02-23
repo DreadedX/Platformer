@@ -67,7 +67,7 @@ public class Game extends Canvas implements Runnable {
 		input = new InputHandler(this);
 		background1 = new Background("/forest1.png");
 		background2 = new Background("/forest2.png");
-		level = new Level("levels/debug_level.map", input);
+		level = new Level("levels/debug_level.map", "scripts/level.js", input);
 	}
 	
 	public synchronized void start() {
