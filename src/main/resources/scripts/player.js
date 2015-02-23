@@ -1,0 +1,14 @@
+var SPEED = 2;
+var JUMPWAIT = 2;
+var JUMPSPEED = 5;
+var DASHSPEED = 5;
+var DASHWAIT = 72;
+var STAGGERLENGTH = 20;
+
+// DEFAULT VALUES
+// var SPEED = 2;
+// var JUMPWAIT = 2;
+// var JUMPSPEED = 5;
+// var DASHSPEED = 5;
+// var DASHWAIT = 72;
+// var STAGGERLENGTH = 20;

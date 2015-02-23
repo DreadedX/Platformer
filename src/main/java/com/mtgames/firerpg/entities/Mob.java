@@ -8,25 +8,24 @@ public abstract class Mob extends Entity {
 	protected final int	ANIMATIONWAIT			= 7;
 	
 	protected String	name;
-	protected int		speed;
+	protected int		speed					= 1;
 	protected int		gravity					= 1;
 	protected int		gravityWait				= 0;
-	protected int		movingDir;
+	protected int		movingDir				= 1;
 	protected int		scale					= 1;
-	protected int		xMin;
-	protected int		xMax;
-	protected int		yMin;
-	protected int		yMax;
+	protected int		xMin					= -1;
+	protected int		xMax					= 1;
+	protected int		yMin					= -1;
+	protected int		yMax					= 1;
 	protected int		animationFrame			= 0;
 	protected int		walkingAnimationFrame	= 0;
 	protected boolean	isJumping				= false;
 	
-	public Mob(Level level, String name, int x, int y, int speed) {
+	public Mob(Level level, String name, int x, int y) {
 		super(level);
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		this.speed = speed;
 	}
 	
 	public void move(int xa, int ya) {
@@ -63,7 +62,7 @@ public abstract class Mob extends Entity {
 				}
 			}
 		}
-
+		
 		if (!hasCollided(0, 1)) {
 			isJumping = true;
 		} else {

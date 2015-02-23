@@ -16,7 +16,7 @@ public class BasicEnemy extends Mob {
 	public boolean	isDashing	= false;
 	
 	public BasicEnemy(Level level, int x, int y) {
-		super(level, "Base Enemy", x, y, 1);
+		super(level, "Base Enemy", x, y);
 		this.level = level;
 		movingDir = (int) (Math.random() + .5);
 		xMin = -4;

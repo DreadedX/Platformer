@@ -4,7 +4,7 @@ import com.mtgames.firerpg.gfx.Screen;
 
 public class Hud {
 	
-	public static void renderDash(Screen screen, int dashWait) {
+	public static void renderDash(Screen screen, double dashRatio) {
 		/* Left part of dash bar */
 		screen.render(screen.xOffset - 2, screen.yOffset - 2, 30);
 		screen.render(screen.xOffset - 2, screen.yOffset + 6, 31);
@@ -22,7 +22,7 @@ public class Hud {
 		}
 		
 		screen.drawRectangle(6, 6, 70, 14, 0xff3c3c47);
-		screen.drawRectangle(6, 6, dashWait - 2, 14, 0xff68afff);
+		screen.drawRectangle(6, 6, (int) (dashRatio * 70), 14, 0xff68afff);
 		/*
 		 * Font.render("D.A.S.H.", screen, screen.xOffset+8, screen.yOffset+7,
 		 * Colours.get(-1, -1, -1, 222));

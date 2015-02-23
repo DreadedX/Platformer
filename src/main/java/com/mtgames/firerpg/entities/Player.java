@@ -5,32 +5,37 @@ import com.mtgames.firerpg.entities.particles.DashParticle;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.gui.Hud;
 import com.mtgames.firerpg.level.Level;
+import com.mtgames.firerpg.level.ScriptLoader;
 
 public class Player extends Mob {
 	
-	private final int		JUMPWAIT		= 2;
-	private final int		JUMPSPEED		= 5;
-	private final int		DASHSPEED		= 5;
-	private final int		DASHWAIT		= 72;
-	private final int		STAGGERLENGTH	= 20;
+	private final static String	NAME			= "Player";
 	
-	private InputHandler	input;
-	private int				xa				= 0;
-	private int				xaDash			= 0;
-	private int				ya				= 0;
-	private int				dir;
-	private int				modifier;
-	private int				jumpWait		= 0;
-	private int				dashWait		= 0;
-	private int				dashTime		= 0;
-	private int				staggerTime		= 0;
-	public boolean			canJump			= false;
-	public boolean			canDash			= true;
-	public boolean			isStaggered		= false;
-	public boolean			isDashing		= false;
+	private ScriptLoader		script			= new ScriptLoader("scripts/player.js");
+	private final int			SPEED			= (int) script.get("SPEED");
+	private final int			JUMPWAIT		= (int) script.get("JUMPWAIT");
+	private final int			JUMPSPEED		= (int) script.get("JUMPSPEED");
+	private final int			DASHSPEED		= (int) script.get("DASHSPEED");
+	private final int			DASHWAIT		= (int) script.get("DASHWAIT");
+	private final int			STAGGERLENGTH	= (int) script.get("STAGGERLENGTH");
+	
+	private InputHandler		input;
+	private int					xa				= 0;
+	private int					xaDash			= 0;
+	private int					ya				= 0;
+	private int					dir;
+	private int					modifier;
+	private int					jumpWait		= 0;
+	private int					dashWait		= 0;
+	private int					dashTime		= 0;
+	private int					staggerTime		= 0;
+	public boolean				canJump			= false;
+	public boolean				canDash			= true;
+	public boolean				isStaggered		= false;
+	public boolean				isDashing		= false;
 	
 	public Player(Level level, int x, int y, InputHandler input) {
-		super(level, "Player", x, y, 2);
+		super(level, NAME, x, y);
 		this.level = level;
 		this.input = input;
 		movingDir = 1;
@@ -38,6 +43,7 @@ public class Player extends Mob {
 		xMax = 4;
 		yMin = -8;
 		yMax = 7;
+		speed = SPEED;
 	}
 	
 	public void tick() {
@@ -164,7 +170,8 @@ public class Player extends Mob {
 		 * colour, dir);
 		 */
 		
-		Hud.renderDash(screen, dashWait);
+		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
+		Hud.renderDash(screen, dashRatio);
 	}
 	
 	private void dash() {
