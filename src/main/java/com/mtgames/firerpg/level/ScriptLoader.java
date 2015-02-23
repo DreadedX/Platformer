@@ -9,16 +9,16 @@ import javax.script.ScriptException;
 
 public class ScriptLoader {
 	
-	private String script;
-	
-	private ScriptEngine	engine;
+	private String						script;
+	private static ScriptEngineManager	manager	= new ScriptEngineManager();
+	private static ScriptEngine			engine	= manager.getEngineByName("JavaScript");
 	
 	public ScriptLoader(String scriptPath) {
-		this.script = scriptPath;
-		ScriptEngineManager manager = new ScriptEngineManager();
-		engine = manager.getEngineByName("JavaScript");
-		
-		load();
+		if (scriptPath != null) {
+			this.script = scriptPath;
+			System.out.println("Loading: " + scriptPath);
+			load();
+		}
 	}
 	
 	public void load() {

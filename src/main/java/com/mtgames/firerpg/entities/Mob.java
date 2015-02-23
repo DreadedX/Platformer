@@ -69,7 +69,7 @@ public abstract class Mob extends Entity {
 			isJumping = false;
 		}
 		
-		if (xa != 0 && ya == 0) {
+		if (xa != 0 && ya == 0 && !hasCollided(-1, 0) && !hasCollided(1,0)) {
 			walkingAnimation();
 		} else {
 			animationFrame = 0;
