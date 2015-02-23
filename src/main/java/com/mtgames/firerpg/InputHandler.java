@@ -29,6 +29,7 @@ public class InputHandler implements KeyListener {
 	}
 	
 	public Key	debug	= new Key();
+	public Key	reload	= new Key();
 	public Key	message	= new Key();
 	public Key	up		= new Key();
 	public Key	down	= new Key();
@@ -42,7 +43,11 @@ public class InputHandler implements KeyListener {
 			case KeyEvent.VK_F3:
 				debug.toggle(!debug.isPressed());
 				break;
-			
+
+			case KeyEvent.VK_R:
+				reload.toggle(true);
+
+				break;
 			case KeyEvent.VK_M:
 				message.toggle(!message.isPressed());
 				break;
@@ -79,6 +84,9 @@ public class InputHandler implements KeyListener {
 	
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_R:
+				reload.toggle(false);
+
 			case KeyEvent.VK_W:
 			case KeyEvent.VK_UP:
 				up.toggle(false);

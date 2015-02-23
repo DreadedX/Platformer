@@ -43,10 +43,18 @@ public class Player extends Mob {
 		xMax = 4;
 		yMin = -8;
 		yMax = 7;
-		speed = SPEED;
+		speed = SPEED;	
+
+		script.invoke("init");
 	}
 	
 	public void tick() {
+		script.invoke("tick");
+		
+		if (input.reload.isPressed()) {
+			script.load();
+		}
+		
 		if (staggerTime == 0) {
 			isStaggered = false;
 		} else {
