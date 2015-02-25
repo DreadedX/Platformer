@@ -37,6 +37,7 @@ public class Player extends Mob {
 		super(level, NAME, x, y);
 		
 		this.script = new ScriptLoader("scripts/player.js");
+		script.init();
 		
 		JUMPWAIT = (int) script.get("JUMPWAIT");
 		JUMPSPEED = (int) script.get("JUMPSPEED");
@@ -52,8 +53,6 @@ public class Player extends Mob {
 		
 		this.level = level;
 		this.input = input;
-		
-		script.init();
 	}
 	
 	public void tick() {

@@ -1,19 +1,15 @@
-var JUMPWAIT = 2;
-var JUMPSPEED = 5;
-var DASHSPEED = 5;
-var DASHWAIT = 72;
-var STAGGERLENGTH = 20;
-
-var speed = 2;
-var xMin = -5;
-var xMax = 4;
-var yMin = -8;
-var yMax = 7;
-
-// THIS SHOULD MOVE INTO THE INIT FUCTION!
-
 function init() {
-	// this function get called on creation
+	JUMPWAIT = 2;
+	JUMPSPEED = 5;
+	DASHSPEED = 5;
+	DASHWAIT = 72;
+	STAGGERLENGTH = 20;
+
+	speed = 2;
+	xMin = -5;
+	xMax = 4;
+	yMin = -8;
+	yMax = 7;
 }
 	
 function tick() {
