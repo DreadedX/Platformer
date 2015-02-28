@@ -10,7 +10,6 @@ import com.mtgames.firerpg.level.ScriptLoader;
 public class Player extends Mob {
 	
 	private final static String	NAME		= "Player";
-	
 	private final int			JUMPWAIT;
 	private final int			JUMPSPEED;
 	private final int			DASHSPEED;
@@ -36,7 +35,7 @@ public class Player extends Mob {
 	public Player(Level level, int x, int y, InputHandler input) {
 		super(level, NAME, x, y);
 		
-		this.script = new ScriptLoader("scripts/player.js");
+		this.script = new ScriptLoader("scripts/Player.js");
 		script.init();
 		
 		JUMPWAIT = (int) script.get("JUMPWAIT");

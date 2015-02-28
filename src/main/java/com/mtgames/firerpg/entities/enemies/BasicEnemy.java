@@ -3,36 +3,51 @@ package com.mtgames.firerpg.entities.enemies;
 import com.mtgames.firerpg.entities.Mob;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.Level;
+import com.mtgames.firerpg.level.ScriptLoader;
 
 public class BasicEnemy extends Mob {
 	
-	private int		xa			= 0;
-	private int		ya			= 0;
-	private int		dir;
-	private int		modifier;
-	public boolean	canJump		= false;
-	public boolean	canDash		= true;
-	public boolean	isStaggered	= false;
-	public boolean	isDashing	= false;
+	private final static String	NAME		= "BasicEnemy";
+	private final int			JUMPSPEED;
+	
+	private ScriptLoader		script;
+	private int			xa			= 0;
+	private int			ya			= 0;
+	private int			dir;
+	private int			modifier;
+	public boolean		canJump		= false;
+	public boolean		canDash		= true;
+	public boolean		isStaggered	= false;
+	public boolean		isDashing	= false;
 	
 	public BasicEnemy(Level level, int x, int y) {
-		super(level, "Base Enemy", x, y);
-		this.level = level;
+		super(level, NAME, x, y);
+		
+		
+		
+		this.script = new ScriptLoader("scripts/BasicEnemy.js");
+		script.init();
+		
+		JUMPSPEED = (int) script.get("JUMPSPEED");
+
+		speed = (int) script.get("speed");
+		xMin = (int) script.get("xMin");
+		xMax = (int) script.get("xMax");
+		yMin = (int) script.get("yMin");
+		yMax = (int) script.get("yMax");
 		movingDir = (int) (Math.random() + .5);
-		xMin = -4;
-		xMax = 3;
-		yMin = -7;
-		yMax = 7;
+
+		this.level = level;
 	}
 	
 	public void tick() {
 		xa = 0;
 		
 		if (!hasCollided(3, -8) && hasCollided(3, 0)) {
-			ya = -3;
+			ya = -JUMPSPEED;
 			xa++;
 		} else if (!hasCollided(-3, -8) && hasCollided(-3, 0)) {
-			ya = -3;
+			ya = -JUMPSPEED;
 			xa--;
 		} else if (hasCollided(-3, 0)) {
 			movingDir = 1;
@@ -76,7 +91,7 @@ public class BasicEnemy extends Mob {
 		if (isJumping) {
 			xTile = 8;
 		}
-
+		
 		if (animationFrame == 1) {
 			xTile += 2;
 		} else if (animationFrame == 2) {
