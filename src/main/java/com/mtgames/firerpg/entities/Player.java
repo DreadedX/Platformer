@@ -5,7 +5,7 @@ import com.mtgames.firerpg.entities.particles.DashParticle;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.gui.Hud;
 import com.mtgames.firerpg.level.Level;
-import com.mtgames.firerpg.level.ScriptLoader;
+import com.mtgames.firerpg.level.Script;
 
 public class Player extends Mob {
 	
@@ -17,7 +17,8 @@ public class Player extends Mob {
 	private final int			STAGGERLENGTH;
 	
 	private InputHandler		input;
-	private ScriptLoader		script;
+	private Script				script;
+	
 	private int					xa			= 0;
 	private int					xaDash		= 0;
 	private int					ya			= 0;
@@ -35,15 +36,15 @@ public class Player extends Mob {
 	public Player(Level level, int x, int y, InputHandler input) {
 		super(level, NAME, x, y);
 		
-		this.script = new ScriptLoader("scripts/Player.js");
-		script.init();
+		this.script = new Script("scripts/Player.js");
+		script.doInit();
 		
 		JUMPWAIT = (int) script.get("JUMPWAIT");
 		JUMPSPEED = (int) script.get("JUMPSPEED");
 		DASHSPEED = (int) script.get("DASHSPEED");
 		DASHWAIT = (int) script.get("DASHWAIT");
 		STAGGERLENGTH = (int) script.get("STAGGERLENGTH");
-
+		
 		speed = (int) script.get("speed");
 		xMin = (int) script.get("xMin");
 		xMax = (int) script.get("xMax");
@@ -55,8 +56,12 @@ public class Player extends Mob {
 	}
 	
 	public void tick() {
-		script.tick();
-
+		script.set("x", x);
+		script.set("xa", xa);
+		script.invoke("tick");
+		xa = (int) script.get("xa");
+		x = (int) script.get("x");
+		
 		if (input.reload.isPressed()) {
 			script.load();
 		}

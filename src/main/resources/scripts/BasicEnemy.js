@@ -1,3 +1,5 @@
+var x;
+
 function init() {
 	JUMPSPEED = 3;
 

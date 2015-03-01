@@ -7,13 +7,13 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-public class ScriptLoader {
+public class Script {
 	
 	private String						script;
-	private static ScriptEngineManager	manager	= new ScriptEngineManager();
-	private static ScriptEngine			engine	= manager.getEngineByName("JavaScript");
+	private ScriptEngineManager	manager	= new ScriptEngineManager();
+	private ScriptEngine			engine	= manager.getEngineByName("JavaScript");
 	
-	public ScriptLoader(String scriptPath) {
+	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
 			System.out.println("Loading: " + scriptPath);
@@ -31,16 +31,20 @@ public class ScriptLoader {
 		
 	}
 	
-	public Object get(String object) {
-		Object value = engine.get(object);
+	public Object get(String key) {
+		Object value = engine.get(key);
 		return value;
 	}
 	
-	public void init() {
+	public void set(String key, Object value) {
+		engine.put(key, value);
+	}
+	
+	public void doInit() {
 		invoke("init");
 	}
 	
-	public void tick() {
+	public void doTick() {
 		invoke("tick");
 	}
 	

@@ -16,7 +16,7 @@ import com.mtgames.firerpg.gfx.gui.Text;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.SpriteSheet;
 import com.mtgames.firerpg.level.Level;
-import com.mtgames.firerpg.level.ScriptLoader;
+import com.mtgames.firerpg.level.Script;
 
 @SuppressWarnings({ "serial" })
 public class Game extends Canvas implements Runnable {
@@ -40,7 +40,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private Screen				screen;
 	public InputHandler			input;
-	public ScriptLoader script;
+	public Script script;
 	public Background			background1;
 	public Background			background2;
 	public Level				level;
@@ -67,7 +67,7 @@ public class Game extends Canvas implements Runnable {
 		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-		script = new ScriptLoader(null);
+		script = new Script(null);
 		background1 = new Background("/forest1.png");
 		background2 = new Background("/forest2.png");
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);

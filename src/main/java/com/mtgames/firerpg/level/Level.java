@@ -12,7 +12,7 @@ import com.mtgames.firerpg.gfx.Screen;
 
 public class Level {
 	
-	private ScriptLoader	script;
+	private Script	script;
 	private Random			generator	= new Random(11);
 	
 	private byte[]			tiles;
@@ -23,7 +23,7 @@ public class Level {
 	private LevelLoader		loader;
 	
 	public Level(String path, String scriptPath, InputHandler input) {
-		this.script = new ScriptLoader(scriptPath);
+		this.script = new Script(scriptPath);
 		if (path != null) {
 			try {
 				loader = new LevelLoader(this, input, path);
@@ -40,7 +40,7 @@ public class Level {
 			tiles = new byte[width * height];
 			generateLevel();
 		}
-		script.init();
+		script.doInit();
 	}
 	
 	public void generateLevel() {
@@ -56,7 +56,7 @@ public class Level {
 	}
 	
 	public void tick() {
-		script.tick();
+		script.doTick();
 
 		for (Entity e : entities) {
 			e.tick();

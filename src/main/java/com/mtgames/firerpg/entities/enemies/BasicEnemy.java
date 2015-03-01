@@ -3,14 +3,15 @@ package com.mtgames.firerpg.entities.enemies;
 import com.mtgames.firerpg.entities.Mob;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.Level;
-import com.mtgames.firerpg.level.ScriptLoader;
+import com.mtgames.firerpg.level.Script;
 
 public class BasicEnemy extends Mob {
 	
 	private final static String	NAME		= "BasicEnemy";
 	private final int			JUMPSPEED;
 	
-	private ScriptLoader		script;
+	private Script		script;
+
 	private int			xa			= 0;
 	private int			ya			= 0;
 	private int			dir;
@@ -23,10 +24,8 @@ public class BasicEnemy extends Mob {
 	public BasicEnemy(Level level, int x, int y) {
 		super(level, NAME, x, y);
 		
-		
-		
-		this.script = new ScriptLoader("scripts/BasicEnemy.js");
-		script.init();
+		this.script = new Script("scripts/BasicEnemy.js");
+		script.doInit();
 		
 		JUMPSPEED = (int) script.get("JUMPSPEED");
 
@@ -41,6 +40,8 @@ public class BasicEnemy extends Mob {
 	}
 	
 	public void tick() {
+		script.invoke("tick");
+
 		xa = 0;
 		
 		if (!hasCollided(3, -8) && hasCollided(3, 0)) {
