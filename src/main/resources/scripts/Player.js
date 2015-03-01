@@ -1,5 +1,5 @@
-var x;
-var xa;
+var x = 0;
+var xa = 0;
 
 function init() {
 	JUMPWAIT = 2;
@@ -17,9 +17,10 @@ function init() {
 }
 	
 function tick() {
-	// this function get called every tick
-  if (x >= 300) {
-    // xa = -50;
-    x = 299;
+  
+  // DEMO: This creates a wind effect
+  if (x >= 400) {
+   xa = xa + 1;
+    // x = -1+x;
   }
 }

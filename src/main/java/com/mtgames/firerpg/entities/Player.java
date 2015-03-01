@@ -60,7 +60,7 @@ public class Player extends Mob {
 		script.set("xa", xa);
 		script.invoke("tick");
 		xa = (int) script.get("xa");
-		x = (int) script.get("x");
+x = (int) script.get("x");
 		
 		if (input.reload.isPressed()) {
 			script.load();
@@ -100,11 +100,11 @@ public class Player extends Mob {
 			}
 			
 			if (input.left.isPressed()) {
-				xa--;
+				xa -= speed;
 			}
 			
 			if (input.right.isPressed()) {
-				xa++;
+				xa += speed;
 			}
 			
 		} else {
@@ -220,9 +220,9 @@ public class Player extends Mob {
 		gravityWait = 0;
 		
 		if (movingDir == 0) {
-			xa = -xaDash;
+			xa = -xaDash*speed;
 		} else {
-			xa = xaDash;
+			xa = xaDash*speed;
 		}
 		
 		if (dashTime > 2) {

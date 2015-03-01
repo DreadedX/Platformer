@@ -37,6 +37,7 @@ public class BasicEnemy extends Mob {
 		movingDir = (int) (Math.random() + .5);
 
 		this.level = level;
+		System.out.println(speed);
 	}
 	
 	public void tick() {
@@ -46,23 +47,23 @@ public class BasicEnemy extends Mob {
 		
 		if (!hasCollided(3, -8) && hasCollided(3, 0)) {
 			ya = -JUMPSPEED;
-			xa++;
+			xa += speed;
 		} else if (!hasCollided(-3, -8) && hasCollided(-3, 0)) {
 			ya = -JUMPSPEED;
-			xa--;
+			xa -= speed;
 		} else if (hasCollided(-3, 0)) {
 			movingDir = 1;
-			xa++;
+			xa += speed;
 		} else if (hasCollided(3, 0)) {
 			movingDir = 0;
-			xa--;
+			xa -= speed;
 		} else {
 			if (movingDir == 0) {
-				xa--;
+				xa -= speed;
 			}
 			
 			if (movingDir == 1) {
-				xa++;
+				xa += speed;
 			}
 		}
 		

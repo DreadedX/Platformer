@@ -47,7 +47,7 @@ public abstract class Mob extends Entity {
 		
 		if (xa < 0) {
 			movingDir = 0;
-			for (int i = 0; i > xa * speed; i--) {
+			for (int i = 0; i > xa; i--) {
 				if (!hasCollided(-1, 0)) {
 					x -= 1;
 				}
@@ -56,7 +56,7 @@ public abstract class Mob extends Entity {
 		
 		if (xa > 0) {
 			movingDir = 1;
-			for (int i = 0; i < xa * speed; i++) {
+			for (int i = 0; i < xa; i++) {
 				if (!hasCollided(1, 0)) {
 					x += 1;
 				}
