@@ -1,5 +1,7 @@
 var x = 0;
 var xa = 0;
+var y = 0;
+var ya = 0;
 
 function init() {
 	JUMPWAIT = 2;
@@ -13,14 +15,18 @@ function init() {
 	xMax = 4;
 	yMin = -8;
 	yMax = 7;
-  print("This is a test");
 }
 	
 function tick() {
-  
   // DEMO: This creates a wind effect
-  if (x >= 400) {
-   xa = xa + 1;
+  //if (x >= 400) {
+   //xa = xa + 1;
     // x = -1+x;
-  }
+  //}
+  
+  // DEMO: Teleport back to start 
+  //if (x > 500) {
+	//x = 22;
+	//y = -104 + y;
+  //}
 }

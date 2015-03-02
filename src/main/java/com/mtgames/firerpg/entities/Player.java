@@ -58,9 +58,13 @@ public class Player extends Mob {
 	public void tick() {
 		script.set("x", x);
 		script.set("xa", xa);
+		script.set("y", y);
+		script.set("ya", ya);
 		script.invoke("tick");
 		xa = (int) script.get("xa");
-x = (int) script.get("x");
+		x = (int) script.get("x");
+		ya = (int) script.get("ya");
+		y = (int) script.get("y");
 		
 		if (input.reload.isPressed()) {
 			script.load();
