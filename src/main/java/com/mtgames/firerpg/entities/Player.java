@@ -51,9 +51,6 @@ public class Player extends Mob {
 
 		health = MAXHEALTH = (int) script.get("MAXHEALTH");
 		
-		//FOR DEBUG PURPOSE
-		health = 75;
-		
 		speed = (int) script.get("speed");
 		xMin = (int) script.get("xMin");
 		xMax = (int) script.get("xMax");
@@ -65,6 +62,9 @@ public class Player extends Mob {
 	}
 	
 	public void tick() {
+		//FOR DEBUG PURPOSE
+		health = 22;
+
 		script.set("x", x);
 		script.set("xa", xa);
 		script.set("y", y);

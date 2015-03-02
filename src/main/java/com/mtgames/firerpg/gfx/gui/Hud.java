@@ -21,33 +21,33 @@ public class Hud {
 			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset + 14, 29, 0x02);
 		}
 		
-		screen.drawRectangle(6, 6, 70, 14, 0xff3c3c47);
-		screen.drawRectangle(6, 6, (int) (dashRatio * 70), 14, 0xff68afff);
+		screen.drawRectangle(6, 6, 70, 14, 0xff2f558d);
+		screen.drawRectangle(6, 6, (int) (dashRatio * 70), 14, 0xff3662a2);
 		/*
 		 * Font.render("D.A.S.H.", screen, screen.xOffset+8, screen.yOffset+7,
 		 * Colours.get(-1, -1, -1, 222));
 		 */
 	}
-
+	
 	public static void renderHealth(Screen screen, double healthRatio) {
 		/* Left part of dash bar */
-		screen.render(screen.xOffset - 2, screen.yOffset - 2, 27);
-		screen.render(screen.xOffset - 2, screen.yOffset + 6, 28);
-		screen.render(screen.xOffset - 2, screen.yOffset + 14, 27, 0x02);
+		screen.render(screen.xOffset + screen.width - 78, screen.yOffset - 2, 27);
+		screen.render(screen.xOffset + screen.width - 78, screen.yOffset + 6, 28);
+		screen.render(screen.xOffset + screen.width - 78, screen.yOffset + 14, 27, 0x02);
 		
 		/* Right part of dash bar */
-		screen.render(screen.xOffset + 70, screen.yOffset - 2, 27, 0x01);
-		screen.render(screen.xOffset + 70, screen.yOffset + 6, 28, 0x01);
-		screen.render(screen.xOffset + 70, screen.yOffset + 14, 27, 0x03);
+		screen.render(screen.xOffset + screen.width - 6, screen.yOffset - 2, 27, 0x01);
+		screen.render(screen.xOffset + screen.width - 6, screen.yOffset + 6, 28, 0x01);
+		screen.render(screen.xOffset + screen.width - 6, screen.yOffset + 14, 27, 0x03);
 		
 		/* Center part of dash bar */
 		for (int i = 0; i < 8; i++) {
-			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset - 2, 26);
-			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset + 14, 26, 0x02);
+			screen.render(screen.xOffset + screen.width - 70 + i * 8, screen.yOffset - 2, 26);
+			screen.render(screen.xOffset + screen.width - 70 + i * 8, screen.yOffset + 14, 26, 0x02);
 		}
 		
-		screen.drawRectangle(6, 6, 70, 14, 0xff3c3c47);
-		screen.drawRectangle(6, 6, (int) (healthRatio * 70), 14, 0xffd73700);
+		screen.drawRectangle(screen.width - 70, 6, screen.width - 6, 14, 0xff9d3d2f);
+		screen.drawRectangle(screen.width - 70, 6, (int) ((screen.width - 76) + (healthRatio * 70)), 14, 0xffb44c36);
 		/*
 		 * Font.render("D.A.S.H.", screen, screen.xOffset+8, screen.yOffset+7,
 		 * Colours.get(-1, -1, -1, 222));
