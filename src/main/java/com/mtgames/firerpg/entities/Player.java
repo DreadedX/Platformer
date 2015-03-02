@@ -15,6 +15,7 @@ public class Player extends Mob {
 	private final int			DASHSPEED;
 	private final int			DASHWAIT;
 	private final int			STAGGERLENGTH;
+	private final int			MAXHEALTH;
 	
 	private InputHandler		input;
 	private Script				script;
@@ -28,6 +29,9 @@ public class Player extends Mob {
 	private int					dashWait	= 0;
 	private int					dashTime	= 0;
 	private int					staggerTime	= 0;
+	
+	private int					health;
+	
 	public boolean				canJump		= false;
 	public boolean				canDash		= true;
 	public boolean				isStaggered	= false;
@@ -44,6 +48,11 @@ public class Player extends Mob {
 		DASHSPEED = (int) script.get("DASHSPEED");
 		DASHWAIT = (int) script.get("DASHWAIT");
 		STAGGERLENGTH = (int) script.get("STAGGERLENGTH");
+
+		health = MAXHEALTH = (int) script.get("MAXHEALTH");
+		
+		//FOR DEBUG PURPOSE
+		health = 75;
 		
 		speed = (int) script.get("speed");
 		xMin = (int) script.get("xMin");
@@ -195,6 +204,8 @@ public class Player extends Mob {
 		
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.renderDash(screen, dashRatio);
+		double healthRatio = ((health * 10d) / (MAXHEALTH * 10d));
+		Hud.renderHealth(screen, healthRatio);
 	}
 	
 	private void dash() {
@@ -224,9 +235,9 @@ public class Player extends Mob {
 		gravityWait = 0;
 		
 		if (movingDir == 0) {
-			xa = -xaDash*speed;
+			xa = -xaDash * speed;
 		} else {
-			xa = xaDash*speed;
+			xa = xaDash * speed;
 		}
 		
 		if (dashTime > 2) {

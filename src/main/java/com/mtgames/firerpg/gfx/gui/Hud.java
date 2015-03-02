@@ -28,4 +28,29 @@ public class Hud {
 		 * Colours.get(-1, -1, -1, 222));
 		 */
 	}
+
+	public static void renderHealth(Screen screen, double healthRatio) {
+		/* Left part of dash bar */
+		screen.render(screen.xOffset - 2, screen.yOffset - 2, 27);
+		screen.render(screen.xOffset - 2, screen.yOffset + 6, 28);
+		screen.render(screen.xOffset - 2, screen.yOffset + 14, 27, 0x02);
+		
+		/* Right part of dash bar */
+		screen.render(screen.xOffset + 70, screen.yOffset - 2, 27, 0x01);
+		screen.render(screen.xOffset + 70, screen.yOffset + 6, 28, 0x01);
+		screen.render(screen.xOffset + 70, screen.yOffset + 14, 27, 0x03);
+		
+		/* Center part of dash bar */
+		for (int i = 0; i < 8; i++) {
+			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset - 2, 26);
+			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset + 14, 26, 0x02);
+		}
+		
+		screen.drawRectangle(6, 6, 70, 14, 0xff3c3c47);
+		screen.drawRectangle(6, 6, (int) (healthRatio * 70), 14, 0xffd73700);
+		/*
+		 * Font.render("D.A.S.H.", screen, screen.xOffset+8, screen.yOffset+7,
+		 * Colours.get(-1, -1, -1, 222));
+		 */
+	}
 }

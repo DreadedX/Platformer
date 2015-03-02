@@ -9,6 +9,7 @@ function init() {
 	DASHSPEED = 5;
 	DASHWAIT = 72;
 	STAGGERLENGTH = 20;
+  MAXHEALTH = 100;
 
 	speed = 2;
 	xMin = -5;
