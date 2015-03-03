@@ -203,9 +203,10 @@ public class Player extends Mob {
 		 */
 		
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
-		Hud.renderDash(screen, dashRatio);
+		Hud.setDash(dashRatio);
 		double healthRatio = ((health * 10d) / (MAXHEALTH * 10d));
-		Hud.renderHealth(screen, healthRatio);
+		Hud.setHealth(healthRatio);
+		
 	}
 	
 	private void dash() {

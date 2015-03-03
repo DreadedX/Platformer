@@ -6,7 +6,7 @@ import com.mtgames.firerpg.gfx.Screen;
 public class Text {
 	
 	public static void textBox(Screen screen, String title, String msg) {
-		msg = wrap(msg, 28, 4);
+		msg = wrap(msg, (screen.width >> 3) - 4, 4);
 		
 		int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
 		int height = msg.length() - msg.replace("|", "").length();

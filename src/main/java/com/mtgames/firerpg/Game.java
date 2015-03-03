@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 
 import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Font;
+import com.mtgames.firerpg.gfx.gui.Hud;
 import com.mtgames.firerpg.gfx.gui.Text;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.SpriteSheet;
@@ -23,7 +24,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public static final boolean	FPSUNLOCK	= true;
 	public static final int		TPS			= 60;
-	public static final int		WIDTH		= 256;
+	public static final int		WIDTH		= 304;
 	public static final int		HEIGHT		= WIDTH / 4 * 3;
 	public static final String	NAME		= "FireRPG";
 	
@@ -161,6 +162,8 @@ public class Game extends Canvas implements Runnable {
 		
 		level.renderEntities(screen);
 		
+		Hud.render(screen);
+		
 		/* Debug text */
 		if (debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
@@ -172,6 +175,7 @@ public class Game extends Canvas implements Runnable {
 		if (input.message.isPressed()) {
 			Text.textBox(screen, "Mission:", "It is your mission to just mess around a bit in this world and try to debug the game!");
 		}
+		
 		
 		for (int y = 0; y < screen.height; y++) {
 			for (int x = 0; x < screen.width; x++) {
