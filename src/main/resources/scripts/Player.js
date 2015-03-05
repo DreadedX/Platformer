@@ -20,14 +20,16 @@ function init() {
 	
 function tick() {
   // DEMO: This creates a wind effect
-  //if (x >= 400) {
-   //xa = xa + 1;
-    // x = -1+x;
-  //}
+  // if (x >= 400) {
+  //  xa = xa + 1;
+  // }
   
   // DEMO: Teleport back to start 
-  //if (x > 500) {
-	//x = 22;
-	//y = -104 + y;
-  //}
+  // if (x >= 507) {
+	// x = 22;
+	// y = -104 + y;
+  // }
+  
+  // DEMO: God mode 
+  // health = MAXHEALTH;
 }

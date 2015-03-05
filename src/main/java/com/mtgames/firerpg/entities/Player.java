@@ -4,6 +4,7 @@ import com.mtgames.firerpg.InputHandler;
 import com.mtgames.firerpg.entities.particles.DashParticle;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.gui.Hud;
+import com.mtgames.firerpg.gfx.gui.Text;
 import com.mtgames.firerpg.level.Level;
 import com.mtgames.firerpg.level.Script;
 
@@ -62,19 +63,6 @@ public class Player extends Mob {
 	}
 	
 	public void tick() {
-		//FOR DEBUG PURPOSE
-		health = 22;
-
-		script.set("x", x);
-		script.set("xa", xa);
-		script.set("y", y);
-		script.set("ya", ya);
-		script.invoke("tick");
-		xa = (int) script.get("xa");
-		x = (int) script.get("x");
-		ya = (int) script.get("ya");
-		y = (int) script.get("y");
-		
 		if (input.reload.isPressed()) {
 			script.load();
 		}
@@ -99,24 +87,24 @@ public class Player extends Mob {
 				canJump = false;
 			}
 			
-			if (input.space.isPressed() && canJump) {
+			if (input.space.isPressed() && canJump && isAlive()) {
 				ya = -JUMPSPEED;
 				canJump = false;
 				animationFrame = 0;
 			}
 			
-			if (input.up.isPressed() && canDash) {
+			if (input.up.isPressed() && canDash && isAlive()) {
 				xaDash = DASHSPEED;
 				canDash = false;
 				dashWait = 0;
 				animationFrame = 0;
 			}
 			
-			if (input.left.isPressed()) {
+			if (input.left.isPressed() && isAlive()) {
 				xa -= speed;
 			}
 			
-			if (input.right.isPressed()) {
+			if (input.right.isPressed() && isAlive()) {
 				xa += speed;
 			}
 			
@@ -148,6 +136,19 @@ public class Player extends Mob {
 				level.addParticle(new DashParticle(level, x, y, particleOffset));
 			}
 		}
+
+//		Scripting
+		script.set("x", x);
+		script.set("xa", xa);
+		script.set("y", y);
+		script.set("ya", ya);
+		script.set("health", health);
+		script.invoke("tick");
+		xa = (int) script.get("xa");
+		x = (int) script.get("x");
+		ya = (int) script.get("ya");
+		y = (int) script.get("y");
+		health = (int) script.get("health");
 	}
 	
 	public void render(Screen screen) {
@@ -206,7 +207,11 @@ public class Player extends Mob {
 		Hud.setDash(dashRatio);
 		double healthRatio = ((health * 10d) / (MAXHEALTH * 10d));
 		Hud.setHealth(healthRatio);
-		
+				
+//		TEMP DEATH CODE
+		if (!isAlive()) {
+			Text.textBox(screen, "YOU DIED!", "");
+		}
 	}
 	
 	private void dash() {
@@ -230,6 +235,7 @@ public class Player extends Mob {
 		if (hasCollided(-1, 0) || hasCollided(1, 0)) {
 			staggerTime = STAGGERLENGTH;
 			xaDash = 0;
+			health -= 10;
 		}
 		
 		ya = 0;
@@ -248,4 +254,12 @@ public class Player extends Mob {
 		
 		dashTime++;
 	}
+	
+	public boolean isAlive() {
+		if (health <= 0) {
+			return false;
+		}
+		return true;
+	}
+	
 }
