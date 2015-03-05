@@ -37,7 +37,6 @@ public class BasicEnemy extends Mob {
 		movingDir = (int) (Math.random() + .5);
 
 		this.level = level;
-		System.out.println(speed);
 	}
 	
 	public void tick() {

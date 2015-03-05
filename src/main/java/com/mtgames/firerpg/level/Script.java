@@ -7,6 +7,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import com.mtgames.firerpg.debug.Debug;
+
 public class Script {
 	
 	private String						script;
@@ -16,7 +18,7 @@ public class Script {
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
-			System.out.println("Loading: " + scriptPath);
+			Debug.message(Debug.SCRIPT, "Loading: " + scriptPath);
 			load();
 		}
 	}
@@ -24,7 +26,7 @@ public class Script {
 	public void load() {
 		try {
 			engine.eval(new InputStreamReader(ClassLoader.getSystemResourceAsStream(script)));
-			System.out.println("Loaded: " + script);
+			Debug.message(Debug.SCRIPT, "Loaded: " + script);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}

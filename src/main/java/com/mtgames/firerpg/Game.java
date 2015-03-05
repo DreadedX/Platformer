@@ -10,6 +10,8 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import com.mtgames.firerpg.debug.Console;
+import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Font;
 import com.mtgames.firerpg.gfx.gui.Hud;
@@ -30,7 +32,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private JFrame				frame;
 	
-	public boolean				debug		= false;
+	public static boolean		debug		= false;
 	public boolean				running		= false;
 	public int					tickCount	= 0;
 	public int					fps			= 0;
@@ -40,8 +42,9 @@ public class Game extends Canvas implements Runnable {
 	private int[]				pixels		= ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	
 	private Screen				screen;
+	
 	public InputHandler			input;
-	public Script script;
+	public Script				script;
 	public Background			background1;
 	public Background			background2;
 	public Level				level;
@@ -65,7 +68,6 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void init() {
-		
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 		script = new Script(null);
@@ -128,7 +130,7 @@ public class Game extends Canvas implements Runnable {
 			
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println(frames + " Frames, " + ticks + " Ticks, " + level.particles.size() + " Particles");
+				Debug.message(Debug.INFO, frames + " Frames, " + ticks + " Ticks, " + level.particles.size() + " Particles");
 				frames = 0;
 				ticks = 0;
 			}
@@ -176,7 +178,6 @@ public class Game extends Canvas implements Runnable {
 			Text.textBox(screen, "Mission:", "It is your mission to just mess around a bit in this world and try to debug the game!");
 		}
 		
-		
 		for (int y = 0; y < screen.height; y++) {
 			for (int x = 0; x < screen.width; x++) {
 				int colourCode = screen.pixels[x + y * screen.width];
@@ -192,10 +193,16 @@ public class Game extends Canvas implements Runnable {
 	
 	public static void main(String[] args) {
 		if (args.length != 0) {
-		scale = Integer.parseInt(args[0]);
+			scale = Integer.parseInt(args[0]);
 		} else {
 			scale = 4;
 		}
+		
+		if (args.length > 1) {
+				new Console();
+				Debug.priority = Debug.INFO;
+		}
+		
 		new Game().start();
 	}
 }
