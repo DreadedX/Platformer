@@ -8,14 +8,13 @@
  */
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-  compile project(':tools/png2xml')
 }
 
 jar {
