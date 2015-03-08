@@ -8,7 +8,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import com.mtgames.firerpg.debug.Console;
 import com.mtgames.firerpg.debug.Debug;
@@ -19,7 +19,6 @@ import com.mtgames.firerpg.gfx.gui.Text;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.SpriteSheet;
 import com.mtgames.firerpg.level.Level;
-import com.mtgames.firerpg.level.Script;
 
 @SuppressWarnings({ "serial" })
 class Game extends Canvas implements Runnable {
@@ -53,7 +52,7 @@ class Game extends Canvas implements Runnable {
 
         JFrame frame = new JFrame(NAME);
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		
 		frame.add(this, BorderLayout.CENTER);
@@ -67,7 +66,6 @@ class Game extends Canvas implements Runnable {
 	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-        Script script = new Script(null);
 		background1 = new Background("/forest1.png");
 		background2 = new Background("/forest2.png");
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
@@ -176,7 +174,7 @@ class Game extends Canvas implements Runnable {
 		}
 		
 		for (int y = 0; y < screen.height; y++) {
-            System.arraycopy(screen.pixels, 0 + y * screen.width, pixels, 0 + y * 304, screen.width);
+            System.arraycopy(screen.pixels, y * screen.width, pixels, y * 304, screen.width);
 		}
 		
 		Graphics g = bs.getDrawGraphics();

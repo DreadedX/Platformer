@@ -1,7 +1,6 @@
 package com.mtgames.firerpg.level;
 
 import com.mtgames.firerpg.gfx.Screen;
-import com.mtgames.firerpg.level.Level;
 
 public abstract class Tile {
 	

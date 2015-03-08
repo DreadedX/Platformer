@@ -21,20 +21,6 @@ public class Screen {
 		this.sheet = sheet;
 		
 		pixels = new int[width * height];
-		
-		int index = 0;
-		for (int r = 0; r < 6; r++) {
-			for (int b = 0; b < 6; b++) {
-				for (int g = 0; g < 6; g++) {
-					int rr = (r * 255 / 5);
-					int bb = (b * 255 / 5);
-					int gg = (g * 255 / 5);
-
-                    int[] colours = new int[6 * 6 * 6];
-                    colours[index++] = rr << 16 | gg << 8 | bb;
-				}
-			}
-		}
 	}
 	
 	public void render(int xPos, int yPos, int tile) {

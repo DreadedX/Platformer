@@ -3,6 +3,7 @@ package com.mtgames.firerpg.level;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -64,13 +65,11 @@ public class Script {
 
     }
 
-    public void cheat(String function, String[] cheats) {
-        for (int i = 0; i < cheats.length; i++) {
+    void cheat(String function, String[] cheats) {
+        for (String cheat : cheats) {
             try {
-                engine.eval(new InputStreamReader(new FileInputStream("cheats/" + cheats[i])));
-            } catch (ScriptException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
+                engine.eval(new InputStreamReader(new FileInputStream("cheats/" + cheat)));
+            } catch (ScriptException | FileNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -79,7 +78,7 @@ public class Script {
 
 //            Debug.msg(Debug.DEBUG, "scripts/" + execScript);
 //            Debug.msg(Debug.DEBUG, script);
-            if (execFunction == function && execScript == script) {
+            if (Objects.equals(execFunction, function) && Objects.equals(execScript, script)) {
                 invoke("cheat");
             }
         }
