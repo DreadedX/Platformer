@@ -127,7 +127,7 @@ class Game extends Canvas implements Runnable {
 			
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.message(Debug.INFO, frames + " Frames, " + ticks + " Ticks");
+				Debug.msg(Debug.INFO, frames + " Frames, " + ticks + " Ticks");
 				frames = 0;
 				ticks = 0;
 			}
@@ -193,7 +193,7 @@ class Game extends Canvas implements Runnable {
 		}
 		
 		if (args.length > 1) {
-//			new Console();
+			new Console();
 			Debug.priority = Debug.INFO;
 			
 		}

@@ -1,6 +1,5 @@
 package com.mtgames.firerpg.level;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
@@ -21,7 +20,7 @@ public class Script {
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
-			Debug.message(Debug.SCRIPT, "Loading: " + script);
+			Debug.msg(Debug.SCRIPT, "Loading: " + script);
 			load();
 		}
 	}
@@ -29,7 +28,7 @@ public class Script {
 	public void load() {
 		try {
 			engine.eval(new InputStreamReader(ClassLoader.getSystemResourceAsStream(script)));
-			Debug.message(Debug.SCRIPT, "Loaded: " + script);
+			Debug.msg(Debug.SCRIPT, "Loaded: " + script);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
@@ -61,14 +60,14 @@ public class Script {
 			e.printStackTrace();
 		}
 
-        cheat(function, new String[]{"cheats/Godmode.js"});
+        cheat(function, new String[]{"Godmode.js"});
 
     }
 
     public void cheat(String function, String[] cheats) {
         for (int i = 0; i < cheats.length; i++) {
             try {
-                engine.eval(new InputStreamReader(new FileInputStream(cheats[i])));
+                engine.eval(new InputStreamReader(new FileInputStream("cheats/" + cheats[i])));
             } catch (ScriptException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {
@@ -78,6 +77,8 @@ public class Script {
             String execScript = (String) get("execScript");
             String execFunction = (String) get("execFunction");
 
+//            Debug.msg(Debug.DEBUG, "scripts/" + execScript);
+//            Debug.msg(Debug.DEBUG, script);
             if (execFunction == function && execScript == script) {
                 invoke("cheat");
             }

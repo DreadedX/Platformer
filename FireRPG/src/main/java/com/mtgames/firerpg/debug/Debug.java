@@ -9,7 +9,7 @@ public class Debug {
 	
 	public static int	priority	= WARNING;
 	
-	public static void message(int type, String message) {
+	public static void msg(int type, String message) {
 		if (type < priority) {
 			return;
 		}
