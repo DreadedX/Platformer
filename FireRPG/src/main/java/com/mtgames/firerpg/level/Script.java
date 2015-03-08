@@ -17,7 +17,7 @@ public class Script {
 	private String						script;
 	private final ScriptEngineManager	manager	= new ScriptEngineManager();
 	private final ScriptEngine			engine	= manager.getEngineByName("JavaScript");
-	
+
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
@@ -61,24 +61,26 @@ public class Script {
 			e.printStackTrace();
 		}
 
-        cheat(function);
+        cheat(function, new String[]{"cheats/Godmode.js"});
 
     }
 
-    public void cheat(String function) {
-        try {
-            engine.eval(new InputStreamReader(new FileInputStream("cheats/Godmode.js")));
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String execScript = (String) get("execScript");
-        String execFunction = (String) get("execFunction");
+    public void cheat(String function, String[] cheats) {
+        for (int i = 0; i < cheats.length; i++) {
+            try {
+                engine.eval(new InputStreamReader(new FileInputStream(cheats[i])));
+            } catch (ScriptException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
+            String execScript = (String) get("execScript");
+            String execFunction = (String) get("execFunction");
 
-        if (execFunction == function && execScript == script) {
-            invoke("cheat");
+            if (execFunction == function && execScript == script) {
+                invoke("cheat");
+            }
         }
     }
 }
