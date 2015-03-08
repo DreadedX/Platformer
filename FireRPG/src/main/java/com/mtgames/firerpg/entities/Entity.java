@@ -9,11 +9,11 @@ public abstract class Entity {
 	public int		y;
 	protected Level	level;
 	
-	public Entity(Level level) {
+	Entity(Level level) {
 		init(level);
 	}
 	
-	public final void init(Level level) {
+	final void init(Level level) {
 		this.level = level;
 	}
 	

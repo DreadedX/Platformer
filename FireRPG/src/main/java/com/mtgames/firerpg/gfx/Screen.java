@@ -2,20 +2,18 @@ package com.mtgames.firerpg.gfx;
 
 public class Screen {
 	
-	public static final byte	BIT_MIRROR_X	= 0x01;
-	public static final byte	BIT_MIRROR_Y	= 0x02;
+	private static final byte	BIT_MIRROR_X	= 0x01;
+	private static final byte	BIT_MIRROR_Y	= 0x02;
 	
-	public int[]				pixels;
+	public final int[]				pixels;
 	
 	public int					xOffset			= 0;
 	public int					yOffset			= 0;
 	
-	public int					width;
-	public int					height;
-	
-	public int[]				colours			= new int[6 * 6 * 6];
-	
-	public SpriteSheet			sheet;
+	public final int					width;
+	public final int					height;
+
+    private final SpriteSheet			sheet;
 	
 	public Screen(int width, int height, SpriteSheet sheet) {
 		this.width = width;
@@ -31,8 +29,9 @@ public class Screen {
 					int rr = (r * 255 / 5);
 					int bb = (b * 255 / 5);
 					int gg = (g * 255 / 5);
-					
-					colours[index++] = rr << 16 | gg << 8 | bb;
+
+                    int[] colours = new int[6 * 6 * 6];
+                    colours[index++] = rr << 16 | gg << 8 | bb;
 				}
 			}
 		}
@@ -46,7 +45,7 @@ public class Screen {
 		render(xPos, yPos, tile, mirrorDir, 1);
 	}
 	
-	public void render(int xPos, int yPos, int tile, int mirrorDir, int scale) {
+	void render(int xPos, int yPos, int tile, int mirrorDir, int scale) {
 		xPos -= xOffset;
 		yPos -= yOffset;
 		
@@ -95,10 +94,10 @@ public class Screen {
 		int xOffsetSpeed = xOffset / speed;
 		int yOffsetSpeed = yOffset / speed;
 		
-		for (int y = 0 + yOffset; y < (height + yOffset); y++) {
+		for (int y = yOffset; y < (height + yOffset); y++) {
 			int yPixel = y - yOffset;
 			
-			for (int x = 0 + xOffset; x < (width + xOffset); x++) {
+			for (int x = xOffset; x < (width + xOffset); x++) {
 				int xPixel = x - xOffset;
 				int col = background.pixels[(x - xOffsetSpeed) + (y - yOffsetSpeed) * background.width];
 				if (col != 0xffff00ff && col != 0xff7f007f) {
@@ -120,7 +119,7 @@ public class Screen {
 		drawRectangle(x1, y1, x2, y2, colour, false);
 	}
 	
-	public void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean absolute) {
+	void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean absolute) {
 		if (absolute) {
 			x1 -= xOffset;
 			x2 -= xOffset;

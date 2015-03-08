@@ -4,7 +4,7 @@ public class Debug {
 	public final static int	INFO	= 0;
 	public final static int	SCRIPT	= 1;
 	public final static int	DEBUG	= 2;
-	public final static int	WARNING	= 3;
+	private final static int	WARNING	= 3;
 	public final static int	ERROR	= 4;
 	
 	public static int	priority	= WARNING;

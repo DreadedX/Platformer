@@ -28,15 +28,15 @@ public class InputHandler implements KeyListener {
 		}
 	}
 	
-	public Key	debug	= new Key();
-	public Key	reload	= new Key();
-	public Key	message	= new Key();
-	public Key	up		= new Key();
-	public Key	down	= new Key();
-	public Key	left	= new Key();
-	public Key	right	= new Key();
-	public Key	space	= new Key();
-	public Key	shift	= new Key();
+	public final Key	debug	= new Key();
+	public final Key	reload	= new Key();
+	public final Key	message	= new Key();
+	public final Key	up		= new Key();
+	public final Key	down	= new Key();
+	public final Key	left	= new Key();
+	public final Key	right	= new Key();
+	public final Key	space	= new Key();
+	public final Key	shift	= new Key();
 	
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {

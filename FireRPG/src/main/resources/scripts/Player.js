@@ -9,7 +9,7 @@ function init() {
 	DASHSPEED = 5;
 	DASHWAIT = 72;
 	STAGGERLENGTH = 20;
-  MAXHEALTH = 100;
+    MAXHEALTH = 100;
 
 	speed = 2;
 	xMin = -5;
@@ -30,6 +30,6 @@ function tick() {
 	// y = -104 + y;
   // }
   
-  // DEMO: God mode 
-  // health = MAXHEALTH;
+//  DEMO: God mode
+//  health = MAXHEALTH;
 }

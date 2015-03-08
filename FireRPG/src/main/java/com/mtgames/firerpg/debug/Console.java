@@ -18,11 +18,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
-	public JFrame					frame;
-	private JTextArea				textArea;
-	private JTextField				inputField;
-	private Thread					reader;
-	private Thread					reader2;
+	private final JFrame					frame;
+	private final JTextArea				textArea;
+    private final Thread					reader;
+	private final Thread					reader2;
 	private boolean					quit;
 	
 	private final PipedInputStream	pin		= new PipedInputStream();
@@ -41,8 +40,8 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		textArea.setEditable(false);
 		textArea.setBackground(Color.DARK_GRAY);
 		textArea.setForeground(Color.LIGHT_GRAY);
-		
-		inputField = new JTextField();
+
+        JTextField inputField = new JTextField();
 		inputField.setEditable(true);
 		
 		JButton button = new JButton("clear");
@@ -59,22 +58,18 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		try {
 			PipedOutputStream pout = new PipedOutputStream(this.pin);
 			System.setOut(new PrintStream(pout, true));
-		} catch (java.io.IOException io) {
+		} catch (IOException | SecurityException io) {
 			textArea.append("Couldn't redirect STDOUT to this console\n" + io.getMessage());
-		} catch (SecurityException se) {
-			textArea.append("Couldn't redirect STDOUT to this console\n" + se.getMessage());
 		}
-		
-		try {
+
+        try {
 			PipedOutputStream pout2 = new PipedOutputStream(this.pin2);
 			System.setErr(new PrintStream(pout2, true));
-		} catch (java.io.IOException io) {
+		} catch (IOException | SecurityException io) {
 			textArea.append("Couldn't redirect STDERR to this console\n" + io.getMessage());
-		} catch (SecurityException se) {
-			textArea.append("Couldn't redirect STDERR to this console\n" + se.getMessage());
 		}
-		
-		quit = false; // signals the Threads that they should exit
+
+        quit = false; // signals the Threads that they should exit
 		
 		// Starting two seperate threads to read from the PipedInputStreams
 		//
@@ -93,11 +88,11 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		try {
 			reader.join(1000);
 			pin.close();
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 		try {
 			reader2.join(1000);
 			pin2.close();
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 		System.exit(0);
 	}
 	
@@ -115,7 +110,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 			while (Thread.currentThread() == reader) {
 				try {
 					this.wait(100);
-				} catch (InterruptedException ie) {}
+				} catch (InterruptedException ignored) {}
 				if (pin.available() != 0) {
 					String input = this.readLine(pin);
 					textArea.append(input);
@@ -128,7 +123,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 			while (Thread.currentThread() == reader2) {
 				try {
 					this.wait(100);
-				} catch (InterruptedException ie) {}
+				} catch (InterruptedException ignored) {}
 				if (pin2.available() != 0) {
 					String input = this.readLine(pin2);
 					textArea.append(input);
@@ -143,7 +138,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		}
 	}
 	
-	public synchronized String readLine(PipedInputStream in) throws IOException {
+	synchronized String readLine(PipedInputStream in) throws IOException {
 		String input = "";
 		do {
 			int available = in.available();

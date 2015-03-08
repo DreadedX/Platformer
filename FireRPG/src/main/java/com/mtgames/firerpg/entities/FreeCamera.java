@@ -6,14 +6,9 @@ import com.mtgames.firerpg.level.Level;
 
 public class FreeCamera extends Mob {
 	
-	private InputHandler	input;
-	public boolean			canJump		= false;
-	public boolean			canDash		= true;
-	public boolean			isStaggered	= false;
-	public boolean			isJumping	= false;
-	public boolean			isDashing	= false;
-	
-	public FreeCamera(Level level, int x, int y, InputHandler input) {
+	private final InputHandler	input;
+
+    public FreeCamera(Level level, int x, int y, InputHandler input) {
 		super(level, "Player", x, y);
 		this.level = level;
 		this.input = input;
@@ -51,8 +46,7 @@ public class FreeCamera extends Mob {
 	}
 	
 	public void render(Screen screen) {
-		return;
-	}
+    }
 	
 	@Override
 	public boolean hasCollided(int xa, int ya) {

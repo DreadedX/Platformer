@@ -18,8 +18,8 @@ public class Player extends Mob {
 	private final int			STAGGERLENGTH;
 	private final int			MAXHEALTH;
 	
-	private InputHandler		input;
-	private Script				script;
+	private final InputHandler		input;
+	private final Script				script;
 	
 	private int					xa			= 0;
 	private int					xaDash		= 0;
@@ -33,10 +33,10 @@ public class Player extends Mob {
 	
 	private int					health;
 	
-	public boolean				canJump		= false;
-	public boolean				canDash		= true;
-	public boolean				isStaggered	= false;
-	public boolean				isDashing	= false;
+	private boolean				canJump		= false;
+	private boolean				canDash		= true;
+	private boolean				isStaggered	= false;
+	private boolean				isDashing	= false;
 	
 	public Player(Level level, int x, int y, InputHandler input) {
 		super(level, NAME, x, y);
@@ -66,12 +66,8 @@ public class Player extends Mob {
 		if (input.reload.isPressed()) {
 			script.load();
 		}
-		
-		if (staggerTime == 0) {
-			isStaggered = false;
-		} else {
-			isStaggered = true;
-		}
+
+        isStaggered = staggerTime != 0;
 		
 		if (!isStaggered) {
 			if (hasCollided(0, 1) && jumpWait > JUMPWAIT) {
@@ -112,12 +108,8 @@ public class Player extends Mob {
 			staggerTime -= 1;
 			ya = 0;
 		}
-		
-		if (xaDash != 0) {
-			isDashing = true;
-		} else {
-			isDashing = false;
-		}
+
+        isDashing = xaDash != 0;
 		
 		move(xa, ya);
 		dash();
@@ -215,17 +207,13 @@ public class Player extends Mob {
 	}
 	
 	private void dash() {
-		if (dashWait >= DASHWAIT || canDash == true) {
+		if (dashWait >= DASHWAIT || canDash) {
 			dashWait = DASHWAIT;
 		} else {
 			dashWait++;
 		}
-		
-		if (dashWait == DASHWAIT && !hasCollided(0, 1)) {
-			canDash = true;
-		} else {
-			canDash = false;
-		}
+
+        canDash = dashWait == DASHWAIT && !hasCollided(0, 1);
 		
 		if (xaDash == 0) {
 			xa = 0;
@@ -255,11 +243,8 @@ public class Player extends Mob {
 		dashTime++;
 	}
 	
-	public boolean isAlive() {
-		if (health <= 0) {
-			return false;
-		}
-		return true;
-	}
+	boolean isAlive() {
+        return health > 0;
+    }
 	
 }

@@ -4,14 +4,11 @@ import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.Level;
 
 public abstract class Particle extends Entity {
-	protected int		life;
-	protected Screen	screen;
-	protected int		x;
+	private int		life;
+    protected int		x;
 	protected int		y;
-	
-	public int			id	= level.particles.size();
-	
-	public Particle(Level level, int x, int y, int life) {
+
+    protected Particle(Level level, int x, int y, int life) {
 		super(level);
 		this.life = life;
 		this.x = x;
@@ -23,18 +20,11 @@ public abstract class Particle extends Entity {
 	}
 	
 	public boolean isAlive() {
-		if (life >= 0) {
-			return true;
-		} else {
-			return false;
-		}
+        return life >= 0;
 	}
 	
 	protected boolean isOnScreen(Screen screen) {
-		if (x - screen.xOffset < 0 || x - screen.xOffset >= screen.width || y - screen.yOffset < 0 || y - screen.yOffset >= screen.height) {
-			return false;
-		}
-		
-		return true;
-	}
+        return !(x - screen.xOffset < 0 || x - screen.xOffset >= screen.width || y - screen.yOffset < 0 || y - screen.yOffset >= screen.height);
+
+    }
 }

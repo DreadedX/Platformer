@@ -22,12 +22,11 @@ public abstract class Tile {
 	public static final Tile	BIGBLOCK2BL	= new BaseSolidTile(66, 2, 2);
 	public static final Tile	BIGBLOCK2BR	= new BaseSolidTile(67, 3, 2);
 	
-	protected byte				id;
-	protected boolean			solid;
-	protected boolean			emitter;
-	private int					levelColour;
-	
-	public Tile(int id, boolean isSolid, boolean isEmitter) {
+	private final byte				id;
+	boolean			solid;
+	private boolean			emitter;
+
+    Tile(int id, boolean isSolid, boolean isEmitter) {
 		this.id = (byte) id;
 		if (tiles[id] != null) {
 			throw new RuntimeException("Tile id already exists: " + id);
@@ -49,11 +48,7 @@ public abstract class Tile {
 	public boolean isEmitter() {
 		return emitter;
 	}
-	
-	public int getLevelColour() {
-		return levelColour;
-	}
-	
-	public abstract void render(Screen screen, Level level, int x, int y);
+
+    public abstract void render(Screen screen, int x, int y);
 	
 }

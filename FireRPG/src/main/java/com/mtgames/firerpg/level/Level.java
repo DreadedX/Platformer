@@ -12,21 +12,20 @@ import com.mtgames.firerpg.gfx.Screen;
 
 public class Level {
 	
-	private Script	script;
-	private Random			generator	= new Random(11);
+	private final Script	script;
+	private final Random			generator	= new Random(11);
 	
 	private byte[]			tiles;
-	public int				width;
-	public int				height;
-	public List<Entity>		entities	= new ArrayList<Entity>();
-	public List<Particle>	particles	= new ArrayList<Particle>();
-	private LevelLoader		loader;
-	
-	public Level(String path, String scriptPath, InputHandler input) {
+	private int				width;
+	private int				height;
+	public final List<Entity>		entities	= new ArrayList<>();
+	public final List<Particle>	particles	= new ArrayList<>();
+
+    public Level(String path, String scriptPath, InputHandler input) {
 		this.script = new Script(scriptPath);
 		if (path != null) {
 			try {
-				loader = new LevelLoader(this, input, path);
+                LevelLoader loader = new LevelLoader(this, input, path);
 				width = loader.getWidth();
 				height = loader.getHeight();
 				
@@ -43,7 +42,7 @@ public class Level {
 		script.doInit();
 	}
 	
-	public void generateLevel() {
+	void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if (generator.nextDouble() > .9) {
@@ -58,13 +57,9 @@ public class Level {
 	public void tick() {
 		script.doTick();
 
-		for (Entity e : entities) {
-			e.tick();
-		}
-		
-		for (Particle e : particles) {
-			e.tick();
-		}
+        entities.forEach(Entity::tick);
+
+        particles.forEach(Particle::tick);
 		
 		Iterator<Particle> iter = particles.iterator();
 		while (iter.hasNext()) {
@@ -97,7 +92,7 @@ public class Level {
 		
 		for (int y = (yOffset >> 3); y <= (yOffset + screen.height >> 3); y++) {
 			for (int x = (xOffset >> 3); x <= (xOffset + screen.width >> 3); x++) {
-				getTile(x, y).render(screen, this, x << 3, y << 3);
+				getTile(x, y).render(screen, x << 3, y << 3);
 			}
 		}
 	}

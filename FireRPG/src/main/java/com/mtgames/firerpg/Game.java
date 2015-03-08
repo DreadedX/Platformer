@@ -22,39 +22,36 @@ import com.mtgames.firerpg.level.Level;
 import com.mtgames.firerpg.level.Script;
 
 @SuppressWarnings({ "serial" })
-public class Game extends Canvas implements Runnable {
+class Game extends Canvas implements Runnable {
 	
-	public static final boolean	FPSUNLOCK	= true;
-	public static final int		TPS			= 60;
-	public static final int		WIDTH		= 304;
-	public static final int		HEIGHT		= WIDTH / 4 * 3;
-	public static final String	NAME		= "FireRPG";
+	private static final boolean	FPSUNLOCK	= true;
+	private static final int		TPS			= 60;
+	private static final int		WIDTH		= 304;
+	private static final int		HEIGHT		= WIDTH / 4 * 3;
+	private static final String	NAME		= "FireRPG";
+
+    private static boolean		debug		= false;
+	private boolean				running		= false;
+	private int					tickCount	= 0;
+	private int					fps			= 0;
+	private static int			scale;
 	
-	private JFrame				frame;
-	
-	public static boolean		debug		= false;
-	public boolean				running		= false;
-	public int					tickCount	= 0;
-	public int					fps			= 0;
-	public static int			scale;
-	
-	private BufferedImage		image		= new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private int[]				pixels		= ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private final BufferedImage		image		= new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private final int[]				pixels		= ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	
 	private Screen				screen;
 	
-	public InputHandler			input;
-	public Script				script;
-	public Background			background1;
-	public Background			background2;
-	public Level				level;
+	private InputHandler			input;
+    private Background			background1;
+	private Background			background2;
+	private Level				level;
 	
-	public Game() {
+	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-		
-		frame = new JFrame(NAME);
+
+        JFrame frame = new JFrame(NAME);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -67,16 +64,16 @@ public class Game extends Canvas implements Runnable {
 		frame.setVisible(true);
 	}
 	
-	public void init() {
+	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-		script = new Script(null);
+        Script script = new Script(null);
 		background1 = new Background("/forest1.png");
 		background2 = new Background("/forest2.png");
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 	}
 	
-	public synchronized void start() {
+	synchronized void start() {
 		running = true;
 		new Thread(this).start();
 	}
@@ -137,7 +134,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	public void tick() {
+	void tick() {
 		tickCount++;
 		level.tick();
 		
@@ -145,7 +142,7 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
-	public void render() {
+	void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
 			createBufferStrategy(3);
@@ -179,10 +176,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		for (int y = 0; y < screen.height; y++) {
-			for (int x = 0; x < screen.width; x++) {
-				int colourCode = screen.pixels[x + y * screen.width];
-				pixels[x + y * WIDTH] = colourCode;
-			}
+            System.arraycopy(screen.pixels, 0 + y * screen.width, pixels, 0 + y * 304, screen.width);
 		}
 		
 		Graphics g = bs.getDrawGraphics();

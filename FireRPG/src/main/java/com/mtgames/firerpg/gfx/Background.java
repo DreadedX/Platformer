@@ -6,12 +6,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Background {
-	
-	public String	path;
-	public int		width;
-	public int		height;
-	
-	public int[]	pixels;
+
+    public int		width;
+
+    public int[]	pixels;
 	
 	public Background(String path) {
 		BufferedImage image = null;
@@ -25,10 +23,9 @@ public class Background {
 		if (image == null) {
 			return;
 		}
-		
-		this.path = path;
-		this.width = image.getWidth();
-		this.height = image.getHeight();
+
+        this.width = image.getWidth();
+        int height = image.getHeight();
 		
 		pixels = image.getRGB(0, 0, width, height, null, 0, width);
 	}

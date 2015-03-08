@@ -10,17 +10,12 @@ public class BasicEnemy extends Mob {
 	private final static String	NAME		= "BasicEnemy";
 	private final int			JUMPSPEED;
 	
-	private Script		script;
+	private final Script		script;
 
-	private int			xa			= 0;
-	private int			ya			= 0;
+    private int			ya			= 0;
 	private int			dir;
 	private int			modifier;
-	public boolean		canJump		= false;
-	public boolean		canDash		= true;
-	public boolean		isStaggered	= false;
-	public boolean		isDashing	= false;
-	
+
 	public BasicEnemy(Level level, int x, int y) {
 		super(level, NAME, x, y);
 		
@@ -42,7 +37,7 @@ public class BasicEnemy extends Mob {
 	public void tick() {
 		script.invoke("tick");
 
-		xa = 0;
+        int xa = 0;
 		
 		if (!hasCollided(3, -8) && hasCollided(3, 0)) {
 			ya = -JUMPSPEED;

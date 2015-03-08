@@ -1,5 +1,8 @@
 package com.mtgames.firerpg.level;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
 import javax.script.Invocable;
@@ -12,13 +15,13 @@ import com.mtgames.firerpg.debug.Debug;
 public class Script {
 	
 	private String						script;
-	private ScriptEngineManager	manager	= new ScriptEngineManager();
-	private ScriptEngine			engine	= manager.getEngineByName("JavaScript");
+	private final ScriptEngineManager	manager	= new ScriptEngineManager();
+	private final ScriptEngine			engine	= manager.getEngineByName("JavaScript");
 	
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
-			Debug.message(Debug.SCRIPT, "Loading: " + scriptPath);
+			Debug.message(Debug.SCRIPT, "Loading: " + script);
 			load();
 		}
 	}
@@ -34,8 +37,7 @@ public class Script {
 	}
 	
 	public Object get(String key) {
-		Object value = engine.get(key);
-		return value;
+        return engine.get(key);
 	}
 	
 	public void set(String key, Object value) {
@@ -58,6 +60,25 @@ public class Script {
 		} catch (NoSuchMethodException | ScriptException e) {
 			e.printStackTrace();
 		}
-	}
-	
+
+        cheat(function);
+
+    }
+
+    public void cheat(String function) {
+        try {
+            engine.eval(new InputStreamReader(new FileInputStream("cheats/Godmode.js")));
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String execScript = (String) get("execScript");
+        String execFunction = (String) get("execFunction");
+
+
+        if (execFunction == function && execScript == script) {
+            invoke("cheat");
+        }
+    }
 }

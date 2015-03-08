@@ -14,14 +14,11 @@ import com.mtgames.firerpg.InputHandler;
 import com.mtgames.firerpg.entities.Player;
 import com.mtgames.firerpg.entities.enemies.BasicEnemy;
 
-public class LevelLoader {
+class LevelLoader {
 	
 	private static String	x;
 	private static String	y;
-	private static String	id;
-	private static String	width;
-	private static String	height;
-	private static int		realWidth;
+    private static int		realWidth;
 	private static int		realHeight;
 	private static byte[]	tiles;
 	
@@ -37,8 +34,8 @@ public class LevelLoader {
 		
 		NodeList tileList = document.getDocumentElement().getElementsByTagName("tile");
 		NodeList entityList = document.getDocumentElement().getElementsByTagName("entity");
-		height = document.getDocumentElement().getAttribute("height");
-		width = document.getDocumentElement().getAttribute("width");
+        String height = document.getDocumentElement().getAttribute("height");
+        String width = document.getDocumentElement().getAttribute("width");
 		
 		realHeight = Integer.parseInt(height);
 		realWidth = Integer.parseInt(width);
@@ -48,8 +45,9 @@ public class LevelLoader {
 		for (int i = 0; i < realWidth * realHeight; i++) {
 			tiles[i] = 1;
 		}
-		
-		for (int i = 0; i < tileList.getLength(); i++) {
+
+        String id;
+        for (int i = 0; i < tileList.getLength(); i++) {
 			
 			Node node = tileList.item(i);
 			if (node instanceof Element) {
