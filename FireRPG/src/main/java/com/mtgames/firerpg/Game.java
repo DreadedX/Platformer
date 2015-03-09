@@ -77,8 +77,8 @@ import java.util.Objects;
 	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-		background1 = new Background("/forest1.png");
-		background2 = new Background("/forest2.png");
+		background1 = new Background("/mountain1.png");
+		background2 = new Background("/mountain2.png");
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 	}
 
@@ -183,16 +183,15 @@ import java.util.Objects;
 		if (debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
+			Font.render(consoleBuffer[0], screen, screen.xOffset, screen.height + screen.yOffset - 8);
+			Font.render(consoleBuffer[1], screen, screen.xOffset, screen.height + screen.yOffset - 16);
+			Font.render(consoleBuffer[2], screen, screen.xOffset, screen.height + screen.yOffset - 24);
+			Font.render(consoleBuffer[3], screen, screen.xOffset, screen.height + screen.yOffset - 32);
 		}
 
 		if (input.message.isPressed()) {
 			Text.textBox(screen, "Mission:", "It is your mission to just mess around a bit in this world and try to debug the game!");
 		}
-
-		Font.render(consoleBuffer[0], screen, screen.xOffset, screen.height + screen.yOffset - 8);
-		Font.render(consoleBuffer[1], screen, screen.xOffset, screen.height + screen.yOffset - 16);
-		Font.render(consoleBuffer[2], screen, screen.xOffset, screen.height + screen.yOffset - 24);
-		Font.render(consoleBuffer[3], screen, screen.xOffset, screen.height + screen.yOffset - 32);
 
 		for (int y = 0; y < screen.height; y++) {
 			System.arraycopy(screen.pixels, y * screen.width, pixels, y * WIDTH, screen.width);
