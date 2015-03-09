@@ -1,16 +1,15 @@
 package com.mtgames.firerpg.gfx;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 public class SpriteSheet {
 
-    public int		width;
+	public int width;
 
-    public int[]	pixels;
-	
+	public int[] pixels;
+
 	public SpriteSheet(String path) {
 		BufferedImage image = null;
 		try {
@@ -18,16 +17,14 @@ public class SpriteSheet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (image == null) {
 			return;
 		}
 
-        this.width = image.getWidth();
-        int height = image.getHeight();
-		
-		pixels = image.getRGB(0, 0, width, height, null, 0, width);
+		this.width = image.getWidth();
+		int height = image.getHeight();
 
-        System.arraycopy(pixels, 0, pixels, 0, pixels.length);
+		pixels = image.getRGB(0, 0, width, height, null, 0, width);
 	}
 }

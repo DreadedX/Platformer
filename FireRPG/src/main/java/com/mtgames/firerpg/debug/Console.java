@@ -12,83 +12,85 @@ package com.mtgames.firerpg.debug;
 //
 //Modified by: Tim Huizinga
 
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
-    private boolean quit;
+	public static String lines = "";
+	private final ScriptEngineManager manager = new ScriptEngineManager();
+	private final ScriptEngine        engine  = manager.getEngineByName("JavaScript");
 
-    private final ScriptEngineManager manager	= new ScriptEngineManager();
-    private final ScriptEngine engine	= manager.getEngineByName("JavaScript");
+	private final JFrame     frame      = new JFrame("Java Console");
+	private final JTextArea  textArea   = new JTextArea();
+	private final JTextField inputField = new JTextField();
+	private final PipedInputStream pin  = new PipedInputStream();
+	private final PipedInputStream pin2 = new PipedInputStream();
+	private boolean quit;
+	private Thread reader;
+	private Thread reader2;
 
-    private final JFrame frame = new JFrame("Java Console");
-    private final JTextArea textArea = new JTextArea();
-    private final JTextField inputField = new JTextField();
+	public Console() {
+		// create all components and add them
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension frameSize = new Dimension(screenSize.width / 4, screenSize.height / 2);
+		//        int x = frameSize.width / 2 + screenSize.width / 2;
+		int x = frameSize.width / 2;
+		int y = frameSize.height / 2;
+		frame.setBounds(x, y, frameSize.width, frameSize.height);
 
-    private Thread reader;
-    private Thread reader2;
+		textArea.setEditable(false);
+		textArea.setBackground(Color.DARK_GRAY);
+		textArea.setForeground(Color.LIGHT_GRAY);
 
-    private final PipedInputStream pin = new PipedInputStream();
-    private final PipedInputStream pin2 = new PipedInputStream();
+		inputField.setEditable(true);
 
-    public Console() {
-        // create all components and add them
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension frameSize = new Dimension(screenSize.width / 4, screenSize.height / 2);
-        int x = frameSize.width / 2 + screenSize.width / 2;
-        int y = frameSize.height / 2;
-        frame.setBounds(x, y, frameSize.width, frameSize.height);
+		JButton button = new JButton("clear");
 
-        textArea.setEditable(false);
-        textArea.setBackground(Color.DARK_GRAY);
-        textArea.setForeground(Color.LIGHT_GRAY);
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+		frame.getContentPane().add(new JScrollPane(inputField), BorderLayout.SOUTH);
+		//		frame.getContentPane().add(button,BorderLayout.EAST);
+		frame.setVisible(true);
 
-        inputField.setEditable(true);
+		inputField.addActionListener(this);
 
-        JButton button = new JButton("clear");
+		frame.addWindowListener(this);
+		button.addActionListener(this);
 
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
-        frame.getContentPane().add(new JScrollPane(inputField), BorderLayout.SOUTH);
-//		frame.getContentPane().add(button,BorderLayout.EAST);
-        frame.setVisible(true);
+		try {
+			PipedOutputStream pout = new PipedOutputStream(this.pin);
+			System.setOut(new PrintStream(pout, true));
+		} catch (IOException | SecurityException io) {
+			textArea.append("Couldn't redirect STDOUT to this console\n" + io.getMessage());
+		}
 
-        inputField.addActionListener(this);
+		try {
+			PipedOutputStream pout2 = new PipedOutputStream(this.pin2);
+			System.setErr(new PrintStream(pout2, true));
+		} catch (IOException | SecurityException io) {
+			textArea.append("Couldn't redirect STDERR to this console\n" + io.getMessage());
+		}
 
-        frame.addWindowListener(this);
-        button.addActionListener(this);
+		quit = false; // signals the Threads that they should exit
 
-        try {
-            PipedOutputStream pout = new PipedOutputStream(this.pin);
-            System.setOut(new PrintStream(pout, true));
-        } catch (IOException | SecurityException io) {
-            textArea.append("Couldn't redirect STDOUT to this console\n" + io.getMessage());
-        }
-
-        try {
-            PipedOutputStream pout2 = new PipedOutputStream(this.pin2);
-            System.setErr(new PrintStream(pout2, true));
-        } catch (IOException | SecurityException io) {
-            textArea.append("Couldn't redirect STDERR to this console\n" + io.getMessage());
-        }
-
-        quit = false; // signals the Threads that they should exit
-
-        // Starting two seperate threads to read from the PipedInputStreams
-        //
-        reader = new Thread(this);
-        reader.setDaemon(true);
-        reader.start();
-        //
-        reader2 = new Thread(this);
-        reader2.setDaemon(true);
-        reader2.start();
-    }
+		// Starting two seperate threads to read from the PipedInputStreams
+		//
+		reader = new Thread(this);
+		reader.setDaemon(true);
+		reader.start();
+		//
+		reader2 = new Thread(this);
+		reader2.setDaemon(true);
+		reader2.start();
+	}
 
 	public synchronized void windowClosed(WindowEvent evt) {
 		quit = true;
@@ -96,51 +98,63 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		try {
 			reader.join(1000);
 			pin.close();
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 		try {
 			reader2.join(1000);
 			pin2.close();
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 		System.exit(0);
 	}
-	
+
 	public synchronized void windowClosing(WindowEvent evt) {
 		frame.setVisible(false); // default behaviour of JFrame
 		frame.dispose();
 	}
-	
-	public synchronized void actionPerformed(ActionEvent evt) {
-        try {
-            engine.eval(inputField.getText());
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
 
-        inputField.setText("");
-    }
+	public synchronized void actionPerformed(ActionEvent evt) {
+		try {
+			engine.eval(inputField.getText());
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+
+		inputField.setText("");
+	}
 
 	public synchronized void run() {
 		try {
 			while (Thread.currentThread() == reader) {
 				try {
 					this.wait(100);
-				} catch (InterruptedException ignored) {}
+				} catch (InterruptedException ignored) {
+				}
 				if (pin.available() != 0) {
 					String input = this.readLine(pin);
 					textArea.append(input);
+
+					lines = "";
+					lines = input;
+
 					textArea.setCaretPosition(textArea.getDocument().getLength());
 				}
 				if (quit)
 					return;
 			}
-			
+
 			while (Thread.currentThread() == reader2) {
 				try {
 					this.wait(100);
-				} catch (InterruptedException ignored) {}
+				} catch (InterruptedException ignored) {
+				}
 				if (pin2.available() != 0) {
 					String input = this.readLine(pin2);
 					textArea.append(input);
+
+					lines = "";
+					lines = input;
+
 					textArea.setCaretPosition(textArea.getDocument().getLength());
 				}
 				if (quit)
@@ -151,7 +165,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 			textArea.append("The error is: " + e);
 		}
 	}
-	
+
 	synchronized String readLine(PipedInputStream in) throws IOException {
 		String input = "";
 		do {
