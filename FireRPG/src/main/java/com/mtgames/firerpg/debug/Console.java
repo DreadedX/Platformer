@@ -24,18 +24,18 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
-	public static String lines = "";
+	public static String              lines   = "";
 	private final ScriptEngineManager manager = new ScriptEngineManager();
 	private final ScriptEngine        engine  = manager.getEngineByName("JavaScript");
 
-	private final JFrame     frame      = new JFrame("Java Console");
-	private final JTextArea  textArea   = new JTextArea();
-	private final JTextField inputField = new JTextField();
-	private final PipedInputStream pin  = new PipedInputStream();
-	private final PipedInputStream pin2 = new PipedInputStream();
-	private boolean quit;
-	private Thread reader;
-	private Thread reader2;
+	private final JFrame           frame      = new JFrame("Java Console");
+	private final JTextArea        textArea   = new JTextArea();
+	private final JTextField       inputField = new JTextField();
+	private final PipedInputStream pin        = new PipedInputStream();
+	private final PipedInputStream pin2       = new PipedInputStream();
+	private       boolean quit;
+	private final Thread  reader;
+	private final Thread  reader2;
 
 	public Console() {
 		// create all components and add them

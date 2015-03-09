@@ -16,7 +16,7 @@ public class Text {
 		Font.render(msg, screen, screen.xOffset + 16, screen.yOffset + screen.height / 2 - 24);
 	}
 
-	public static String wrap(String msg, int maxLength, int maxLines) {
+	private static String wrap(String msg, int maxLength, int maxLines) {
 		int lastSpace;
 
 		if (msg.length() > maxLength * maxLines)

@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class Level {
 
-	public final List<Entity>   entities  = new ArrayList<>();
-	public final List<Particle> particles = new ArrayList<>();
+	public final  List<Entity>   entities  = new ArrayList<>();
+	private final List<Particle> particles = new ArrayList<>();
 	private final Script script;
 	private final Random generator = new Random(11);
 	private byte[] tiles;

@@ -25,14 +25,14 @@ import java.util.Objects;
 	private static final int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "FireRPG";
 
-	private static boolean debug     = false;
+	private static boolean debug = false;
 	private static int scale;
-	private final BufferedImage image  = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private final int[]         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	private        boolean running   = false;
-	private        int     tickCount = 0;
-	private        int     fps       = 0;
-	private String[] consoleBuffer = { "", "", "", "" };
+	private final BufferedImage image         = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private final int[]         pixels        = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private       boolean       running       = false;
+	private       int           tickCount     = 0;
+	private       int           fps           = 0;
+	private final String[]      consoleBuffer = { "", "", "", "" };
 	private Screen screen;
 
 	private InputHandler input;

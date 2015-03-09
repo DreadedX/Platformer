@@ -24,6 +24,8 @@ jar {
     version = "0.1.0"
 }
 
+//noinspection GroovyAssignabilityCheck
 task run(dependsOn:jar) << {
-  javaexec { main="-jar"; args jar.archivePath } 
+  javaexec { main="-jar"; //noinspection GroovyAssignabilityCheck
+      args jar.archivePath }
 }
