@@ -12,6 +12,8 @@ package com.mtgames.firerpg.debug;
 //
 //Modified by: Tim Huizinga
 
+import com.mtgames.firerpg.level.Level;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -37,7 +39,9 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 	private final Thread  reader;
 	private final Thread  reader2;
 
-	public Console() {
+	private final Level level;
+
+	public Console(Level level) {
 		// create all components and add them
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = new Dimension(screenSize.width / 4, screenSize.height / 2);
@@ -90,6 +94,8 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		reader2 = new Thread(this);
 		reader2.setDaemon(true);
 		reader2.start();
+
+		this.level = level;
 	}
 
 	public synchronized void windowClosed(WindowEvent evt) {
@@ -115,7 +121,11 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 
 	public synchronized void actionPerformed(ActionEvent evt) {
 		try {
+			engine.eval("function load(path) { level = path; print(path); }");
 			engine.eval(inputField.getText());
+			Debug.msg(Debug.DEBUG, "1");
+			level.load(engine.get("level") + "");
+			Debug.msg(Debug.DEBUG, "2");
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}

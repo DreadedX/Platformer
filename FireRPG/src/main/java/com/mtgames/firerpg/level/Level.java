@@ -1,6 +1,7 @@
 package com.mtgames.firerpg.level;
 
 import com.mtgames.firerpg.InputHandler;
+import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.entities.Entity;
 import com.mtgames.firerpg.entities.Particle;
 import com.mtgames.firerpg.gfx.Screen;
@@ -20,18 +21,13 @@ public class Level {
 	private int    width;
 	private int    height;
 
+	private InputHandler input;
+
 	public Level(String path, String scriptPath, InputHandler input) {
 		this.script = new Script(scriptPath);
+		this.input = input;
 		if (path != null) {
-			try {
-				LevelLoader loader = new LevelLoader(this, input, path);
-				width = loader.getWidth();
-				height = loader.getHeight();
-
-				tiles = loader.loadTiles();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			load(path);
 		} else {
 			this.width = 64;
 			this.height = 64;
@@ -120,5 +116,23 @@ public class Level {
 
 	public void addParticle(Particle particle) {
 		this.particles.add(particle);
+	}
+
+	public void load(String path) {
+//		TODO: This causes the game to freeze, it is needed to remova all old entities from the level
+//		Iterator<Entity> iter = entities.iterator();
+//		while (iter.hasNext()) {
+//			iter.remove();
+//		}
+
+		try {
+			LevelLoader loader = new LevelLoader(this, input, path);
+			width = loader.getWidth();
+			height = loader.getHeight();
+
+			tiles = loader.loadTiles();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

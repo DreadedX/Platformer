@@ -66,9 +66,7 @@ import java.util.Objects;
 		}
 
 		if (args.length > 1) {
-			new Console();
 			Debug.priority = Debug.INFO;
-			System.out.println(Debug.priority + " " + Debug.SCRIPT);
 		}
 
 		new Game().start();
@@ -80,6 +78,8 @@ import java.util.Objects;
 		background1 = new Background("/mountain1.png");
 		background2 = new Background("/mountain2.png");
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
+
+		new Console(level);
 	}
 
 	synchronized void start() {
