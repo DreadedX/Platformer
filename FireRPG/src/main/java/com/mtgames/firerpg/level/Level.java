@@ -21,6 +21,9 @@ public class Level {
 	private int    width;
 	private int    height;
 
+	public String scriptPath;
+	public boolean reload;
+
 	private InputHandler input;
 
 	public Level(String path, String scriptPath, InputHandler input) {
@@ -35,6 +38,8 @@ public class Level {
 			generateLevel();
 		}
 		script.doInit();
+
+		this.scriptPath = scriptPath;
 	}
 
 	void generateLevel() {
@@ -50,6 +55,12 @@ public class Level {
 	}
 
 	public void tick() {
+		if (reload) {
+			load(scriptPath);
+			System.out.println(scriptPath);
+			reload = false;
+		}
+
 		script.doTick();
 
 		entities.forEach(Entity::tick);
@@ -120,10 +131,10 @@ public class Level {
 
 	public void load(String path) {
 //		TODO: This causes the game to freeze, it is needed to remova all old entities from the level
-//		Iterator<Entity> iter = entities.iterator();
-//		while (iter.hasNext()) {
-//			iter.remove();
-//		}
+
+		if (this.entities.size() > 0) {
+			this.entities.clear();
+		}
 
 		try {
 			LevelLoader loader = new LevelLoader(this, input, path);

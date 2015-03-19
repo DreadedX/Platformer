@@ -124,7 +124,8 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 			engine.eval("function load(path) { level = path; print(path); }");
 			engine.eval(inputField.getText());
 			Debug.msg(Debug.DEBUG, "1");
-			level.load(engine.get("level") + "");
+			level.scriptPath = engine.get("level") + "";
+			level.reload = true;
 			Debug.msg(Debug.DEBUG, "2");
 		} catch (ScriptException e) {
 			e.printStackTrace();
