@@ -6,9 +6,11 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Objects;
 
 public class Script {
@@ -52,7 +54,9 @@ public class Script {
 	}
 
 	public void invoke(String function) {
-		cheat(function, new String[] { "Godmode.js" });
+        if (new File("cheats").exists()) {
+            cheat(function, new String[] { "Godmode.js" });
+        }
 
 		Invocable invocable = (Invocable) engine;
 
