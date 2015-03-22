@@ -57,7 +57,6 @@ public class Level {
 	public void tick() {
 		if (reload) {
 			load(scriptPath);
-			System.out.println(scriptPath);
 			reload = false;
 		}
 

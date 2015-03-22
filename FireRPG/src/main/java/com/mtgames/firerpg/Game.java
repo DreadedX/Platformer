@@ -66,7 +66,8 @@ import java.util.Objects;
 		}
 
 		if (args.length > 1) {
-			Debug.priority = Debug.INFO;
+//			Debug.priority = Debug.INFO;
+			Debug.priority = Debug.SCRIPT;
 		}
 
 		new Game().start();
