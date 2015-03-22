@@ -107,10 +107,12 @@ class LevelLoader {
 				switch (realId) {
 					case 0:
 						level.addEntity(new Player(level, realX, realY, input));
+						Debug.log(Debug.LEVEL, "Added Player: " + realX + " " + realY);
 						break;
 
 					case 1:
 						level.addEntity(new BasicEnemy(level, realX, realY));
+						Debug.log(Debug.LEVEL, "Added BasicEnemy: " + realX + " " + realY);
 						break;
 				}
 			}
@@ -126,6 +128,7 @@ class LevelLoader {
 				speed = Integer.parseInt(node.getAttributes().getNamedItem("speed").getNodeValue());
 
 				level.addBackground(new Background("/" + name + ".png", speed));
+				Debug.log(Debug.LEVEL, "Added layer: " + name + " " + speed);
 			}
 
 		}

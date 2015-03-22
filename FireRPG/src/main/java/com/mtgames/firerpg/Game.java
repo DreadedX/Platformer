@@ -36,8 +36,6 @@ import java.util.Objects;
 	private Screen screen;
 
 	private InputHandler input;
-	private Background   background1;
-	private Background   background2;
 	private Level        level;
 
 	private Game() {
@@ -67,7 +65,7 @@ import java.util.Objects;
 
 		if (args.length > 1) {
 //			Debug.priority = Debug.INFO;
-			Debug.priority = Debug.SCRIPT;
+			Debug.priority = Debug.LEVEL;
 		}
 
 		new Game().start();
@@ -76,9 +74,7 @@ import java.util.Objects;
 	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-//		background1 = new Background("/mountain1.png");
-//		background2 = new Background("/mountain2.png");
-		level = new Level("levels/prototype.map", "scripts/Level.js", input);
+		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 
 		new Console(level);
 	}
@@ -168,9 +164,6 @@ import java.util.Objects;
 
 		int xOffset = level.entities.get(0).x + 30 - (screen.width / 2);
 		int yOffset = level.entities.get(0).y - 10 - (screen.height / 2);
-
-//		screen.renderBackground(background1, 2);
-//		screen.renderBackground(background2, 4);
 
 		level.renderBackground(screen);
 

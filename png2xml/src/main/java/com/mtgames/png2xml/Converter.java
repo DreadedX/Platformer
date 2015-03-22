@@ -46,6 +46,10 @@ public class Converter {
 		String xml;
 
 		xml = "<map height=\"" + height + "\" width=\"" + width + "\">\n";
+		xml += "  <background>\n";
+		xml += "    <layer name='forest1' speed='2'/>\n";
+		xml += "    <layer name='forest2' speed='4'/>\n";
+		xml += "  </background>\n";
 		xml += "  <entities>\n";
 		xml += "    <entity id=\"0\"><x>10</x><y>10</y></entity>\n";
 		xml += "  </entities>\n";
