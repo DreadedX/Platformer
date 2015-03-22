@@ -5,6 +5,7 @@ import com.mtgames.firerpg.entities.Entity;
 import com.mtgames.firerpg.entities.Particle;
 import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Screen;
+import com.mtgames.firerpg.level.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.Iterator;

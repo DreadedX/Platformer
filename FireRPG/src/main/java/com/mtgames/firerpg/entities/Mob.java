@@ -1,7 +1,7 @@
 package com.mtgames.firerpg.entities;
 
 import com.mtgames.firerpg.level.Level;
-import com.mtgames.firerpg.level.Tile;
+import com.mtgames.firerpg.level.tiles.Tile;
 
 public abstract class Mob extends Entity {
 

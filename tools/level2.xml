@@ -1,7 +1,7 @@
 <map height='48' width='64'>
   <background>
-    <layer name='forest1' speed='2'/>
-    <layer name='forest2' speed='4'/>
+    <layer name='mountain1' speed='2'/>
+    <layer name='mountain2' speed='4'/>
   </background>
   <entities>
     <entity id='0' x='10' y='10'/>

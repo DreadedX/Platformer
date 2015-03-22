@@ -1,8 +1,8 @@
-package com.mtgames.firerpg.level;
+package com.mtgames.firerpg.level.tiles;
 
 import com.mtgames.firerpg.gfx.Screen;
 
-public class BaseTile extends Tile {
+class BaseTile extends Tile {
 
 	private final int tileId;
 

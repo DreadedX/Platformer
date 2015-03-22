@@ -91,7 +91,7 @@ class LevelLoader {
 				name = node.getAttributes().getNamedItem("name").getNodeValue();
 				speed = Integer.parseInt(node.getAttributes().getNamedItem("speed").getNodeValue());
 
-				level.addBackground(new Background("/" + name + ".png", speed));
+				level.addBackground(new Background("/backgrounds/" + name + ".png", speed));
 				Debug.log(Debug.LEVEL, "Added layer: " + name + " " + speed);
 			}
 

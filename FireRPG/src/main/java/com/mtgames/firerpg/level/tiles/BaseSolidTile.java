@@ -1,4 +1,4 @@
-package com.mtgames.firerpg.level;
+package com.mtgames.firerpg.level.tiles;
 
 class BaseSolidTile extends BaseTile {
 

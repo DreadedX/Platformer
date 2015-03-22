@@ -1,4 +1,4 @@
-package com.mtgames.firerpg.level;
+package com.mtgames.firerpg.level.tiles;
 
 import com.mtgames.firerpg.gfx.Screen;
 
