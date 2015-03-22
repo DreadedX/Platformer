@@ -2,7 +2,6 @@ package com.mtgames.firerpg;
 
 import com.mtgames.firerpg.debug.Console;
 import com.mtgames.firerpg.debug.Debug;
-import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Font;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.gfx.SpriteSheet;

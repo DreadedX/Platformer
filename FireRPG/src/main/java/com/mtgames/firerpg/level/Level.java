@@ -1,7 +1,6 @@
 package com.mtgames.firerpg.level;
 
 import com.mtgames.firerpg.InputHandler;
-import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.entities.Entity;
 import com.mtgames.firerpg.entities.Particle;
 import com.mtgames.firerpg.gfx.Background;
@@ -14,19 +13,19 @@ import java.util.Random;
 
 public class Level {
 
-	public final  List<Entity>   entities  = new ArrayList<>();
-	private final List<Particle> particles = new ArrayList<>();
-	private final List<Background> layers = new ArrayList<>();
+	public final  List<Entity>     entities  = new ArrayList<>();
+	private final List<Particle>   particles = new ArrayList<>();
+	private final List<Background> layers    = new ArrayList<>();
 	private final Script script;
 	private final Random generator = new Random(11);
 	private byte[] tiles;
 	private int    width;
 	private int    height;
 
-	public String scriptPath;
+	public String  scriptPath;
 	public boolean reload;
 
-	private InputHandler input;
+	private final InputHandler input;
 
 	public Level(String path, String scriptPath, InputHandler input) {
 		this.script = new Script(scriptPath);
@@ -138,7 +137,7 @@ public class Level {
 		this.layers.add(background);
 	}
 
-	public void load(String path) {
+	void load(String path) {
 		if (this.entities.size() > 0) {
 			this.entities.clear();
 		}

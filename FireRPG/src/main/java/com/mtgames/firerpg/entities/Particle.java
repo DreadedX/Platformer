@@ -4,9 +4,9 @@ import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.Level;
 
 public abstract class Particle extends Entity {
-	protected int x;
-	protected int y;
-	private   int life;
+	protected final int x;
+	protected final int y;
+	private         int life;
 
 	protected Particle(Level level, int x, int y, int life) {
 		super(level);

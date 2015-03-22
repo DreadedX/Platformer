@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class Background {
 
-	public int width;
-	public int speed;
+	public        int width;
+	private final int speed;
 
 	public int[] pixels;
 
