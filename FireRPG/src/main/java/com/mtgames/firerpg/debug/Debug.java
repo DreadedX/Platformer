@@ -8,7 +8,7 @@ public class Debug {
 	private final static int WARNING = 3;
 	public static int priority = WARNING;
 
-	public static void msg(int type, String message) {
+	public static void log(int type, String message) {
 		if (type < priority) {
 			return;
 		}

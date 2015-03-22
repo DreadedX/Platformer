@@ -73,7 +73,8 @@ public class Screen {
 		}
 	}
 
-	public void renderBackground(Background background, int speed) {
+	public void renderBackground(Background background) {
+		int speed = background.getSpeed();
 		int xOffsetSpeed = xOffset / speed;
 		int yOffsetSpeed = yOffset / speed;
 

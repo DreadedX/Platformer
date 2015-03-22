@@ -1,4 +1,9 @@
 <map height="48" width="64">
+  <background>
+    <layer name="forest1" speed=2/>
+    <layer name="forest2" speed=4/>
+  </background>
+
   <entities>
 
     <entity id="0"> <x>22</x> <y>264</y> </entity>

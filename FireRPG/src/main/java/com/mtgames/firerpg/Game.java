@@ -76,9 +76,9 @@ import java.util.Objects;
 	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-		background1 = new Background("/mountain1.png");
-		background2 = new Background("/mountain2.png");
-		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
+//		background1 = new Background("/mountain1.png");
+//		background2 = new Background("/mountain2.png");
+		level = new Level("levels/prototype.map", "scripts/Level.js", input);
 
 		new Console(level);
 	}
@@ -137,7 +137,7 @@ import java.util.Objects;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.msg(Debug.INFO, frames + " Frames, " + ticks + " Ticks");
+				Debug.log(Debug.INFO, frames + " Frames, " + ticks + " Ticks");
 				frames = 0;
 				ticks = 0;
 			}
@@ -169,8 +169,10 @@ import java.util.Objects;
 		int xOffset = level.entities.get(0).x + 30 - (screen.width / 2);
 		int yOffset = level.entities.get(0).y - 10 - (screen.height / 2);
 
-		screen.renderBackground(background1, 2);
-		screen.renderBackground(background2, 4);
+//		screen.renderBackground(background1, 2);
+//		screen.renderBackground(background2, 4);
+
+		level.renderBackground(screen);
 
 		level.renderTiles(screen, xOffset, yOffset);
 

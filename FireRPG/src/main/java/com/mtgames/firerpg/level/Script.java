@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.util.Objects;
 
 public class Script {
@@ -22,7 +21,7 @@ public class Script {
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
-			Debug.msg(Debug.SCRIPT, "Loading: " + script);
+			Debug.log(Debug.SCRIPT, "Loading: " + script);
 			load();
 		}
 	}
@@ -30,7 +29,7 @@ public class Script {
 	public void load() {
 		try {
 			engine.eval(new InputStreamReader(ClassLoader.getSystemResourceAsStream(script)));
-			Debug.msg(Debug.SCRIPT, "Loaded: " + script);
+			Debug.log(Debug.SCRIPT, "Loaded: " + script);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}

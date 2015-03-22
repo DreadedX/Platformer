@@ -4,6 +4,7 @@ import com.mtgames.firerpg.InputHandler;
 import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.entities.Entity;
 import com.mtgames.firerpg.entities.Particle;
+import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Screen;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Level {
 
 	public final  List<Entity>   entities  = new ArrayList<>();
 	private final List<Particle> particles = new ArrayList<>();
+	private final List<Background> layers = new ArrayList<>();
 	private final Script script;
 	private final Random generator = new Random(11);
 	private byte[] tiles;
@@ -102,6 +104,10 @@ public class Level {
 		}
 	}
 
+	public void renderBackground(Screen screen) {
+		layers.forEach(screen::renderBackground);
+	}
+
 	public void renderEntities(Screen screen) {
 		for (Entity e : entities) {
 			e.render(screen);
@@ -109,8 +115,8 @@ public class Level {
 	}
 
 	public void renderParticles(Screen screen) {
-		for (Particle e : particles) {
-			e.render(screen);
+		for (Particle p : particles) {
+			p.render(screen);
 		}
 	}
 
@@ -128,11 +134,21 @@ public class Level {
 		this.particles.add(particle);
 	}
 
-	public void load(String path) {
-//		TODO: This causes the game to freeze, it is needed to remova all old entities from the level
+	public void addBackground(Background background) {
+		this.layers.add(background);
+	}
 
+	public void load(String path) {
 		if (this.entities.size() > 0) {
 			this.entities.clear();
+		}
+
+		if (this.particles.size() > 0) {
+			this.particles.clear();
+		}
+
+		if (this.layers.size() > 0) {
+			this.layers.clear();
 		}
 
 		try {

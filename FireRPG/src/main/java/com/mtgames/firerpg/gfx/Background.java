@@ -7,11 +7,13 @@ import java.io.IOException;
 public class Background {
 
 	public int width;
+	public int speed;
 
 	public int[] pixels;
 
-	public Background(String path) {
+	public Background(String path, int speed) {
 		BufferedImage image = null;
+		this.speed = speed;
 
 		try {
 			image = ImageIO.read(SpriteSheet.class.getResourceAsStream(path));
@@ -27,5 +29,9 @@ public class Background {
 		int height = image.getHeight();
 
 		pixels = image.getRGB(0, 0, width, height, null, 0, width);
+	}
+
+	public int getSpeed() {
+		return speed;
 	}
 }

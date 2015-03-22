@@ -1,8 +1,10 @@
 package com.mtgames.firerpg.level;
 
 import com.mtgames.firerpg.InputHandler;
+import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.entities.Player;
 import com.mtgames.firerpg.entities.enemies.BasicEnemy;
+import com.mtgames.firerpg.gfx.Background;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,8 +16,6 @@ import java.util.zip.GZIPInputStream;
 
 class LevelLoader {
 
-	private static String x;
-	private static String y;
 	private static int    realWidth;
 	private static int    realHeight;
 	private static byte[] tiles;
@@ -32,6 +32,7 @@ class LevelLoader {
 
 		NodeList tileList = document.getDocumentElement().getElementsByTagName("tile");
 		NodeList entityList = document.getDocumentElement().getElementsByTagName("entity");
+		NodeList backgroundList = document.getDocumentElement().getElementsByTagName("layer");
 		String height = document.getDocumentElement().getAttribute("height");
 		String width = document.getDocumentElement().getAttribute("width");
 
@@ -45,6 +46,8 @@ class LevelLoader {
 		}
 
 		String id;
+		String x = null;
+		String y = null;
 		for (int i = 0; i < tileList.getLength(); i++) {
 
 			Node node = tileList.item(i);
@@ -111,6 +114,20 @@ class LevelLoader {
 						break;
 				}
 			}
+		}
+
+		String name;
+		int speed;
+		for (int i = 0; i < backgroundList.getLength(); i++) {
+
+			Node node = backgroundList.item(i);
+			if (node instanceof Element) {
+				name = node.getAttributes().getNamedItem("name").getNodeValue();
+				speed = Integer.parseInt(node.getAttributes().getNamedItem("speed").getNodeValue());
+
+				level.addBackground(new Background("/" + name + ".png", speed));
+			}
+
 		}
 	}
 
