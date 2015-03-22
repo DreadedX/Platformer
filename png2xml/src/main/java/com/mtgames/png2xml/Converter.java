@@ -45,13 +45,13 @@ public class Converter {
 		int id;
 		String xml;
 
-		xml = "<map height=\"" + height + "\" width=\"" + width + "\">\n";
+		xml = "<map height='" + height + "' width='" + width + "'>\n";
 		xml += "  <background>\n";
 		xml += "    <layer name='forest1' speed='2'/>\n";
 		xml += "    <layer name='forest2' speed='4'/>\n";
 		xml += "  </background>\n";
 		xml += "  <entities>\n";
-		xml += "    <entity id=\"0\"><x>10</x><y>10</y></entity>\n";
+		xml += "    <entity id='0' x='10' y='10'/>\n";
 		xml += "  </entities>\n";
 		xml += "  <tiles>\n";
 		
@@ -107,8 +107,7 @@ public class Converter {
 				}
 
 				if (id != 1) {
-					xml += "    <tile id=\"" + id + "\"><x>" + x + "</x><y>"
-							+ y + "</y></tile>\n";
+					xml += "    <tile id='" + id + "' x='" + x + "' y='" + y + "'/>\n";
 					System.out.println("Added: " + id + " at " + x + ", " + y);
 				}
 			}

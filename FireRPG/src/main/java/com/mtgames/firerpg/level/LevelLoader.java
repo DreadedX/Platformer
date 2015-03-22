@@ -45,36 +45,18 @@ class LevelLoader {
 			tiles[i] = 1;
 		}
 
-		String id;
-		String x = null;
-		String y = null;
+		int id;
+		int x;
+		int y;
 		for (int i = 0; i < tileList.getLength(); i++) {
 
 			Node node = tileList.item(i);
 			if (node instanceof Element) {
-				id = node.getAttributes().getNamedItem("id").getNodeValue();
+				id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
+				x = Integer.parseInt(node.getAttributes().getNamedItem("x").getNodeValue());
+				y = Integer.parseInt(node.getAttributes().getNamedItem("y").getNodeValue());
 
-				NodeList childNodes = node.getChildNodes();
-				for (int j = 0; j < childNodes.getLength(); j++) {
-					Node cNode = childNodes.item(j);
-
-					// Identifying the child tag of employee encountered.
-					if (cNode instanceof Element) {
-						String content = cNode.getLastChild().getTextContent().trim();
-						switch (cNode.getNodeName()) {
-							case "x":
-								x = content;
-								break;
-							case "y":
-								y = content;
-								break;
-						}
-					}
-				}
-				int realX = Integer.parseInt(x);
-				int realY = Integer.parseInt(y);
-				int realId = Integer.parseInt(id);
-				tiles[realX + realY * realWidth] = (byte) realId;
+				tiles[x + y * realWidth] = (byte) id;
 			}
 		}
 
@@ -82,37 +64,19 @@ class LevelLoader {
 
 			Node node = entityList.item(i);
 			if (node instanceof Element) {
-				id = node.getAttributes().getNamedItem("id").getNodeValue();
+				id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
+				x = Integer.parseInt(node.getAttributes().getNamedItem("x").getNodeValue());
+				y = Integer.parseInt(node.getAttributes().getNamedItem("y").getNodeValue());
 
-				NodeList childNodes = node.getChildNodes();
-				for (int j = 0; j < childNodes.getLength(); j++) {
-					Node cNode = childNodes.item(j);
-
-					// Identifying the child tag of employee encountered.
-					if (cNode instanceof Element) {
-						String content = cNode.getLastChild().getTextContent().trim();
-						switch (cNode.getNodeName()) {
-							case "x":
-								x = content;
-								break;
-							case "y":
-								y = content;
-								break;
-						}
-					}
-				}
-				int realX = Integer.parseInt(x);
-				int realY = Integer.parseInt(y);
-				int realId = Integer.parseInt(id);
-				switch (realId) {
+				switch (id) {
 					case 0:
-						level.addEntity(new Player(level, realX, realY, input));
-						Debug.log(Debug.LEVEL, "Added Player: " + realX + " " + realY);
+						level.addEntity(new Player(level, x, y, input));
+						Debug.log(Debug.LEVEL, "Added Player: " + x + " " + y);
 						break;
 
 					case 1:
-						level.addEntity(new BasicEnemy(level, realX, realY));
-						Debug.log(Debug.LEVEL, "Added BasicEnemy: " + realX + " " + realY);
+						level.addEntity(new BasicEnemy(level, x, y));
+						Debug.log(Debug.LEVEL, "Added BasicEnemy: " + x + " " + y);
 						break;
 				}
 			}
