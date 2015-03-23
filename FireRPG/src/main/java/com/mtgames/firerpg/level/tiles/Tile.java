@@ -2,7 +2,7 @@ package com.mtgames.firerpg.level.tiles;
 
 import com.mtgames.firerpg.gfx.Screen;
 
-public abstract class Tile {
+@SuppressWarnings("UnusedDeclaration") public abstract class Tile {
 
 	public static final Tile[] tiles = new Tile[256];
 	public static final Tile   VOID  = new BaseSolidTile(0, 0, 0);

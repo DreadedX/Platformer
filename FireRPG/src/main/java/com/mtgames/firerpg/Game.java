@@ -30,9 +30,7 @@ import java.util.Objects;
 	private final BufferedImage image         = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private final int[]         pixels        = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private       boolean       running       = false;
-	private       int           tickCount     = 0;
 	private       int           fps           = 0;
-	private final String[]      consoleBuffer = { "", "", "", "" };
 	private Screen screen;
 
 	private InputHandler input;
@@ -65,8 +63,7 @@ import java.util.Objects;
 
 		if (args.length > 1) {
 			if (Objects.equals(args[1], "debug")) {
-//				Debug.priority = Debug.INFO;
-				Debug.priority = Debug.LEVEL;
+				Debug.priority = Debug.INFO;
 				debug = true;
 			}
 		}
@@ -82,7 +79,7 @@ import java.util.Objects;
 		Command.set(level, input);
 
 		if (debug) {
-			new Console(level);
+			new Console();
 		}
 
 	}
@@ -90,10 +87,6 @@ import java.util.Objects;
 	synchronized void start() {
 		running = true;
 		new Thread(this).start();
-	}
-
-	public synchronized void stop() {
-		running = false;
 	}
 
 	public void run() {
@@ -149,18 +142,7 @@ import java.util.Objects;
 	}
 
 	void tick() {
-		tickCount++;
 		level.tick();
-
-		debug = input.debug.isPressed();
-
-		//        Render console ingame
-//		if (!Objects.equals(Console.lines, consoleBuffer[0])) {
-//			consoleBuffer[3] = consoleBuffer[2];
-//			consoleBuffer[2] = consoleBuffer[1];
-//			consoleBuffer[1] = consoleBuffer[0];
-//			consoleBuffer[0] = Console.lines;
-//		}
 	}
 
 	void render() {
@@ -189,13 +171,9 @@ import java.util.Objects;
 		Hud.render(screen);
 
 		/* Debug text */
-		if (debug) {
+		if (input.debug.isPressed() && debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
-			Font.render(consoleBuffer[0], screen, screen.xOffset, screen.height + screen.yOffset - 8);
-			Font.render(consoleBuffer[1], screen, screen.xOffset, screen.height + screen.yOffset - 16);
-			Font.render(consoleBuffer[2], screen, screen.xOffset, screen.height + screen.yOffset - 24);
-			Font.render(consoleBuffer[3], screen, screen.xOffset, screen.height + screen.yOffset - 32);
 		}
 
 		if (input.message.isPressed()) {
