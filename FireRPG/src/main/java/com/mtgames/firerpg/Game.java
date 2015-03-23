@@ -25,7 +25,6 @@ import java.util.Objects;
 	private static final int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "FireRPG";
 
-	private static boolean debug = false;
 	private static int scale;
 	private final BufferedImage image         = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private final int[]         pixels        = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -64,7 +63,7 @@ import java.util.Objects;
 		if (args.length > 1) {
 			if (Objects.equals(args[1], "debug")) {
 				Debug.priority = Debug.INFO;
-				debug = true;
+				Debug.debug = true;
 			}
 		}
 
@@ -78,7 +77,7 @@ import java.util.Objects;
 
 		Command.set(level, input);
 
-		if (debug) {
+		if (Debug.debug) {
 			new Console();
 		}
 
@@ -171,7 +170,7 @@ import java.util.Objects;
 		Hud.render(screen);
 
 		/* Debug text */
-		if (input.debug.isPressed() && debug) {
+		if (input.debug.isPressed() && Debug.debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
 		}
