@@ -21,7 +21,7 @@ public class Script {
 	public Script(String scriptPath) {
 		if (scriptPath != null) {
 			this.script = scriptPath;
-			Debug.log(Debug.SCRIPT, "Loading: " + script);
+			Debug.log("Loading: " + script, Debug.SCRIPT);
 			load();
 		}
 	}
@@ -29,7 +29,7 @@ public class Script {
 	public void load() {
 		try {
 			engine.eval(new InputStreamReader(ClassLoader.getSystemResourceAsStream(script)));
-			Debug.log(Debug.SCRIPT, "Loaded: " + script);
+			Debug.log("Loaded: " + script, Debug.SCRIPT);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}

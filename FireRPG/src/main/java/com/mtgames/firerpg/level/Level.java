@@ -141,7 +141,7 @@ public class Level {
 	void load(String path) {
 		URL u = ClassLoader.getSystemResource(path);
 		if (u == null) {
-			Debug.log(Debug.WARNING, "The file '" + path + "' does not exist");
+			Debug.log("The file '" + path + "' does not exist", Debug.WARNING);
 			return;
 		}
 

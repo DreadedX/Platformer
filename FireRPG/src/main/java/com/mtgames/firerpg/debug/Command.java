@@ -18,7 +18,7 @@ public class Command {
 
 		switch (commands[0]) {
 			default:
-				Debug.log(Debug.WARNING, "'" + commands[0] + "' is not a valid command");
+				Debug.log("'" + commands[0] + "' is not a valid command", Debug.WARNING);
 				break;
 
 			case "load":
@@ -26,7 +26,7 @@ public class Command {
 					level.path = "levels/" + commands[1] + ".map";
 					level.reload = true;
 				} else {
-					Debug.log(Debug.WARNING, "Invalid arguments, usage: load <level name>");
+					Debug.log("Invalid arguments, usage: load <level name>", Debug.WARNING);
 				}
 				break;
 
@@ -34,7 +34,7 @@ public class Command {
 				if (commands.length == 1) {
 					level.reload = true;
 				} else {
-					Debug.log(Debug.WARNING, "Invalid arguments, usage: load");
+					Debug.log("Invalid arguments, usage: load", Debug.WARNING);
 				}
 				break;
 
@@ -49,11 +49,11 @@ public class Command {
 						level.entities.get(Integer.parseInt(commands[1])).x = Integer.parseInt(commands[2]);
 						level.entities.get(Integer.parseInt(commands[1])).y = Integer.parseInt(commands[3]);
 					} else {
-						Debug.log(Debug.WARNING, "'" + commands[1] + "' is not a valid id");
+						Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 					}
 
 				} else {
-					Debug.log(Debug.WARNING, "Invalid arguments, usage: move <id> <x> <y>");
+					Debug.log("Invalid arguments, usage: move <id> <x> <y>", Debug.WARNING);
 				}
 				break;
 
@@ -61,7 +61,7 @@ public class Command {
 				if (commands.length == 4) {
 					switch (Integer.parseInt(commands[1])) {
 						default:
-							Debug.log(Debug.WARNING, "'" + commands[1] + "' is not a valid id");
+							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 							break;
 
 						case 0:
@@ -78,7 +78,7 @@ public class Command {
 						//							break;
 					}
 				} else {
-					Debug.log(Debug.WARNING, "Invalid arguments, usage: spawn <id> <x> <y>");
+					Debug.log("Invalid arguments, usage: spawn <id> <x> <y>", Debug.WARNING);
 				}
 				break;
 
@@ -87,10 +87,10 @@ public class Command {
 					if (Integer.parseInt(commands[1]) < level.entities.size()) {
 						level.entities.remove(Integer.parseInt(commands[1]));
 					} else {
-						Debug.log(Debug.WARNING, "'" + commands[1] + "' is not a valid id");
+						Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 					}
 				} else {
-					Debug.log(Debug.WARNING, "Invalid arguments, usage: kill <uid>");
+					Debug.log("Invalid arguments, usage: kill <uid>", Debug.WARNING);
 				}
 				break;
 
