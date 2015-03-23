@@ -57,15 +57,18 @@ import java.util.Objects;
 	}
 
 	public static void main(String[] args) {
-		if (args.length != 0) {
+		if (args.length > 0) {
 			scale = Integer.parseInt(args[0]);
 		} else {
 			scale = 4;
 		}
 
 		if (args.length > 1) {
-//			Debug.priority = Debug.INFO;
-			Debug.priority = Debug.LEVEL;
+			if (Objects.equals(args[1], "debug")) {
+//				Debug.priority = Debug.INFO;
+				Debug.priority = Debug.LEVEL;
+				debug = true;
+			}
 		}
 
 		new Game().start();
@@ -78,7 +81,10 @@ import java.util.Objects;
 
 		Command.set(level, input);
 
-		new Console(level);
+		if (debug) {
+			new Console(level);
+		}
+
 	}
 
 	synchronized void start() {
