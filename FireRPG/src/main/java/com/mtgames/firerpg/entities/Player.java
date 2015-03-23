@@ -10,7 +10,6 @@ import com.mtgames.firerpg.level.Script;
 
 public class Player extends Mob {
 
-	private final static String NAME = "Player";
 	private final int JUMPWAIT;
 	private final int JUMPSPEED;
 	private final int DASHSPEED;
@@ -39,7 +38,7 @@ public class Player extends Mob {
 	private boolean isDashing   = false;
 
 	public Player(Level level, int x, int y, InputHandler input) {
-		super(level, NAME, x, y);
+		super(level, x, y);
 
 		this.script = new Script("scripts/Player.js");
 		script.doInit();

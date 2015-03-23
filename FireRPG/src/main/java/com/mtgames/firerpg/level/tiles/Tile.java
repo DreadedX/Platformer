@@ -23,16 +23,14 @@ public abstract class Tile {
 
 	private final byte id;
 	boolean solid;
-	private boolean emitter;
 
-	Tile(int id, boolean isSolid, boolean isEmitter) {
+	Tile(int id, boolean isSolid) {
 		this.id = (byte) id;
 		if (tiles[id] != null) {
 			throw new RuntimeException("Tile id already exists: " + id);
 		}
 
 		this.solid = isSolid;
-		this.emitter = isEmitter;
 		tiles[id] = this;
 	}
 
@@ -42,10 +40,6 @@ public abstract class Tile {
 
 	public boolean isSolid() {
 		return solid;
-	}
-
-	public boolean isEmitter() {
-		return emitter;
 	}
 
 	public abstract void render(Screen screen, int x, int y);

@@ -7,7 +7,6 @@ import com.mtgames.firerpg.level.Script;
 
 public class BasicEnemy extends Mob {
 
-	private final static String NAME = "BasicEnemy";
 	private final int JUMPSPEED;
 
 	private final Script script;
@@ -17,7 +16,7 @@ public class BasicEnemy extends Mob {
 	private int modifier;
 
 	public BasicEnemy(Level level, int x, int y) {
-		super(level, NAME, x, y);
+		super(level, x, y);
 
 		this.script = new Script("scripts/BasicEnemy.js");
 		script.doInit();

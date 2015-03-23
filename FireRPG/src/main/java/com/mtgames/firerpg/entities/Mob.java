@@ -5,7 +5,6 @@ import com.mtgames.firerpg.level.tiles.Tile;
 
 public abstract class Mob extends Entity {
 
-	private final String name;
 	protected int speed = 1;
 	protected int     movingDir             = 1;
 	protected int     xMin                  = -1;
@@ -17,9 +16,8 @@ public abstract class Mob extends Entity {
 	int gravityWait = 0;
 	private   int     walkingAnimationFrame = 0;
 
-	protected Mob(Level level, String name, int x, int y) {
+	protected Mob(Level level, int x, int y) {
 		super(level);
-		this.name = name;
 		this.x = x;
 		this.y = y;
 	}
@@ -152,9 +150,5 @@ public abstract class Mob extends Entity {
 		} else {
 			walkingAnimationFrame++;
 		}
-	}
-
-	public String getName() {
-		return name;
 	}
 }

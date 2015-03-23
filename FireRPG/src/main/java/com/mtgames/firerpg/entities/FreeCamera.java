@@ -9,7 +9,7 @@ public class FreeCamera extends Mob {
 	private final InputHandler input;
 
 	public FreeCamera(Level level, int x, int y, InputHandler input) {
-		super(level, "Player", x, y);
+		super(level, x, y);
 		this.level = level;
 		this.input = input;
 		movingDir = 1;
