@@ -1,5 +1,6 @@
 package com.mtgames.firerpg;
 
+import com.mtgames.firerpg.debug.Command;
 import com.mtgames.firerpg.debug.Console;
 import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.gfx.Font;
@@ -75,6 +76,8 @@ import java.util.Objects;
 		input = new InputHandler(this);
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 
+		Command.exec("load level2", level);
+
 		new Console(level);
 	}
 
@@ -146,12 +149,12 @@ import java.util.Objects;
 		debug = input.debug.isPressed();
 
 		//        Render console ingame
-		if (!Objects.equals(Console.lines, consoleBuffer[0])) {
-			consoleBuffer[3] = consoleBuffer[2];
-			consoleBuffer[2] = consoleBuffer[1];
-			consoleBuffer[1] = consoleBuffer[0];
-			consoleBuffer[0] = Console.lines;
-		}
+//		if (!Objects.equals(Console.lines, consoleBuffer[0])) {
+//			consoleBuffer[3] = consoleBuffer[2];
+//			consoleBuffer[2] = consoleBuffer[1];
+//			consoleBuffer[1] = consoleBuffer[0];
+//			consoleBuffer[0] = Console.lines;
+//		}
 	}
 
 	void render() {

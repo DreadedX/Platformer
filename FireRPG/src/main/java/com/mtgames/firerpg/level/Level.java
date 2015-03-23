@@ -23,7 +23,7 @@ public class Level {
 	private int    width;
 	private int    height;
 
-	public String  scriptPath;
+	public String  path;
 	public boolean reload;
 
 	private final InputHandler input;
@@ -41,7 +41,7 @@ public class Level {
 		}
 		script.doInit();
 
-		this.scriptPath = scriptPath;
+		this.path = path;
 	}
 
 	void generateLevel() {
@@ -58,7 +58,7 @@ public class Level {
 
 	public void tick() {
 		if (reload) {
-			load(scriptPath);
+			load(path);
 			reload = false;
 		}
 

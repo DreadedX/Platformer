@@ -24,11 +24,12 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
-	public static String              lines   = "";
-	private final ScriptEngineManager manager = new ScriptEngineManager();
-	private final ScriptEngine        engine  = manager.getEngineByName("JavaScript");
+	public static String              lines       = "";
+	private final ScriptEngineManager manager     = new ScriptEngineManager();
+	private final ScriptEngine        engine      = manager.getEngineByName("JavaScript");
 
 	private final JFrame           frame      = new JFrame("Java Console");
 	private final JTextArea        textArea   = new JTextArea();
@@ -120,16 +121,19 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 	}
 
 	public synchronized void actionPerformed(ActionEvent evt) {
-		try {
-			engine.eval("function load(path) { level = path; }");
-			engine.eval(inputField.getText());
-			level.scriptPath = "levels/" + engine.get("level") + ".map";
-			level.reload = true;
-		} catch (ScriptException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			engine.eval("function load(path) { level = path; }");
+//			engine.eval(inputField.getText());
+//			level.path = "levels/" + engine.get("level") + ".map";
+//			level.reload = true;
+//		} catch (ScriptException e) {
+//			e.printStackTrace();
+//		}
+
+		Command.exec(inputField.getText(), level);
 
 		inputField.setText("");
+
 	}
 
 	public synchronized void run() {
