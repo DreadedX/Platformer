@@ -5,16 +5,16 @@ import com.mtgames.firerpg.level.tiles.Tile;
 
 public abstract class Mob extends Entity {
 
-	protected int speed = 1;
-	protected int     movingDir             = 1;
-	protected int     xMin                  = -1;
-	protected int     xMax                  = 1;
-	protected int     yMin                  = -1;
-	protected int     yMax                  = 1;
-	protected int     animationFrame        = 0;
-	protected boolean isJumping             = false;
+	protected int     speed          = 1;
+	protected int     movingDir      = 1;
+	protected int     xMin           = -1;
+	protected int     xMax           = 1;
+	protected int     yMin           = -1;
+	protected int     yMax           = 1;
+	protected int     animationFrame = 0;
+	protected boolean isJumping      = false;
 	int gravityWait = 0;
-	private   int     walkingAnimationFrame = 0;
+	private int walkingAnimationFrame = 0;
 
 	protected Mob(Level level, int x, int y) {
 		super(level);

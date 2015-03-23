@@ -2,10 +2,13 @@ package com.mtgames.firerpg.debug;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 
-public class Console extends WindowAdapter implements WindowListener, ActionListener{
-	private final JTextField       inputField = new JTextField();
+public class Console extends WindowAdapter implements WindowListener, ActionListener {
+	private final JTextField inputField = new JTextField();
 
 	public Console() {
 		Dimension frameSize = new Dimension(300, 20);
@@ -27,8 +30,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		frame.addWindowListener(this);
 	}
 
-	@Override
-	public synchronized void actionPerformed(ActionEvent evt) {
+	@Override public synchronized void actionPerformed(ActionEvent evt) {
 		Command.exec(inputField.getText());
 		inputField.setText("");
 	}

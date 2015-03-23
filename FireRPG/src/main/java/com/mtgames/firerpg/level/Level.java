@@ -1,12 +1,14 @@
 package com.mtgames.firerpg.level;
 
 import com.mtgames.firerpg.InputHandler;
+import com.mtgames.firerpg.debug.Debug;
 import com.mtgames.firerpg.entities.Entity;
 import com.mtgames.firerpg.entities.Particle;
 import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.tiles.Tile;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,14 +21,12 @@ public class Level {
 	private final List<Background> layers    = new ArrayList<>();
 	private final Script script;
 	private final Random generator = new Random(11);
+	private final InputHandler input;
+	public String  path;
+	public boolean reload;
 	private byte[] tiles;
 	private int    width;
 	private int    height;
-
-	public String  path;
-	public boolean reload;
-
-	private final InputHandler input;
 
 	public Level(String path, String scriptPath, InputHandler input) {
 		this.script = new Script(scriptPath);
@@ -139,6 +139,12 @@ public class Level {
 	}
 
 	void load(String path) {
+		URL u = ClassLoader.getSystemResource(path);
+		if (u == null) {
+			Debug.log(Debug.WARNING, "The file '" + path + "' does not exist");
+			return;
+		}
+
 		if (this.entities.size() > 0) {
 			this.entities.clear();
 		}
@@ -156,7 +162,7 @@ public class Level {
 			width = loader.getWidth();
 			height = loader.getHeight();
 
-			tiles = loader.loadTiles();
+			tiles = loader.getTiles();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

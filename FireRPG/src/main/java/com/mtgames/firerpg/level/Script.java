@@ -53,9 +53,9 @@ public class Script {
 	}
 
 	public void invoke(String function) {
-        if (new File("cheats").exists()) {
-            cheat(function, new String[] { "Godmode.js" });
-        }
+		if (new File("cheats").exists()) {
+			cheat(function, new String[] { "Godmode.js" });
+		}
 
 		Invocable invocable = (Invocable) engine;
 

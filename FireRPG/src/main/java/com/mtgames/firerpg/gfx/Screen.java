@@ -5,9 +5,9 @@ public class Screen {
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 
-	public final int[] pixels;
-	public final int width;
-	public final int height;
+	public final  int[]       pixels;
+	public final  int         width;
+	public final  int         height;
 	private final SpriteSheet sheet;
 	public int xOffset = 0;
 	public int yOffset = 0;

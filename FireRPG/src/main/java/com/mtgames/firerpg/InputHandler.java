@@ -14,6 +14,7 @@ public class InputHandler implements KeyListener {
 	public final Key right   = new Key();
 	public final Key space   = new Key();
 	public final Key shift   = new Key();
+
 	public InputHandler(Game game) {
 		game.addKeyListener(this);
 	}
@@ -101,7 +102,7 @@ public class InputHandler implements KeyListener {
 	}
 
 	public class Key {
-		private boolean pressed         = false;
+		private boolean pressed = false;
 
 		public boolean isPressed() {
 			return pressed;

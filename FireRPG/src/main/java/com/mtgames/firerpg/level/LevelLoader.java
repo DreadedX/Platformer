@@ -98,7 +98,7 @@ class LevelLoader {
 		}
 	}
 
-	public byte[] loadTiles() {
+	public byte[] getTiles() {
 		return tiles;
 	}
 
