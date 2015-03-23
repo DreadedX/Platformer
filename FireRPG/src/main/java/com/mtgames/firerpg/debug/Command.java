@@ -30,6 +30,14 @@ public class Command {
 				}
 				break;
 
+			case "reload":
+				if (commands.length == 1) {
+					level.reload = true;
+				} else {
+					Debug.log(Debug.WARNING, "Invalid arguments, usage: load");
+				}
+				break;
+
 			case "move":
 				if (commands.length == 4) {
 					if (Objects.equals(commands[1], "*")) {
