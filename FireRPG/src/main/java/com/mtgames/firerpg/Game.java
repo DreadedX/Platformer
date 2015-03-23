@@ -76,7 +76,7 @@ import java.util.Objects;
 		input = new InputHandler(this);
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 
-		Command.exec("load level2", level);
+		Command.set(level, input);
 
 		new Console(level);
 	}
@@ -164,8 +164,13 @@ import java.util.Objects;
 			return;
 		}
 
-		int xOffset = level.entities.get(0).x + 30 - (screen.width / 2);
-		int yOffset = level.entities.get(0).y - 10 - (screen.height / 2);
+		int xOffset = screen.width/2;
+		int yOffset = screen.height/2;
+
+		if (level.entities.size() > 0) {
+			xOffset = level.entities.get(0).x + 30 - (screen.width / 2);
+			yOffset = level.entities.get(0).y - 10 - (screen.height / 2);
+		}
 
 		level.renderBackground(screen);
 

@@ -130,7 +130,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 //			e.printStackTrace();
 //		}
 
-		Command.exec(inputField.getText(), level);
+		Command.exec(inputField.getText());
 
 		inputField.setText("");
 
