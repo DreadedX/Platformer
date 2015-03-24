@@ -20,8 +20,8 @@ dependencies {
 jar {
   from configurations.compile.collect {zipTree it}
   manifest.attributes "Main-Class": "com.mtgames.firerpg.Game"
-    baseName = "firerpg"
-    version = "0.1.0"
+    baseName = "platformer"
+    // version = "0.1.0"
 }
 
 //noinspection GroovyAssignabilityCheck

@@ -25,6 +25,11 @@ public class Command {
 				if (commands.length == 2) {
 					level.path = "levels/" + commands[1] + ".map";
 					level.reload = true;
+					level.external = false;
+				} else if (commands.length == 3 && Objects.equals(commands[2], "ext")) {
+					level.path = "levels/" + commands[1] + ".map";
+					level.reload = true;
+					level.external = true;
 				} else {
 					Debug.log("Invalid arguments, usage: load <level name>", Debug.WARNING);
 				}

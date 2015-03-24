@@ -76,7 +76,10 @@ import java.util.Objects;
 		input = new InputHandler(this);
 		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
 
+//		Initialize command system
 		Command.set(level, input);
+//		Load debug level
+		Command.exec("load debug_level");
 
 		if (Debug.debug) {
 			new Console();

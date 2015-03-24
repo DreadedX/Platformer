@@ -8,6 +8,8 @@ import com.mtgames.firerpg.gfx.Background;
 import com.mtgames.firerpg.gfx.Screen;
 import com.mtgames.firerpg.level.tiles.Tile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,26 +24,29 @@ public class Level {
 	private final Script script;
 	private final Random generator = new Random(11);
 	private final InputHandler input;
-	public String  path;
-	public boolean reload;
+
 	private byte[] tiles;
 	private int    width;
 	private int    height;
 
+	public String  path;
+	public boolean reload;
+	public boolean external;
+
 	public Level(String path, String scriptPath, InputHandler input) {
 		this.script = new Script(scriptPath);
 		this.input = input;
-		if (path != null) {
-			load(path);
-		} else {
-			this.width = 64;
-			this.height = 64;
-			tiles = new byte[width * height];
-			generateLevel();
-		}
+//		if (path != null) {
+//			load(path);
+//		} else {
+//			this.width = 64;
+//			this.height = 64;
+//			tiles = new byte[width * height];
+//			generateLevel();
+//		}
 		script.doInit();
 
-		this.path = path;
+//		this.path = path;
 	}
 
 	void generateLevel() {
@@ -139,9 +144,8 @@ public class Level {
 	}
 
 	void load(String path) {
-		URL u = ClassLoader.getSystemResource(path);
-		if (u == null) {
-			Debug.log("The file '" + path + "' does not exist", Debug.WARNING);
+		if ((!external && ClassLoader.getSystemResource(path) == null) || (external && !(new File(path).exists()))) {
+			Debug.log("The file '" + path + "' does not exist, external: " + external, Debug.WARNING);
 			return;
 		}
 
@@ -158,7 +162,7 @@ public class Level {
 		}
 
 		try {
-			LevelLoader loader = new LevelLoader(this, input, path);
+			LevelLoader loader = new LevelLoader(this, input, path, external);
 			width = loader.getWidth();
 			height = loader.getHeight();
 
@@ -166,5 +170,7 @@ public class Level {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		external = false;
 	}
 }

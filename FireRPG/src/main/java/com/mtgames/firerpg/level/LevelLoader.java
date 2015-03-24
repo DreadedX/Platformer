@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.FileInputStream;
 import java.util.zip.GZIPInputStream;
 
 class LevelLoader {
@@ -20,15 +21,21 @@ class LevelLoader {
 	private static int    realHeight;
 	private static byte[] tiles;
 
-	public LevelLoader(Level level, InputHandler input, String path) throws Exception {
+	public LevelLoader(Level level, InputHandler input, String path, boolean external) throws Exception {
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		DocumentBuilder builder = factory.newDocumentBuilder();
 
-		GZIPInputStream gzis = new GZIPInputStream(ClassLoader.getSystemResourceAsStream(path));
+		GZIPInputStream gzis;
+		if (external) {
+			gzis = new GZIPInputStream(new FileInputStream(path));
+		} else {
+			gzis = new GZIPInputStream(ClassLoader.getSystemResourceAsStream(path));
+		}
 
 		Document document = builder.parse(gzis);
+		gzis.close();
 
 		NodeList tileList = document.getDocumentElement().getElementsByTagName("tile");
 		NodeList entityList = document.getDocumentElement().getElementsByTagName("entity");
