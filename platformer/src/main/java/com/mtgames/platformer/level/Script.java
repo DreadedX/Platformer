@@ -6,10 +6,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Objects;
 
 public class Script {
@@ -54,7 +51,15 @@ public class Script {
 
 	public void invoke(String function) {
 		if (new File("platformer/cheats").exists()) {
-			cheat(function, new String[] { "Godmode.js" });
+			File f = new File("platformer/cheats");
+
+			FilenameFilter textFilter = (dir, name) -> name.toLowerCase().endsWith(".js");
+
+			File[] files = f.listFiles(textFilter);
+			for (File file : files) {
+				cheat(function, file.getName());
+			}
+
 		}
 
 		Invocable invocable = (Invocable) engine;
@@ -66,22 +71,18 @@ public class Script {
 		}
 	}
 
-	void cheat(String function, String[] cheats) {
-		for (String cheat : cheats) {
-			try {
-				engine.eval(new InputStreamReader(new FileInputStream("platformer/cheats/" + cheat)));
-			} catch (ScriptException | FileNotFoundException e) {
-				e.printStackTrace();
-			}
+	void cheat(String function, String cheat) {
+		try {
+			engine.eval(new InputStreamReader(new FileInputStream("platformer/cheats/" + cheat)));
+		} catch (ScriptException | FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
-			String execScript = (String) get("execScript");
-			String execFunction = (String) get("execFunction");
+		String execScript = (String) get("execScript");
+		String execFunction = (String) get("execFunction");
 
-			//            Debug.msg(Debug.DEBUG, "scripts/" + execScript);
-			//            Debug.msg(Debug.DEBUG, script);
-			if (Objects.equals(execFunction, function) && Objects.equals(execScript, script)) {
-				invoke("cheat");
-			}
+		if (Objects.equals(execFunction, function) && Objects.equals(execScript, script)) {
+			invoke(cheat.substring(0, cheat.lastIndexOf('.')).toLowerCase());
 		}
 	}
 }

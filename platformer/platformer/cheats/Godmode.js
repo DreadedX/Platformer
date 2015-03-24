@@ -2,7 +2,7 @@ var execFunction = "tick";
 var execScript = "scripts/Player.js";
 
 
-function cheat() {
+function godmode() {
   //  DEMO: God mode
   health = MAXHEALTH;
 }
