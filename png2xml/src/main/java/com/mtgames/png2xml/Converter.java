@@ -1,11 +1,10 @@
 package com.mtgames.png2xml;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +20,7 @@ class Converter {
 
 	public static void main(String[] args) {
 		final JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG map files", "png");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(".png & .xml files", "png", "xml");
 		fc.setFileFilter(filter);
 		fc.setCurrentDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());
 
@@ -33,22 +32,69 @@ class Converter {
 			return;
 		}
 
-		try {
-			filename = path.getName().substring(0, path.getName().lastIndexOf('.')) + ".xml";
-			image = ImageIO.read(new File(path.toString()));
-			width = image.getWidth();
-			height = image.getHeight();
+		String extension = "";
 
-			System.out.println("Loaded: " + path);
+		int i = path.toString().lastIndexOf('.');
+		if (i >= 0) {
+			extension = path.toString().substring(i + 1);
+		}
 
-			convert();
+		filename = path.getName().substring(0, path.getName().lastIndexOf('.'));
+		new File("levels").mkdir();
+		new File("levels/" + filename).mkdir();
 
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(extension.equals("png")) {
+			System.out.println("Converting " + path + " to " + filename + ".xml");
+
+			try {
+				image = ImageIO.read(new File(path.toString()));
+				width = image.getWidth();
+				height = image.getHeight();
+
+//				System.out.println("Loaded: " + path);
+
+				convertPNG();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if(extension.equals("xml")) {
+			System.out.println("Converting " + path + " to " + filename + ".map");
+
+//			System.out.println("This feature is not yet implemented");
+
+			try {
+				InputStream in = new FileInputStream(path);
+				GZIPOutputStream gzout = new GZIPOutputStream(new FileOutputStream("levels/" + filename + "/" + filename + ".map"));
+
+				byte[] buffer = new byte[1024];
+				int len;
+				while ((len = in.read(buffer)) != -1) {
+					gzout.write(buffer, 0, len);
+				}
+				gzout.close();
+				in.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			//			try {
+//				image = ImageIO.read(new File(path.toString()));
+//				width = image.getWidth();
+//				height = image.getHeight();
+//
+//				//				System.out.println("Loaded: " + path);
+//
+//				convertPNG();
+//
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 
-	private static void convert() {
+	private static void convertPNG() {
 		int[] tileColours = image.getRGB(0, 0, width, height, null, 0, width);
 		int id;
 		String xml;
@@ -63,7 +109,7 @@ class Converter {
 		xml += "  </entities>\n";
 		xml += "  <tiles>\n";
 		
-		System.out.println("Added: Necessary level information");
+//		System.out.println("Added: Necessary level information");
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -116,7 +162,7 @@ class Converter {
 
 				if (id != 1) {
 					xml += "    <tile id='" + id + "' x='" + x + "' y='" + y + "'/>\n";
-					System.out.println("Added: " + id + " at " + x + ", " + y);
+//					System.out.println("Added: " + id + " at " + x + ", " + y);
 				}
 			}
 		}
@@ -125,10 +171,10 @@ class Converter {
 		
 		PrintWriter out;
 		try {
-			out = new PrintWriter(filename);
+			out = new PrintWriter("levels/" + filename + "/" + filename + ".xml");
 			out.println(xml);
 			out.close();
-			System.out.println("Converted: " + path + " to " + filename);
+			System.out.println("Converted " + path + " to " + filename + ".xml");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

@@ -15,10 +15,10 @@ import com.mtgames.firerpg.gfx.Screen;
 	public static final Tile BIGBLOCK1TR = new BaseSolidTile(33, 1, 1);
 	public static final Tile BIGBLOCK1BL = new BaseSolidTile(64, 0, 2);
 	public static final Tile BIGBLOCK1BR = new BaseSolidTile(65, 1, 2);
+	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, 2, 2);
 
 	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, 2, 1);
 	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, 3, 1);
-	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, 2, 2);
 	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, 3, 2);
 
 	private final byte id;
