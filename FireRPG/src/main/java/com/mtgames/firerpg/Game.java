@@ -74,7 +74,7 @@ import java.util.Objects;
 	void init() {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
-		level = new Level("levels/debug_level.map", "scripts/Level.js", input);
+		level = new Level("scripts/Level.js", input);
 
 //		Initialize command system
 		Command.set(level, input);
