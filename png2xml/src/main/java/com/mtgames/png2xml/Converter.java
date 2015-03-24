@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Converter {
+class Converter {
 
 	private static int width;
 	private static int height;
@@ -17,26 +20,31 @@ public class Converter {
 	private static BufferedImage image;
 
 	public static void main(String[] args) {
-		if (args.length != 0 && args[0] != null) {
-			path = new File(args[0]);
+		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG map files", "png");
+		fc.setFileFilter(filter);
+		fc.setCurrentDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());
 
-			try {				
-				filename = path.getName().substring(0, path.getName().lastIndexOf('.')) + ".xml";
-				image = ImageIO.read(new File(path.toString()));
+		int returnVal = fc.showOpenDialog(null);
 
-				width = image.getWidth();
-				height = image.getHeight();
-				
-				System.out.println("Loaded: " + path);
-
-				convert();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			path = fc.getSelectedFile();
 		} else {
-			System.out.println("Please specify an image to convert");
+			return;
+		}
+
+		try {
+			filename = path.getName().substring(0, path.getName().lastIndexOf('.')) + ".xml";
+			image = ImageIO.read(new File(path.toString()));
+			width = image.getWidth();
+			height = image.getHeight();
+
+			System.out.println("Loaded: " + path);
+
+			convert();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
