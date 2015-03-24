@@ -53,7 +53,7 @@ public class Script {
 	}
 
 	public void invoke(String function) {
-		if (new File("cheats").exists()) {
+		if (new File("platformer/cheats").exists()) {
 			cheat(function, new String[] { "Godmode.js" });
 		}
 
@@ -69,7 +69,7 @@ public class Script {
 	void cheat(String function, String[] cheats) {
 		for (String cheat : cheats) {
 			try {
-				engine.eval(new InputStreamReader(new FileInputStream("cheats/" + cheat)));
+				engine.eval(new InputStreamReader(new FileInputStream("platformer/cheats/" + cheat)));
 			} catch (ScriptException | FileNotFoundException e) {
 				e.printStackTrace();
 			}
