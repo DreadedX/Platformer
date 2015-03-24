@@ -2,7 +2,6 @@ package com.mtgames.png2xml;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.zip.GZIPOutputStream;
 
@@ -61,8 +60,6 @@ class Converter {
 		} else if(extension.equals("xml")) {
 			System.out.println("Converting " + path + " to " + filename + ".map");
 
-//			System.out.println("This feature is not yet implemented");
-
 			try {
 				InputStream in = new FileInputStream(path);
 				GZIPOutputStream gzout = new GZIPOutputStream(new FileOutputStream("levels/" + filename + "/" + filename + ".map"));
@@ -78,19 +75,6 @@ class Converter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			//			try {
-//				image = ImageIO.read(new File(path.toString()));
-//				width = image.getWidth();
-//				height = image.getHeight();
-//
-//				//				System.out.println("Loaded: " + path);
-//
-//				convertPNG();
-//
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
 		}
 	}
 
