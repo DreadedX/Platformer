@@ -4,7 +4,8 @@
     <layer name='forest2' speed='4'/>
   </background>
   <entities>
-    <entity id='0' x='10' y='10'/>
+    <entity id='0' x='67' y='528'/>
+    <entity id='1' x='430' y='736'/>
   </entities>
   <tiles>
     <tile id='3' x='54' y='22'/>
