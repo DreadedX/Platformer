@@ -35,8 +35,8 @@ public class Hud {
 		
 		/* Center part of dash bar */
 		for (int i = 0; i < 8; i++) {
-			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset - 2, 29);
-			screen.render(screen.xOffset + 6 + i * 8, screen.yOffset + 14, 29, 0x02);
+			screen.render(screen.xOffset + 6 + i * 16, screen.yOffset - 2, 29);
+			screen.render(screen.xOffset + 6 + i * 16, screen.yOffset + 14, 29, 0x02);
 		}
 
 		screen.drawRectangle(6, 6, 70, 14, 0xff2f558d);
@@ -59,9 +59,9 @@ public class Hud {
 		screen.render(screen.xOffset + screen.width - 6, screen.yOffset + 14, 27, 0x03);
 		
 		/* Center part of dash bar */
-		for (int i = 0; i < 8; i++) {
-			screen.render(screen.xOffset + screen.width - 70 + i * 8, screen.yOffset - 2, 26);
-			screen.render(screen.xOffset + screen.width - 70 + i * 8, screen.yOffset + 14, 26, 0x02);
+		for (int i = 0; i < 16; i++) {
+			screen.render(screen.xOffset + screen.width - 70 + i * 16, screen.yOffset - 2, 26);
+			screen.render(screen.xOffset + screen.width - 70 + i * 16, screen.yOffset + 14, 26, 0x02);
 		}
 
 		screen.drawRectangle(screen.width - 70, 6, screen.width - 6, 14, 0xff9d3d2f);
@@ -85,8 +85,8 @@ public class Hud {
 		
 		/* Center part of dash bar */
 		for (int i = 0; i < 4; i++) {
-			screen.render(screen.xOffset + screen.width / 2 - 16 + i * 8, screen.yOffset - 2, 23);
-			screen.render(screen.xOffset + screen.width / 2 - 16 + i * 8, screen.yOffset + 14, 23, 0x02);
+			screen.render(screen.xOffset + screen.width / 2 - 16 + i * 16, screen.yOffset - 2, 23);
+			screen.render(screen.xOffset + screen.width / 2 - 16 + i * 16, screen.yOffset + 14, 23, 0x02);
 		}
 
 		screen.drawRectangle(screen.width / 2 - 16, 6, screen.width / 2 + 16, 14, 0xff484848);
@@ -104,13 +104,13 @@ public class Hud {
 		screen.render(screen.xOffset + screen.width - 6, screen.yOffset + 14, 22, 0x03);
 
 		for (int i = 0; i < ((screen.width / 2) - 86) >> 3; i++) {
-			screen.render(screen.xOffset + 70 + i * 8, screen.yOffset - 2, 22);
-			screen.render(screen.xOffset + 70 + i * 8, screen.yOffset + 14, 22, 0x02);
+			screen.render(screen.xOffset + 70 + i * 16, screen.yOffset - 2, 22);
+			screen.render(screen.xOffset + 70 + i * 16, screen.yOffset + 14, 22, 0x02);
 		}
 
-		for (int i = 0; i < ((screen.width - 78) - ((screen.width / 2) + 8)) >> 3; i++) {
-			screen.render(screen.xOffset + screen.width / 2 + 16 + i * 8, screen.yOffset - 2, 22);
-			screen.render(screen.xOffset + screen.width / 2 + 16 + i * 8, screen.yOffset + 14, 22, 0x02);
+		for (int i = 0; i < ((screen.width - 78) - ((screen.width / 2) + 16)) >> 4; i++) {
+			screen.render(screen.xOffset + screen.width / 2 + 16 + i * 16, screen.yOffset - 2, 22);
+			screen.render(screen.xOffset + screen.width / 2 + 16 + i * 16, screen.yOffset + 14, 22, 0x02);
 		}
 
 	}

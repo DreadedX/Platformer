@@ -123,7 +123,7 @@ public class Player extends Mob {
 				particleOffset = 4;
 			}
 
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 40; i++) {
 				level.addParticle(new DashParticle(level, x, y, particleOffset));
 			}
 		}
@@ -152,7 +152,7 @@ public class Player extends Mob {
 		switch (movingDir) {
 			case 0:
 				dir = 0x01;
-				modifier = 8;
+				modifier = 16;
 				break;
 
 			case 1:
@@ -179,9 +179,9 @@ public class Player extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 8 + modifier, yOffset - 8, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 8, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 8 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset - 16, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 16, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
 		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
 		
 		/* Draw overlay on character */

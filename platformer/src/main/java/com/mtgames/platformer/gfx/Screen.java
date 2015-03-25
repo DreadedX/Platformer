@@ -38,21 +38,21 @@ public class Screen {
 		int scaleMap = scale - 1;
 		int xTile = tile % 32;
 		int yTile = tile / 32;
-		int tileOffset = (xTile << 3) + (yTile << 3) * sheet.width;
-		for (int y = 0; y < 8; y++) {
+		int tileOffset = (xTile << 4) + (yTile << 4) * sheet.width;
+		for (int y = 0; y < 16; y++) {
 			int ySheet = y;
 			if (mirrorY) {
-				ySheet = 7 - y;
+				ySheet = 15 - y;
 			}
 
-			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2);
-			for (int x = 0; x < 8; x++) {
+			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 4) / 2);
+			for (int x = 0; x < 16; x++) {
 				int xSheet = x;
 				if (mirrorX) {
-					xSheet = 7 - x;
+					xSheet = 15 - x;
 				}
 
-				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
+				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 4) / 2);
 				int col = sheet.pixels[xSheet + ySheet * sheet.width + tileOffset];
 				if (col != 0xffff00ff && col != 0xff7f007f) {
 					for (int yScale = 0; yScale < scale; yScale++) {

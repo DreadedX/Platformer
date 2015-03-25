@@ -1,11 +1,11 @@
 function init() {
-	JUMPSPEED = 3;
+	JUMPSPEED = 4;
 
-	speed = 1;
-	xMin = -4;
-	xMax = 3;
-	yMin = -7;
-	yMax = 7;
+	speed = 2;
+	xMin = -8;
+	xMax = 5;
+	yMin = -14;
+	yMax = 15;
 }
 	
 function tick() {

@@ -104,8 +104,8 @@ public abstract class Mob extends Entity {
 		if (level == null)
 			return false;
 
-		Tile lastTile = level.getTile((this.x + x) >> 3, (this.y + y) >> 3);
-		Tile newTile = level.getTile((this.x + x + xa) >> 3, (this.y + y + ya) >> 3);
+		Tile lastTile = level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
+		Tile newTile = level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
 
 		return !lastTile.equals(newTile) && newTile.isSolid();
 
@@ -128,9 +128,9 @@ public abstract class Mob extends Entity {
 		if (hasCollided(0, -1))
 			ya = 0;
 
-		if (gravityWait > 2) {
+		if (gravityWait > 1) {
 			int gravity = 1;
-			if (ya < 6)
+			if (ya < 12)
 				ya = ya + gravity;
 			gravityWait = 0;
 		}

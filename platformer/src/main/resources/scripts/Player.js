@@ -5,17 +5,17 @@ var ya = 0;
 
 function init() {
 	JUMPWAIT = 2;
-	JUMPSPEED = 5;
+	JUMPSPEED = 9
 	DASHSPEED = 5;
 	DASHWAIT = 72;
 	STAGGERLENGTH = 20;
     MAXHEALTH = 100;
 
-	speed = 2;
-	xMin = -5;
-	xMax = 4;
-	yMin = -8;
-	yMax = 7;
+	speed = 4;
+	xMin = -10;
+	xMax = 8;
+	yMin = -16;
+	yMax = 15;
 }
 	
 function tick() {

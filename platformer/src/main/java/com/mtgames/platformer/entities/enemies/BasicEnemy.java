@@ -38,10 +38,10 @@ public class BasicEnemy extends Mob {
 
 		int xa = 0;
 
-		if (!hasCollided(3, -8) && hasCollided(3, 0)) {
+		if (!hasCollided(3, -16) && hasCollided(3, 0)) {
 			ya = -JUMPSPEED;
 			xa += speed;
-		} else if (!hasCollided(-3, -8) && hasCollided(-3, 0)) {
+		} else if (!hasCollided(-3, -16) && hasCollided(-3, 0)) {
 			ya = -JUMPSPEED;
 			xa -= speed;
 		} else if (hasCollided(-3, 0)) {
@@ -74,7 +74,7 @@ public class BasicEnemy extends Mob {
 		switch (movingDir) {
 			case 0:
 				dir = 0x01;
-				modifier = 8;
+				modifier = 16;
 				break;
 
 			case 1:
@@ -95,9 +95,9 @@ public class BasicEnemy extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 8 + modifier, yOffset - 8, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 8, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 8 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset - 16, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 16, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
 		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
 	}
 }

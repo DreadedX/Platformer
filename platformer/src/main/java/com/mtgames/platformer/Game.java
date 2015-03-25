@@ -21,7 +21,7 @@ import java.util.Objects;
 
 	private static final boolean FPSUNLOCK = true;
 	private static final int     TPS       = 60;
-	private static final int     WIDTH     = 304;
+	private static final int     WIDTH     = 608;
 	private static final int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "FireRPG";
 
@@ -57,7 +57,7 @@ import java.util.Objects;
 		if (args.length > 0) {
 			scale = Integer.parseInt(args[0]);
 		} else {
-			scale = 4;
+			scale = 2;
 		}
 
 		if (args.length > 1) {
