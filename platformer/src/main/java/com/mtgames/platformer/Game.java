@@ -72,7 +72,7 @@ import java.util.Objects;
 	}
 
 	void init() {
-		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/graphics/sprite_sheet.png"), new SpriteSheet("/graphics/font.png"));
 		input = new InputHandler(this);
 		level = new Level("scripts/Level.js", input);
 

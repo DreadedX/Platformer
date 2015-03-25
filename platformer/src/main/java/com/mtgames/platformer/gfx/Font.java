@@ -16,7 +16,7 @@ public class Font {
 			String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      abcdefghijklmnopqrstuvwxyz      0123456789.,:;'\"!?$%()-=+/*[]";
 			int charIndex = chars.indexOf(msg.charAt(i));
 			if (charIndex >= 0)
-				screen.render(x + (location * 16), y + 9 * line, charIndex + 29 * 32);
+				screen.renderFont(x + (location * 8), y + 9 * line, charIndex);
 			location++;
 		}
 	}

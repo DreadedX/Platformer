@@ -9,13 +9,15 @@ public class Screen {
 	public final  int         width;
 	public final  int         height;
 	private final SpriteSheet sheet;
+	private final SpriteSheet font;
 	public int xOffset = 0;
 	public int yOffset = 0;
 
-	public Screen(int width, int height, SpriteSheet sheet) {
+	public Screen(int width, int height, SpriteSheet sheet, SpriteSheet font) {
 		this.width = width;
 		this.height = height;
 		this.sheet = sheet;
+		this.font = font;
 
 		pixels = new int[width * height];
 	}
@@ -54,6 +56,54 @@ public class Screen {
 
 				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 4) / 2);
 				int col = sheet.pixels[xSheet + ySheet * sheet.width + tileOffset];
+				if (col != 0xffff00ff && col != 0xff7f007f) {
+					for (int yScale = 0; yScale < scale; yScale++) {
+						if (yPixel + yScale < 0 || yPixel + yScale >= height) {
+							continue;
+						}
+
+						for (int xScale = 0; xScale < scale; xScale++) {
+							if (xPixel + xScale < 0 || xPixel + xScale >= width) {
+								continue;
+							}
+
+							pixels[(xPixel + xScale) + (yPixel + yScale) * width] = col;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void renderFont(int xPos, int yPos, int tile) {
+		xPos -= xOffset;
+		yPos -= yOffset;
+
+		int mirrorDir = 0x00;
+		int scale = 1;
+
+		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
+		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
+
+		int scaleMap = scale - 1;
+		int xTile = tile % 32;
+		int yTile = tile / 32;
+		int tileOffset = (xTile << 3) + (yTile << 3) * font.width;
+		for (int y = 0; y < 8; y++) {
+			int ySheet = y;
+			if (mirrorY) {
+				ySheet = 7 - y;
+			}
+
+			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2);
+			for (int x = 0; x < 8; x++) {
+				int xSheet = x;
+				if (mirrorX) {
+					xSheet = 7 - x;
+				}
+
+				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
+				int col = font.pixels[xSheet + ySheet * font.width + tileOffset];
 				if (col != 0xffff00ff && col != 0xff7f007f) {
 					for (int yScale = 0; yScale < scale; yScale++) {
 						if (yPixel + yScale < 0 || yPixel + yScale >= height) {
