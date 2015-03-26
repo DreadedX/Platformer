@@ -2,6 +2,7 @@ package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Debug;
+import com.mtgames.platformer.entities.AutoScoll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.gfx.Background;
@@ -83,7 +84,12 @@ class LevelLoader {
 
 					case 1:
 						level.addEntity(new BaseEnemy(level, x, y));
-						Debug.log("Added BasicEnemy: " + x + " " + y, Debug.LEVEL);
+						Debug.log("Added BaseEnemy: " + x + " " + y, Debug.LEVEL);
+						break;
+
+					case 99:
+						level.addEntity(new AutoScoll(level, x, y));
+						Debug.log("Added AutoScroll: " + x + " " + y, Debug.LEVEL);
 						break;
 				}
 			}
