@@ -20,7 +20,7 @@ public class Player extends Mob {
 
 	private final InputHandler input;
 	private final Script       script;
-	private final Sheet sheet = new Sheet("/graphics/sprite_sheet.png");
+	private final Sheet sheet = new Sheet("/graphics/sprites/player.png");
 
 	private int xa     = 0;
 	private int xaDash = 0;
@@ -146,7 +146,6 @@ public class Player extends Mob {
 
 	public void render(Screen screen) {
 		int xTile = 0;
-		int yTile = 27;
 
 		int xOffset = x;
 		int yOffset = y;
@@ -181,10 +180,10 @@ public class Player extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 16, sheet, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset - modifier, yOffset, sheet, (xTile + 1) + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
+		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
+		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width/16, dir);
 
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);

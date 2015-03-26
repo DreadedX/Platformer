@@ -16,7 +16,7 @@ public class BaseEnemy extends Mob {
 	private int dir;
 	private int modifier;
 
-	private final Sheet sheet = new Sheet("/graphics/sprite_sheet.png");
+	private final Sheet sheet = new Sheet("/graphics/sprites/baseEnemy.png");
 
 	public BaseEnemy(Level level, int x, int y) {
 		super(level, x, y);
@@ -69,7 +69,6 @@ public class BaseEnemy extends Mob {
 
 	public void render(Screen screen) {
 		int xTile = 0;
-		int yTile = 25;
 
 		int xOffset = x;
 		int yOffset = y;
@@ -98,9 +97,9 @@ public class BaseEnemy extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 16, sheet, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset - modifier, yOffset, sheet, (xTile + 1) + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
+		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (sheet.width/16), dir);
+		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + (sheet.width/16) , dir);
 	}
 }
