@@ -3,7 +3,7 @@ package com.mtgames.platformer.level;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.Player;
-import com.mtgames.platformer.entities.enemies.BasicEnemy;
+import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.gfx.Background;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -82,7 +82,7 @@ class LevelLoader {
 						break;
 
 					case 1:
-						level.addEntity(new BasicEnemy(level, x, y));
+						level.addEntity(new BaseEnemy(level, x, y));
 						Debug.log("Added BasicEnemy: " + x + " " + y, Debug.LEVEL);
 						break;
 				}
@@ -98,7 +98,7 @@ class LevelLoader {
 				name = node.getAttributes().getNamedItem("name").getNodeValue();
 				speed = Integer.parseInt(node.getAttributes().getNamedItem("speed").getNodeValue());
 
-				level.addBackground(new Background("/backgrounds/" + name + ".png", speed));
+				level.addBackground(new Background("/graphics/backgrounds/" + name + ".png", speed));
 				Debug.log("Added layer: " + name + " " + speed, Debug.LEVEL);
 			}
 

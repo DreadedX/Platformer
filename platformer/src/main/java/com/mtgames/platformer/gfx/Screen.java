@@ -5,105 +5,81 @@ public class Screen {
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 
-	public final  int[]       pixels;
-	public final  int         width;
-	public final  int         height;
-	private final SpriteSheet sheet;
-	private final SpriteSheet font;
+	public final  int[] pixels;
+	public final  int   width;
+	public final  int   height;
 	public int xOffset = 0;
 	public int yOffset = 0;
 
-	public Screen(int width, int height, SpriteSheet sheet, SpriteSheet font) {
+	public Screen(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.sheet = sheet;
-		this.font = font;
 
 		pixels = new int[width * height];
 	}
 
-	public void render(int xPos, int yPos, int tile) {
-		render(xPos, yPos, tile, 0x00, 1);
+//	public void render(int xPos, int yPos, int tile) {
+//		render(xPos, yPos, tile, 0x00, 1);
+//	}
+
+//	public void render(int xPos, int yPos, int tile, int mirrorDir) {
+//		render(xPos, yPos, tile, mirrorDir, 1);
+//	}
+
+//	Default to 16x tileset and no mirror
+	public void render(int xPos, int yPos, Sheet tileset, int tile) {
+		render(xPos, yPos, tileset, tile, false, 0x00);
 	}
 
-	public void render(int xPos, int yPos, int tile, int mirrorDir) {
-		render(xPos, yPos, tile, mirrorDir, 1);
+	//	Default to 16x tileset
+	public void render(int xPos, int yPos, Sheet tileset, int tile, int mirrorDir) {
+		render(xPos, yPos, tileset, tile, false, mirrorDir);
 	}
 
-	void render(int xPos, int yPos, int tile, int mirrorDir, int scale) {
+	//	Default to no mirror
+	public void render(int xPos, int yPos, Sheet tileset, int tile, boolean small) {
+		render(xPos, yPos, tileset, tile, small, 0x00);
+	}
+
+	void render(int xPos, int yPos, Sheet sheet, int tile, boolean small, int mirrorDir) {
 		xPos -= xOffset;
 		yPos -= yOffset;
 
-		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
-		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-
-		int scaleMap = scale - 1;
-		int xTile = tile % 32;
-		int yTile = tile / 32;
-		int tileOffset = (xTile << 4) + (yTile << 4) * sheet.width;
-		for (int y = 0; y < 16; y++) {
-			int ySheet = y;
-			if (mirrorY) {
-				ySheet = 15 - y;
-			}
-
-			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 4) / 2);
-			for (int x = 0; x < 16; x++) {
-				int xSheet = x;
-				if (mirrorX) {
-					xSheet = 15 - x;
-				}
-
-				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 4) / 2);
-				int col = sheet.pixels[xSheet + ySheet * sheet.width + tileOffset];
-				if (col != 0xffff00ff && col != 0xff7f007f) {
-					for (int yScale = 0; yScale < scale; yScale++) {
-						if (yPixel + yScale < 0 || yPixel + yScale >= height) {
-							continue;
-						}
-
-						for (int xScale = 0; xScale < scale; xScale++) {
-							if (xPixel + xScale < 0 || xPixel + xScale >= width) {
-								continue;
-							}
-
-							pixels[(xPixel + xScale) + (yPixel + yScale) * width] = col;
-						}
-					}
-				}
-			}
+		int tileSize;
+		int bitSize;
+		if (small) {
+			tileSize = 8;
+			bitSize = 3;
+		} else {
+			tileSize = 16;
+			bitSize = 4;
 		}
-	}
 
-	void renderFont(int xPos, int yPos, int tile) {
-		xPos -= xOffset;
-		yPos -= yOffset;
-
-		int mirrorDir = 0x00;
 		int scale = 1;
 
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
 
 		int scaleMap = scale - 1;
-		int xTile = tile % 32;
-		int yTile = tile / 32;
-		int tileOffset = (xTile << 3) + (yTile << 3) * font.width;
-		for (int y = 0; y < 8; y++) {
+		int xTile = tile % (sheet.width/tileSize);
+		int yTile = tile / (sheet.width/tileSize);
+
+		int tileOffset = (xTile << bitSize) + (yTile << bitSize) * sheet.width;
+		for (int y = 0; y < tileSize; y++) {
 			int ySheet = y;
 			if (mirrorY) {
-				ySheet = 7 - y;
+				ySheet = tileSize - 1 - y;
 			}
 
-			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2);
-			for (int x = 0; x < 8; x++) {
+			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << bitSize) / 2);
+			for (int x = 0; x < tileSize; x++) {
 				int xSheet = x;
 				if (mirrorX) {
-					xSheet = 7 - x;
+					xSheet = 15 - x;
 				}
 
-				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
-				int col = font.pixels[xSheet + ySheet * font.width + tileOffset];
+				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << bitSize) / 2);
+				int col = sheet.pixels[xSheet + ySheet * sheet.width + tileOffset];
 				if (col != 0xffff00ff && col != 0xff7f007f) {
 					for (int yScale = 0; yScale < scale; yScale++) {
 						if (yPixel + yScale < 0 || yPixel + yScale >= height) {
@@ -150,17 +126,6 @@ public class Screen {
 	}
 
 	public void drawRectangle(int x1, int y1, int x2, int y2, int colour) {
-		drawRectangle(x1, y1, x2, y2, colour, false);
-	}
-
-	void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean absolute) {
-		if (absolute) {
-			x1 -= xOffset;
-			x2 -= xOffset;
-			y1 -= yOffset;
-			y2 -= yOffset;
-		}
-
 		for (int y = y1; y < y2; y++) {
 			if (y < 0 || y >= height) {
 				continue;

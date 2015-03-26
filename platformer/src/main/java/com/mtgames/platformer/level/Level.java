@@ -20,7 +20,6 @@ public class Level {
 	private final List<Particle>   particles = new ArrayList<>();
 	private final List<Background> layers    = new ArrayList<>();
 	private final Script script;
-	private final Random generator = new Random(11);
 	private final InputHandler input;
 
 	private byte[] tiles;

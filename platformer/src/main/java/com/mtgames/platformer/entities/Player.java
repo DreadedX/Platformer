@@ -3,6 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.level.Level;
@@ -19,6 +20,7 @@ public class Player extends Mob {
 
 	private final InputHandler input;
 	private final Script       script;
+	private final Sheet sheet = new Sheet("/graphics/sprite_sheet.png");
 
 	private int xa     = 0;
 	private int xaDash = 0;
@@ -179,20 +181,10 @@ public class Player extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 16 + modifier, yOffset - 16, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 16, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 16 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
-		
-		/* Draw overlay on character */
-		/*
-		 * screen.render(xOffset+modifier, yOffset, (xTile+2)+yTile*32, colour,
-		 * dir);
-		 */
-		/*
-		 * screen.render(xOffset+8-modifier, yOffset, (xTile+3)+yTile*32,
-		 * colour, dir);
-		 */
+		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 16, sheet, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - modifier, yOffset, sheet, (xTile + 1) + (yTile + 1) * 32, dir);
 
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);

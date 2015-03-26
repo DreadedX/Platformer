@@ -4,16 +4,16 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class SpriteSheet {
+public class Sheet {
 
 	public int width;
 
 	public int[] pixels;
 
-	public SpriteSheet(String path) {
+	public Sheet(String path) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(SpriteSheet.class.getResourceAsStream(path));
+			image = ImageIO.read(Sheet.class.getResourceAsStream(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

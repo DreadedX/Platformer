@@ -15,7 +15,7 @@ public class Background {
 		this.speed = speed;
 
 		try {
-			image = ImageIO.read(SpriteSheet.class.getResourceAsStream(path));
+			image = ImageIO.read(Sheet.class.getResourceAsStream(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

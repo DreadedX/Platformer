@@ -5,7 +5,7 @@ import com.mtgames.platformer.debug.Console;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.SpriteSheet;
+import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.level.Level;
@@ -72,7 +72,7 @@ import java.util.Objects;
 	}
 
 	void init() {
-		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/graphics/sprite_sheet.png"), new SpriteSheet("/graphics/font.png"));
+		screen = new Screen(WIDTH, HEIGHT);
 		input = new InputHandler(this);
 		level = new Level("scripts/Level.js", input);
 
@@ -180,7 +180,7 @@ import java.util.Objects;
 		}
 
 		if (input.message.isPressed()) {
-			Text.textBox(screen, "Mission:", "It is your mission to just mess around a bit in this world and try to debug the game!");
+			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ      abcdefghijklmnopqrstuvwxyz      0123456789.,:;'\"!?$%()-=+/*[]");
 		}
 
 		for (int y = 0; y < screen.height; y++) {

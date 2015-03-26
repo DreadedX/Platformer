@@ -1,6 +1,7 @@
 package com.mtgames.platformer.gfx;
 
 public class Font {
+	private static final Sheet sheet = new Sheet("/graphics/font.png");
 
 	public static void render(String msg, Screen screen, int x, int y) {
 		int line = 0;
@@ -16,7 +17,7 @@ public class Font {
 			String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      abcdefghijklmnopqrstuvwxyz      0123456789.,:;'\"!?$%()-=+/*[]";
 			int charIndex = chars.indexOf(msg.charAt(i));
 			if (charIndex >= 0)
-				screen.renderFont(x + (location * 8), y + 9 * line, charIndex);
+				screen.render(x + (location * 8), y + 9 * line, sheet, charIndex, true);
 			location++;
 		}
 	}

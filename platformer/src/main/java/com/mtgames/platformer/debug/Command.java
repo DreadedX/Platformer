@@ -2,7 +2,7 @@ package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
-import com.mtgames.platformer.entities.enemies.BasicEnemy;
+import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.level.Level;
 
 import java.util.Objects;
@@ -69,7 +69,7 @@ public class Command {
 							break;
 
 						case 1:
-							level.addEntity(new BasicEnemy(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3])));
+							level.addEntity(new BaseEnemy(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3])));
 							break;
 
 						//						TODO: FIX CAMERA BEFORE ENABLING THIS

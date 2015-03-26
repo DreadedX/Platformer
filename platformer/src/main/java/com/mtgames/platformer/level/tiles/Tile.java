@@ -5,23 +5,23 @@ import com.mtgames.platformer.gfx.Screen;
 @SuppressWarnings("UnusedDeclaration") public abstract class Tile {
 
 	public static final Tile[] tiles = new Tile[256];
-	public static final Tile   VOID  = new BaseSolidTile(0, 0, 0);
-	public static final Tile   GRID  = new BaseTile(1, 1, 0);
+	public static final Tile   VOID  = new BaseSolidTile(0, "void", 0);
+	public static final Tile   AIR   = new BaseTile(1, "air", 0);
 
-	public static final Tile BLOCK1 = new BaseSolidTile(2, 2, 0);
-	public static final Tile BLOCK2 = new BaseSolidTile(3, 3, 0);
+	public static final Tile BLOCK1 = new BaseSolidTile(2, "block1", 0);
+	public static final Tile BLOCK2 = new BaseSolidTile(3, "block2", 0);
 
-	public static final Tile BIGBLOCK1TL = new BaseSolidTile(32, 0, 1);
-	public static final Tile BIGBLOCK1TR = new BaseSolidTile(33, 1, 1);
-	public static final Tile BIGBLOCK1BL = new BaseSolidTile(64, 0, 2);
-	public static final Tile BIGBLOCK1BR = new BaseSolidTile(65, 1, 2);
-	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, 2, 2);
+	public static final Tile BIGBLOCK1TL = new BaseSolidTile(32, "bigblock1", 0);
+	public static final Tile BIGBLOCK1TR = new BaseSolidTile(33, "bigblock1", 1);
+	public static final Tile BIGBLOCK1BL = new BaseSolidTile(64, "bigblock1", 2);
+	public static final Tile BIGBLOCK1BR = new BaseSolidTile(65, "bigblock1", 3);
 
-	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, 2, 1);
-	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, 3, 1);
-	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, 3, 2);
+	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, "bigblock2", 0);
+	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, "bigblock2", 1);
+	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, "bigblock2", 2);
+	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, "bigblock2", 3);
 
-	private final byte id;
+	private final byte   id;
 	boolean solid;
 
 	Tile(int id, boolean isSolid) {

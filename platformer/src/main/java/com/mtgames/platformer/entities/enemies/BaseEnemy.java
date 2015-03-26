@@ -2,10 +2,11 @@ package com.mtgames.platformer.entities.enemies;
 
 import com.mtgames.platformer.entities.Mob;
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.Script;
 
-public class BasicEnemy extends Mob {
+public class BaseEnemy extends Mob {
 
 	private final int JUMPSPEED;
 
@@ -15,10 +16,12 @@ public class BasicEnemy extends Mob {
 	private int dir;
 	private int modifier;
 
-	public BasicEnemy(Level level, int x, int y) {
+	private final Sheet sheet = new Sheet("/graphics/sprite_sheet.png");
+
+	public BaseEnemy(Level level, int x, int y) {
 		super(level, x, y);
 
-		this.script = new Script("scripts/BasicEnemy.js");
+		this.script = new Script("scripts/BaseEnemy.js");
 		script.doInit();
 
 		JUMPSPEED = (int) script.get("JUMPSPEED");
@@ -95,9 +98,9 @@ public class BasicEnemy extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 16 + modifier, yOffset - 16, xTile + yTile * 32, dir);
-		screen.render(xOffset - modifier, yOffset - 16, (xTile + 1) + yTile * 32, dir);
-		screen.render(xOffset - 16 + modifier, yOffset, xTile + (yTile + 1) * 32, dir);
-		screen.render(xOffset - modifier, yOffset, (xTile + 1) + (yTile + 1) * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile + yTile * 32, dir);
+		screen.render(xOffset - modifier, yOffset - 16, sheet, (xTile + 1) + yTile * 32, dir);
+		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (yTile + 1) * 32, dir);
+		screen.render(xOffset - modifier, yOffset, sheet, (xTile + 1) + (yTile + 1) * 32, dir);
 	}
 }
