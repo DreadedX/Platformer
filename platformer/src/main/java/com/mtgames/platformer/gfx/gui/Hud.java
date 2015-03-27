@@ -66,20 +66,20 @@ public class Hud {
 		screen.drawRectangle(screen.width - 140, 12, (int) ((screen.width - 156) + (healthRatio * 144)), 28, 0xffb44c36);
 	}
 
-	private static void renderLives(Screen screen) {
+//	private static void renderLives(Screen screen) {
 //		TODO: This needs to be fixed
 		/* Left part of dash bar */
-		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset - 4, sheet, 2);
-		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset + 12, sheet, 3);
-		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset + 28, sheet, 2, 0x02);
+//		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset - 4, sheet, 2);
+//		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset + 12, sheet, 3);
+//		screen.render(screen.xOffset + screen.width / 2 - 40, screen.yOffset + 28, sheet, 2, 0x02);
 		
 		/* Right part of dash bar */
-		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset - 4, sheet, 2, 0x01);
-		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset + 12, sheet, 3, 0x01);
-		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset + 28, sheet, 2, 0x03);
+//		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset - 4, sheet, 2, 0x01);
+//		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset + 12, sheet, 3, 0x01);
+//		screen.render(screen.xOffset + screen.width / 2 + 32, screen.yOffset + 28, sheet, 2, 0x03);
 		
-		screen.drawRectangle(screen.width / 2 - 24, 10, screen.width / 2 + 32, 8, 0xff484848);
-	}
+//		screen.drawRectangle(screen.width / 2 - 24, 10, screen.width / 2 + 32, 8, 0xff484848);
+//	}
 
 	private static void renderOther(Screen screen) {
 		screen.render(screen.xOffset - 4, screen.yOffset - 4, sheet, 0);

@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 

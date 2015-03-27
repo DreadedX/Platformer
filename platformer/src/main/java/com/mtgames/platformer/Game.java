@@ -5,7 +5,6 @@ import com.mtgames.platformer.debug.Console;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.level.Level;

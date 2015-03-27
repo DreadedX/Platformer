@@ -27,18 +27,18 @@ public class Screen {
 //	}
 
 //	Default to 16x tileset and no mirror
-	public void render(int xPos, int yPos, Sheet tileset, int tile) {
-		render(xPos, yPos, tileset, tile, false, 0x00);
+	public void render(int xPos, int yPos, Sheet sheet, int tile) {
+		render(xPos, yPos, sheet, tile, false, 0x00);
 	}
 
 	//	Default to 16x tileset
-	public void render(int xPos, int yPos, Sheet tileset, int tile, int mirrorDir) {
-		render(xPos, yPos, tileset, tile, false, mirrorDir);
+	public void render(int xPos, int yPos, Sheet sheet, int tile, int mirrorDir) {
+		render(xPos, yPos, sheet, tile, false, mirrorDir);
 	}
 
 	//	Default to no mirror
-	public void render(int xPos, int yPos, Sheet tileset, int tile, boolean small) {
-		render(xPos, yPos, tileset, tile, small, 0x00);
+	public void render(int xPos, int yPos, Sheet sheet, int tile, boolean small) {
+		render(xPos, yPos, sheet, tile, small, 0x00);
 	}
 
 	void render(int xPos, int yPos, Sheet sheet, int tile, boolean small, int mirrorDir) {
