@@ -92,17 +92,15 @@ public class Command {
 				}
 				break;
 
-			case "lighting":
+			case "kill":
 				if (commands.length == 2) {
-					if (commands[1].toLowerCase().equals("true") && !screen.lighting) {
-						screen.lighting = true;
-					} else if (commands[1].toLowerCase().equals("false") && screen.lighting) {
-						screen.lighting = false;
+					if (Integer.parseInt(commands[1]) < level.entities.size()) {
+						level.entities.remove(Integer.parseInt(commands[1]));
 					} else {
-						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+						Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: kill <uid>", Debug.WARNING);
 				}
 				break;
 
@@ -120,15 +118,17 @@ public class Command {
 				}
 				break;
 
-			case "kill":
+			case "lighting":
 				if (commands.length == 2) {
-					if (Integer.parseInt(commands[1]) < level.entities.size()) {
-						level.entities.remove(Integer.parseInt(commands[1]));
+					if (commands[1].toLowerCase().equals("true") && !screen.lighting) {
+						screen.lighting = true;
+					} else if (commands[1].toLowerCase().equals("false") && screen.lighting) {
+						screen.lighting = false;
 					} else {
-						Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
+						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: kill <uid>", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
 				}
 				break;
 
