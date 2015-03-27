@@ -16,7 +16,7 @@ public class Command {
 	public static void exec(String command) {
 		String[] commands = command.split(" ");
 
-		switch (commands[0]) {
+		switch (commands[0].toLowerCase()) {
 			default:
 				Debug.log("'" + commands[0] + "' is not a valid command", Debug.WARNING);
 				break;
@@ -87,6 +87,20 @@ public class Command {
 					}
 				} else {
 					Debug.log("Invalid arguments, usage: spawn <id> <x> <y>", Debug.WARNING);
+				}
+				break;
+
+			case "freecam":
+				if (commands.length == 2) {
+					if (commands[1].toLowerCase().equals("true") && level.entities.get(0) instanceof Player) {
+						level.entities.set(0, new FreeCamera(level, level.entities.get(0).x, level.entities.get(0).y, input));
+					} else if (commands[1].toLowerCase().equals("false") && level.entities.get(0) instanceof FreeCamera) {
+						level.entities.set(0, new Player(level, level.entities.get(0).x, level.entities.get(0).y, input));
+					} else {
+						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					}
+				} else {
+					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
 				}
 				break;
 

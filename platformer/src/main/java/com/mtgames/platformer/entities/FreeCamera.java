@@ -1,7 +1,6 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
-import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
@@ -47,6 +46,7 @@ public class FreeCamera extends Mob {
 	}
 
 	public void render(Screen screen) {
+		screen.drawRectangle(x-4-screen.xOffset, y-4-screen.yOffset ,x+4-screen.xOffset, y+4-screen.yOffset, 0x7F000000, false);
 	}
 
 	@Override public boolean hasCollided(int xa, int ya) {

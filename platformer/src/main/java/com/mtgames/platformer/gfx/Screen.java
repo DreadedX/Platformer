@@ -1,15 +1,23 @@
 package com.mtgames.platformer.gfx;
 
+import com.mtgames.platformer.debug.Debug;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Screen {
 
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 
-	public final  int[] pixels;
-	public final  int   width;
-	public final  int   height;
+	public final int[] pixels;
+	public final int   width;
+	public final int   height;
 	public int xOffset = 0;
 	public int yOffset = 0;
+
+	private final Map<Integer, Integer> alphaBlendMap = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -125,7 +133,8 @@ public class Screen {
 		}
 	}
 
-	public void drawRectangle(int x1, int y1, int x2, int y2, int colour) {
+	public void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean opaque) {
+
 		for (int y = y1; y < y2; y++) {
 			if (y < 0 || y >= height) {
 				continue;
@@ -136,8 +145,28 @@ public class Screen {
 					continue;
 				}
 
-				pixels[x + y * width] = colour;
+				if (opaque) {
+					pixels[x + y * width] = colour;
+				} else {
+					pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour);
+				}
 			}
+		}
+	}
+
+	int alphaBlend(int c1Hex, int c2Hex) {
+		if (alphaBlendMap.get(c1Hex + c2Hex + c2Hex) != null) {
+			return alphaBlendMap.get(c1Hex + c2Hex + c2Hex);
+		} else {
+			Color c1 = new Color(c1Hex);
+			Color c2 = new Color(c2Hex, true);
+
+			Color result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
+					((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
+
+			alphaBlendMap.put(c1Hex + c2Hex + c2Hex, result.getRGB());
+
+			return result.getRGB();
 		}
 	}
 

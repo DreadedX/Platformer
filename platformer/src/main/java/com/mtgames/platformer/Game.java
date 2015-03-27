@@ -172,6 +172,8 @@ import java.util.Objects;
 
 		Hud.render(screen);
 
+		screen.drawRectangle(0, 0, WIDTH, HEIGHT, 0x50977171, false);
+
 		/* Debug text */
 		if (input.debug.isPressed() && Debug.debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
