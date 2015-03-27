@@ -16,6 +16,7 @@ public class Screen {
 	public final int   height;
 	public int xOffset = 0;
 	public int yOffset = 0;
+	public boolean lighting = false;
 
 	private final Map<Integer, Integer> alphaBlendMap = new HashMap<>();
 
@@ -104,6 +105,12 @@ public class Screen {
 					}
 				}
 			}
+		}
+	}
+
+	public void renderLighting() {
+		if (lighting) {
+			drawRectangle(0, 0, width, height, 0xaa000000, false);
 		}
 	}
 

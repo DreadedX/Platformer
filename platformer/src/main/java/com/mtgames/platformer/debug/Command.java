@@ -3,6 +3,7 @@ package com.mtgames.platformer.debug;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
+import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ import com.mtgames.platformer.entities.FreeCamera;
 public class Command {
 	private static Level        level = null;
 	private static InputHandler input = null;
+	private static Screen screen = null;
 
 	public static void exec(String command) {
 		String[] commands = command.split(" ");
@@ -90,6 +92,20 @@ public class Command {
 				}
 				break;
 
+			case "lighting":
+				if (commands.length == 2) {
+					if (commands[1].toLowerCase().equals("true") && !screen.lighting) {
+						screen.lighting = true;
+					} else if (commands[1].toLowerCase().equals("false") && screen.lighting) {
+						screen.lighting = false;
+					} else {
+						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					}
+				} else {
+					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+				}
+				break;
+
 			case "freecam":
 				if (commands.length == 2) {
 					if (commands[1].toLowerCase().equals("true") && level.entities.get(0) instanceof Player) {
@@ -97,10 +113,10 @@ public class Command {
 					} else if (commands[1].toLowerCase().equals("false") && level.entities.get(0) instanceof FreeCamera) {
 						level.entities.set(0, new Player(level, level.entities.get(0).x, level.entities.get(0).y, input));
 					} else {
-						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+						Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
 				}
 				break;
 
@@ -123,8 +139,9 @@ public class Command {
 		}
 	}
 
-	public static void set(Level level, InputHandler input) {
+	public static void set(Level level, InputHandler input, Screen screen) {
 		Command.level = level;
 		Command.input = input;
+		Command.screen = screen;
 	}
 }

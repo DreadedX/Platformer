@@ -76,7 +76,7 @@ import java.util.Objects;
 		level = new Level("scripts/Level.js", input);
 
 //		Initialize command system
-		Command.set(level, input);
+		Command.set(level, input, screen);
 //		Load debug level
 		Command.exec("load debug_level");
 
@@ -170,9 +170,9 @@ import java.util.Objects;
 
 		level.renderEntities(screen);
 
-		Hud.render(screen);
+		screen.renderLighting();
 
-		screen.drawRectangle(0, 0, WIDTH, HEIGHT, 0x50977171, false);
+		Hud.render(screen);
 
 		/* Debug text */
 		if (input.debug.isPressed() && Debug.debug) {
