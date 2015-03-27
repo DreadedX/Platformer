@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
+import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
@@ -13,7 +14,7 @@ public class FreeCamera extends Mob {
 		this.level = level;
 		this.input = input;
 		movingDir = 1;
-		speed = 2;
+		speed = 4;
 	}
 
 	public void tick() {
@@ -21,17 +22,17 @@ public class FreeCamera extends Mob {
 		int ya = 0;
 
 		if (input.shift.isPressed()) {
-			speed = 4;
+			speed = 8;
 		} else {
-			speed = 2;
+			speed = 3;
 		}
 
 		if (input.left.isPressed()) {
-			xa--;
+			xa -= speed;
 		}
 
 		if (input.right.isPressed()) {
-			xa++;
+			xa += speed;
 		}
 
 		if (input.up.isPressed()) {

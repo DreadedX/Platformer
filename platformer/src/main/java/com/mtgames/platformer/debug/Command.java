@@ -7,7 +7,7 @@ import com.mtgames.platformer.level.Level;
 
 import java.util.Objects;
 
-//import com.mtgames.platformer.entities.FreeCamera;
+import com.mtgames.platformer.entities.FreeCamera;
 
 public class Command {
 	private static Level        level = null;
@@ -59,6 +59,15 @@ public class Command {
 
 			case "spawn":
 				if (commands.length == 4) {
+
+					if (commands[2].equals("*")) {
+						commands[2] = String.valueOf(level.entities.get(0).x);
+					}
+
+					if (commands[3].equals("*")) {
+						commands[3] = String.valueOf(level.entities.get(0).y);
+					}
+
 					switch (Integer.parseInt(commands[1])) {
 						default:
 							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
@@ -72,10 +81,9 @@ public class Command {
 							level.addEntity(new BaseEnemy(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3])));
 							break;
 
-						//						TODO: FIX CAMERA BEFORE ENABLING THIS
-						//						case 99:
-						//							level.addEntity(new FreeCamera(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), input));
-						//							break;
+						case 99:
+							level.addEntity(new FreeCamera(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), input));
+							break;
 					}
 				} else {
 					Debug.log("Invalid arguments, usage: spawn <id> <x> <y>", Debug.WARNING);
