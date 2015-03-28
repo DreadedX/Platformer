@@ -19,11 +19,13 @@ public class Screen {
 	public final int   height;
 	public int xOffset = 0;
 	public int yOffset = 0;
-	public boolean lighting = true;
+	public boolean lighting = false;
 
 	public final int[] lightPixels;
 	private int[] overlayPixels;
 	private BufferedImage overlay = null;
+//	TODO: Get a better name for colour
+	private int colour;
 
 	public final Map<Integer, Integer> alphaBlendMap = new HashMap<>();
 
@@ -45,6 +47,7 @@ public class Screen {
 		}
 
 		overlayPixels = overlay.getRGB(0, 0, overlay.getWidth(), overlay.getHeight(), null, 0, overlay.getWidth());
+		colour = overlayPixels[overlay.getWidth() / 2 + overlay.getWidth() / 2 * overlay.getWidth()];
 	}
 
 //	Default to 16x tileset and no mirror
@@ -140,21 +143,32 @@ public class Screen {
 					Color c1 = new Color(lightPixels[x + y * width], true);
 					Color c2 = new Color(overlayPixels[(x - x1) + (y - y1) * overlay.getWidth()], true);
 
-					lightPixels[x + y * width] = c1.getRGB() + c2.getAlpha() << 24;
-//					lightPixels[x + y * width] = overlayPixels[(x - x1) + (y - y1) * overlay.getWidth()];
+					int alpha;
+					if (c2.getAlpha() == 0) {
+						alpha = c1.getAlpha();
+					} else {
+						alpha = c1.getAlpha() - c2.getAlpha();
+						if (alpha < 0) {
+							alpha = 0;
+						}
+					}
+
+					int colour = c1.getRGB() + (alpha) << 24;
+					lightPixels[x + y * width] = colour;
 				}
 			}
 		}
 	}
 
 	public void renderLighting() {
-		for (int i = 0; i < lightPixels.length; i++) {
-			pixels[i] = alphaBlend(pixels[i], lightPixels[i]);
-		}
+		if (lighting) {
+			for (int i = 0; i < lightPixels.length; i++) {
+				pixels[i] = alphaBlend(pixels[i], lightPixels[i]);
+			}
 
-		for (int i = 0; i < lightPixels.length; i++) {
-			lightPixels[i] = overlayPixels[1];
-//			lightPixels[i] = 0x00000000;
+			for (int i = 0; i < lightPixels.length; i++) {
+				lightPixels[i] = colour;
+			}
 		}
 	}
 
@@ -213,9 +227,9 @@ public class Screen {
 			return c1.getRGB();
 		}
 
-//		if (alphaBlendMap.get(c1Hex + c2Hex) != null) {
-//			return alphaBlendMap.get(c1Hex + c2Hex);
-//		}
+		if (alphaBlendMap.get(c1Hex + c2Hex) != null) {
+			return alphaBlendMap.get(c1Hex + c2Hex);
+		}
 
 		Color result;
 		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
