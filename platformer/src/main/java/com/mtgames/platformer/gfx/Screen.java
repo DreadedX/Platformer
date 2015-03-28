@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Screen {
 
@@ -19,12 +21,14 @@ public class Screen {
 	public int     yOffset  = 0;
 	public boolean lighting = true;
 
-	private BufferedImage overlayBig = null;
+	private BufferedImage overlayBig  = null;
 	private BufferedImage overlayDash = null;
 	private final int[] overlayPixels;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
 	private       int   overlayColour;
+
+	private Map<Integer, Integer> overlayCache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -237,6 +241,14 @@ public class Screen {
 	}
 
 	int alphaBlend(int c1Hex, int c2Hex) {
+		if (c2Hex == overlayColour) {
+			return overlayCache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlendCalc(c1Hex, c2Hex));
+		} else {
+			return alphaBlendCalc(c1Hex, c2Hex);
+		}
+	}
+
+	int alphaBlendCalc(int c1Hex, int c2Hex) {
 		Color c1 = new Color(c1Hex);
 		Color c2 = new Color(c2Hex, true);
 
@@ -248,10 +260,12 @@ public class Screen {
 		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
 				((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
 
+		int resultHex = result.getRGB();
+
 //		COLOR EVERYTHING RED
 //		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255) << 16);
 
-		return result.getRGB();
+		return resultHex;
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {
