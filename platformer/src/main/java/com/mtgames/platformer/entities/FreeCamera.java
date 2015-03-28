@@ -47,6 +47,7 @@ public class FreeCamera extends Mob {
 
 	public void render(Screen screen) {
 		screen.drawRectangle(x-4-screen.xOffset, y-4-screen.yOffset ,x+4-screen.xOffset, y+4-screen.yOffset, 0x7F000000, false);
+		screen.addLighting(x, y, 0);
 	}
 
 	@Override public boolean hasCollided(int xa, int ya) {

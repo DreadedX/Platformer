@@ -1,11 +1,11 @@
 package com.mtgames.platformer.gfx;
 
+import com.mtgames.platformer.debug.Debug;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Screen {
 
@@ -19,12 +19,12 @@ public class Screen {
 	public int     yOffset  = 0;
 	public boolean lighting = true;
 
-	private BufferedImage overlay = null;
+	private BufferedImage overlayBig = null;
+	private BufferedImage overlayDash = null;
 	private final int[] overlayPixels;
-	private       int[] overlayLightPixels;
+	private       int[] overlayLightPixelsBig;
+	private       int[] overlayLightPixelsDash;
 	private       int   overlayColour;
-
-	private Map<Integer, Integer> cache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -34,17 +34,19 @@ public class Screen {
 		overlayPixels = new int[width * height];
 
 		try {
-			overlay = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lighting_test.png"));
+			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
+			overlayDash = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/dash.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (overlay == null) {
+		if (overlayBig == null || overlayDash == null) {
 			return;
 		}
 
-		overlayLightPixels = overlay.getRGB(0, 0, overlay.getWidth(), overlay.getHeight(), null, 0, overlay.getWidth());
-		overlayColour = overlayLightPixels[overlay.getWidth() / 2 + overlay.getWidth() / 2 * overlay.getWidth()];
+		overlayLightPixelsBig = overlayBig.getRGB(0, 0, overlayBig.getWidth(), overlayBig.getHeight(), null, 0, overlayBig.getWidth());
+		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
+		overlayColour = overlayLightPixelsBig[overlayBig.getWidth() / 2 + overlayBig.getWidth() / 2 * overlayBig.getWidth()];
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -120,8 +122,27 @@ public class Screen {
 		}
 	}
 
-	public void setLighting(int x1, int y1) {
+	public void addLighting(int x1, int y1, int type) {
 		if (lighting) {
+			BufferedImage overlay;
+			int[] overlayLightPixels;
+
+			switch (type) {
+				case 0:
+					overlay = overlayBig;
+					overlayLightPixels = overlayLightPixelsBig;
+					break;
+
+				case 1:
+					overlay = overlayDash;
+					overlayLightPixels = overlayLightPixelsDash;
+					break;
+
+				default:
+					Debug.log(type + " is not a valid light type!", Debug.WARNING);
+					return;
+			}
+
 			x1 -= overlay.getWidth()/2 + xOffset;
 			y1 -= overlay.getHeight()/2 + yOffset;
 
@@ -160,7 +181,7 @@ public class Screen {
 	public void renderLighting() {
 		if (lighting) {
 			for (int i = 0; i < overlayPixels.length; i++) {
-				pixels[i] = alphaBlendOptimized(pixels[i], overlayPixels[i]);
+				pixels[i] = alphaBlend(pixels[i], overlayPixels[i]);
 			}
 
 			for (int i = 0; i < overlayPixels.length; i++) {
@@ -209,14 +230,10 @@ public class Screen {
 				if (opaque) {
 					pixels[x + y * width] = colour;
 				} else {
-					pixels[x + y * width] = alphaBlendOptimized(pixels[x + y * width], colour);
+					pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour);
 				}
 			}
 		}
-	}
-
-	int alphaBlendOptimized(int c1Hex, int c2Hex) {
-		return cache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlend(c1Hex, c2Hex));
 	}
 
 	int alphaBlend(int c1Hex, int c2Hex) {

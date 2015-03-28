@@ -15,6 +15,8 @@ public class InputHandler implements KeyListener {
 	public final Key space   = new Key();
 	public final Key shift   = new Key();
 
+	public final Key throwItem = new Key();
+
 	public InputHandler(Game game) {
 		game.addKeyListener(this);
 	}
@@ -60,6 +62,10 @@ public class InputHandler implements KeyListener {
 			case KeyEvent.VK_SHIFT:
 				shift.toggle(true);
 				break;
+
+			case KeyEvent.VK_Q:
+				throwItem.toggle(true);
+				break;
 		}
 	}
 
@@ -94,6 +100,10 @@ public class InputHandler implements KeyListener {
 
 			case KeyEvent.VK_SHIFT:
 				shift.toggle(false);
+				break;
+
+			case KeyEvent.VK_Q:
+				throwItem.toggle(false);
 				break;
 		}
 	}

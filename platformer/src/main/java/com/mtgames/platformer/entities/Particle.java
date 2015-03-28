@@ -1,7 +1,9 @@
 package com.mtgames.platformer.entities;
 
+import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.level.tiles.Tile;
 
 public abstract class Particle extends Entity {
 	protected int x;
@@ -32,31 +34,70 @@ public abstract class Particle extends Entity {
 	protected void move(int xa, int ya) {
 		if (ya < 0) {
 			for (int i = 0; i > ya; i--) {
-				y -= 1;
+				if (!hasCollided(0, -1)) {
+					y -= 1;
+				}
 			}
 		}
 
 		if (ya > 0) {
 			for (int i = 0; i < ya; i++) {
-				y += 1;
+				if (!hasCollided(0, 1)) {
+					y += 1;
+				}
 			}
 		}
 
 		if (xa < 0) {
 			for (int i = 0; i > xa; i--) {
-				x -= 1;
+				if (!hasCollided(-1, 0)) {
+					x -= 1;
+				}
 			}
 		}
 
 		if (xa > 0) {
 			for (int i = 0; i < xa; i++) {
-				x += 1;
+				if (!hasCollided(1, 0)) {
+					x += 1;
+				}
 			}
 		}
+	}
+
+	protected boolean hasCollided(int xa, int ya) {
+		return isSolidTile(xa, ya, 0, 0);
+
+	}
+
+	boolean isSolidTile(int xa, int ya, int x, int y) {
+		if (level == null)
+			return false;
+
+		Tile lastTile = level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
+		Tile newTile = level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
+
+		return !lastTile.equals(newTile) && newTile.isSolid();
 
 	}
 
 	protected int gravity(int ya) {
+		if (hasCollided(0, 1) && ya > 0) {
+			ya = 0;
+		}
+
+		if (hasCollided(0, 1)) {
+			gravityWait = 0;
+			return ya;
+		}
+
+		if (hasCollided(0, 1) && ya > 0) {
+			ya = 0;
+		}
+
+		if (hasCollided(0, -1))
+			ya = 0;
+
 		if (gravityWait > 1) {
 			int gravity = 1;
 			if (ya < 12)

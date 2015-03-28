@@ -2,6 +2,7 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
+import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
@@ -20,7 +21,7 @@ public class Player extends Mob {
 
 	private final InputHandler input;
 	private final Script       script;
-	private final Sheet sheet = new Sheet("/graphics/sprites/player.png");
+	private final Sheet sheet = new Sheet("/graphics/entities/player.png");
 
 	private int xa     = 0;
 	private int xaDash = 0;
@@ -105,6 +106,11 @@ public class Player extends Mob {
 				xa += speed;
 			}
 
+			if (input.throwItem.isPressed() && isAlive()) {
+				level.addParticle(new Glowstick(level, x, y, 0, movingDir));
+				input.throwItem.toggle(false);
+			}
+
 		} else {
 			staggerTime -= 1;
 			ya = 0;
@@ -185,7 +191,7 @@ public class Player extends Mob {
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
 		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width/16, dir);
 
-		screen.setLighting(x, y);
+		screen.addLighting(x, y, 0);
 
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);

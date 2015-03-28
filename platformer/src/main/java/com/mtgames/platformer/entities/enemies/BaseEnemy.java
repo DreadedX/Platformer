@@ -16,7 +16,7 @@ public class BaseEnemy extends Mob {
 	private int dir;
 	private int modifier;
 
-	private final Sheet sheet = new Sheet("/graphics/sprites/baseEnemy.png");
+	private final Sheet sheet = new Sheet("/graphics/entities/baseEnemy.png");
 
 	public BaseEnemy(Level level, int x, int y) {
 		super(level, x, y);
@@ -102,6 +102,6 @@ public class BaseEnemy extends Mob {
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (sheet.width/16), dir);
 		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + (sheet.width/16) , dir);
 
-		screen.setLighting(x, y);
+		screen.addLighting(x, y, 0);
 	}
 }
