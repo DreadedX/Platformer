@@ -185,6 +185,8 @@ public class Player extends Mob {
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
 		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width/16, dir);
 
+		screen.setLighting(x, y);
+
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);
 		double healthRatio = ((health * 10d) / (MAXHEALTH * 10d));

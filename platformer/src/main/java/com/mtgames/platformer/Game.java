@@ -170,9 +170,6 @@ import java.util.Objects;
 
 		level.renderEntities(screen);
 
-//		TODO: Fix this code so it is not bound directly to entities, now it will crash in levels with only the player
-		screen.setLighting(level.entities.get(0).x, level.entities.get(0).y);
-		screen.setLighting(level.entities.get(1).x, level.entities.get(1).y);
 		screen.renderLighting();
 
 		Hud.render(screen);
