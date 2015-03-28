@@ -6,7 +6,7 @@ import com.mtgames.platformer.level.Level;
 public abstract class Particle extends Entity {
 	protected int x;
 	protected int y;
-	protected int life;
+	private   int life;
 	private int gravityWait = 0;
 
 	protected Particle(Level level, int x, int y, int life) {
