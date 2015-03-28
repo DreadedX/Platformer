@@ -1,12 +1,12 @@
 package com.mtgames.platformer.debug;
 
 public class Debug {
-	public final static int INFO     = 0;
-	public final static int LEVEL    = 1;
-	public final static int SCRIPT   = 2;
-	public final static int DEBUG    = 3;
-	public final static int WARNING  = 4;
-	public static       int priority = WARNING;
+	public final static  int INFO     = 0;
+	public final static  int LEVEL    = 1;
+	public final static  int SCRIPT   = 2;
+	private final static int DEBUG    = 3;
+	public final static  int WARNING  = 4;
+	public static        int priority = WARNING;
 
 	public static boolean debug = false;
 

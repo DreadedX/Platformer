@@ -28,7 +28,7 @@ public class Screen {
 	private       int[] overlayLightPixelsDash;
 	private       int   overlayColour;
 
-	private Map<Integer, Integer> overlayCache = new HashMap<>();
+	private final Map<Integer, Integer> overlayCache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -175,8 +175,7 @@ public class Screen {
 						}
 					}
 
-					int colour = c1.getRGB() + (alpha) << 24;
-					overlayPixels[x + y * width] = colour;
+					overlayPixels[x + y * width] = alpha << 24;
 				}
 			}
 		}
@@ -260,12 +259,10 @@ public class Screen {
 		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
 				((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
 
-		int resultHex = result.getRGB();
-
 //		COLOR EVERYTHING RED
 //		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255) << 16);
 
-		return resultHex;
+		return result.getRGB();
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {

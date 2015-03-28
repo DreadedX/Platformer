@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
@@ -70,6 +69,7 @@ public abstract class Particle extends Entity {
 
 	}
 
+//	TODO: Move this into entity code, now it is in both mobs and particles
 	boolean isSolidTile(int xa, int ya, int x, int y) {
 		if (level == null)
 			return false;

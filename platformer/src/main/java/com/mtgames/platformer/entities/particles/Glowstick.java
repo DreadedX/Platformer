@@ -5,13 +5,11 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.level.Level;
 
-import java.util.Map;
-
 public class Glowstick extends Particle {
 
 	private int xa;
-	private int ya = -10 - (int) (Math.random());
-	private Sheet sheet = new Sheet("/graphics/items/glowstick.png");
+	private       int   ya    = -10 - (int) (Math.random());
+	private final Sheet sheet = new Sheet("/graphics/items/glowstick.png");
 
 	public Glowstick(Level level, int x, int y, int particleOffset, int movingDir) {
 		super(level, (int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000);

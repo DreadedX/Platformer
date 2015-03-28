@@ -7,7 +7,7 @@ import com.mtgames.platformer.level.Level;
 public class DashParticle extends Particle {
 
 	private int ya;
-	private int colour = 0xff68afaf + (int) (Math.random() * 0x50); // 0xff68afff
+	private final int colour = 0xff68afaf + (int) (Math.random() * 0x50); // 0xff68afff
 
 	public DashParticle(Level level, int x, int y, int particleOffset) {
 		super(level, (int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), (int) (Math.random() * 20));
