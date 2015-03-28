@@ -111,10 +111,10 @@ public class Command {
 					} else if (commands[1].toLowerCase().equals("false") && level.entities.get(0) instanceof FreeCamera) {
 						level.entities.set(0, new Player(level, level.entities.get(0).x, level.entities.get(0).y, input));
 					} else {
-						Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
+						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
 				}
 				break;
 
@@ -125,10 +125,10 @@ public class Command {
 					} else if (commands[1].toLowerCase().equals("false") && screen.lighting) {
 						screen.lighting = false;
 					} else {
-						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+						Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
 				}
 				break;
 

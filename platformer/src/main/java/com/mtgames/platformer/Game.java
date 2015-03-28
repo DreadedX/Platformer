@@ -62,7 +62,7 @@ import java.util.Objects;
 		if (args.length > 1) {
 			if (Objects.equals(args[1], "debug")) {
 				Debug.priority = Debug.INFO;
-				Debug.priority = Debug.DEBUG;
+//				Debug.priority = Debug.DEBUG;
 				Debug.debug = true;
 			}
 		}
@@ -136,7 +136,7 @@ import java.util.Objects;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
+				Debug.log(frames + " Frames, " + ticks + " Ticks, " + screen.alphaBlendMap.size() + "entries in blendMap", Debug.INFO);
 				frames = 0;
 				ticks = 0;
 			}
@@ -169,6 +169,10 @@ import java.util.Objects;
 		level.renderParticles(screen);
 
 		level.renderEntities(screen);
+
+		screen.setLighting(level.entities.get(0).x, level.entities.get(0).y);
+
+		screen.setLighting(363, 720);
 
 		screen.renderLighting();
 

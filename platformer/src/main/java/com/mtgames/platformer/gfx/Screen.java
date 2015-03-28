@@ -2,7 +2,10 @@ package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.debug.Debug;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,24 +19,33 @@ public class Screen {
 	public final int   height;
 	public int xOffset = 0;
 	public int yOffset = 0;
-	public boolean lighting = false;
+	public boolean lighting = true;
 
-	private final Map<Integer, Integer> alphaBlendMap = new HashMap<>();
+	public final int[] lightPixels;
+	private int[] overlayPixels;
+	private BufferedImage overlay = null;
+
+	public final Map<Integer, Integer> alphaBlendMap = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
 		this.height = height;
 
 		pixels = new int[width * height];
+		lightPixels = new int[width * height];
+
+		try {
+			overlay = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lighting_test.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (overlay == null) {
+			return;
+		}
+
+		overlayPixels = overlay.getRGB(0, 0, overlay.getWidth(), overlay.getHeight(), null, 0, overlay.getWidth());
 	}
-
-//	public void render(int xPos, int yPos, int tile) {
-//		render(xPos, yPos, tile, 0x00, 1);
-//	}
-
-//	public void render(int xPos, int yPos, int tile, int mirrorDir) {
-//		render(xPos, yPos, tile, mirrorDir, 1);
-//	}
 
 //	Default to 16x tileset and no mirror
 	public void render(int xPos, int yPos, Sheet sheet, int tile) {
@@ -108,9 +120,41 @@ public class Screen {
 		}
 	}
 
-	public void renderLighting() {
+	public void setLighting(int x1, int y1) {
 		if (lighting) {
-			drawRectangle(0, 0, width, height, 0xaa000000, false);
+			x1 -= overlay.getWidth()/2 + xOffset;
+			y1 -= overlay.getHeight()/2 + yOffset;
+
+			int x2 = x1 + overlay.getWidth();
+			int y2 = y1 + overlay.getHeight();
+
+			for (int y = y1; y < y2; y++) {
+				if (y < 0 || y >= height) {
+					continue;
+				}
+
+				for (int x = x1; x < x2; x++) {
+					if (x < 0 || x >= width) {
+						continue;
+					}
+					Color c1 = new Color(lightPixels[x + y * width], true);
+					Color c2 = new Color(overlayPixels[(x - x1) + (y - y1) * overlay.getWidth()], true);
+
+					lightPixels[x + y * width] = c1.getRGB() + c2.getAlpha() << 24;
+//					lightPixels[x + y * width] = overlayPixels[(x - x1) + (y - y1) * overlay.getWidth()];
+				}
+			}
+		}
+	}
+
+	public void renderLighting() {
+		for (int i = 0; i < lightPixels.length; i++) {
+			pixels[i] = alphaBlend(pixels[i], lightPixels[i]);
+		}
+
+		for (int i = 0; i < lightPixels.length; i++) {
+			lightPixels[i] = overlayPixels[1];
+//			lightPixels[i] = 0x00000000;
 		}
 	}
 
@@ -162,19 +206,24 @@ public class Screen {
 	}
 
 	int alphaBlend(int c1Hex, int c2Hex) {
-		if (alphaBlendMap.get(c1Hex + c2Hex + c2Hex) != null) {
-			return alphaBlendMap.get(c1Hex + c2Hex + c2Hex);
-		} else {
-			Color c1 = new Color(c1Hex);
-			Color c2 = new Color(c2Hex, true);
+		Color c1 = new Color(c1Hex);
+		Color c2 = new Color(c2Hex, true);
 
-			Color result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
-					((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
-
-			alphaBlendMap.put(c1Hex + c2Hex + c2Hex, result.getRGB());
-
-			return result.getRGB();
+		if (c2.getRGB() == 0) {
+			return c1.getRGB();
 		}
+
+//		if (alphaBlendMap.get(c1Hex + c2Hex) != null) {
+//			return alphaBlendMap.get(c1Hex + c2Hex);
+//		}
+
+		Color result;
+		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
+				((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
+
+		alphaBlendMap.put(c1Hex + c2Hex, result.getRGB());
+
+		return result.getRGB();
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {
