@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Screen {
 
@@ -18,9 +20,11 @@ public class Screen {
 	public boolean lighting = true;
 
 	private BufferedImage overlay = null;
-	public final int[] overlayPixels;
-	private      int[] overlayLightPixels;
-	private      int   overlayColour;
+	private final int[] overlayPixels;
+	private       int[] overlayLightPixels;
+	private       int   overlayColour;
+
+	private Map<Integer, Integer> cache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -156,7 +160,7 @@ public class Screen {
 	public void renderLighting() {
 		if (lighting) {
 			for (int i = 0; i < overlayPixels.length; i++) {
-				pixels[i] = alphaBlend(pixels[i], overlayPixels[i]);
+				pixels[i] = alphaBlendOptimized(pixels[i], overlayPixels[i]);
 			}
 
 			for (int i = 0; i < overlayPixels.length; i++) {
@@ -192,7 +196,6 @@ public class Screen {
 	}
 
 	public void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean opaque) {
-
 		for (int y = y1; y < y2; y++) {
 			if (y < 0 || y >= height) {
 				continue;
@@ -206,10 +209,14 @@ public class Screen {
 				if (opaque) {
 					pixels[x + y * width] = colour;
 				} else {
-					pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour);
+					pixels[x + y * width] = alphaBlendOptimized(pixels[x + y * width], colour);
 				}
 			}
 		}
+	}
+
+	int alphaBlendOptimized(int c1Hex, int c2Hex) {
+		return cache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlend(c1Hex, c2Hex));
 	}
 
 	int alphaBlend(int c1Hex, int c2Hex) {
