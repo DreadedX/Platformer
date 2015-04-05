@@ -127,7 +127,11 @@ public class Screen {
 	}
 
 	public void addLighting(int x1, int y1, int type) {
-		if (lighting) {
+		addLighting(x1, y1, type, 0x00);
+	}
+
+	public void addLighting(int x1, int y1, int type, int modifier) {
+		if (lighting && modifier < 0xff) {
 			BufferedImage overlay;
 			int[] overlayLightPixels;
 
@@ -163,10 +167,10 @@ public class Screen {
 						continue;
 					}
 					int c1Alpha = overlayAlpha[x + y * width];
-					int c2Alpha = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true).getAlpha();
+					int c2Alpha = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true).getAlpha() - modifier;
 
 					int alpha;
-					if (c2Alpha == 0) {
+					if (c2Alpha <= 0) {
 						alpha = c1Alpha;
 					} else {
 						alpha = c1Alpha - c2Alpha;
@@ -258,9 +262,6 @@ public class Screen {
 		Color result;
 		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
 				((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
-
-//		COLOR EVERYTHING RED
-//		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255) << 16);
 
 		return result.getRGB();
 	}
