@@ -46,12 +46,10 @@ public class Level {
 
 		particles.forEach(Particle::tick);
 
-		Iterator<Particle> iter = particles.iterator();
-		while (iter.hasNext()) {
-			Particle particle = iter.next();
-
-			if (!particle.isAlive()) {
-				iter.remove();
+		Iterator<Particle> iterator = particles.iterator();
+		while (iterator.hasNext()) {
+			if (!iterator.next().isAlive()) {
+				iterator.remove();
 			}
 		}
 	}
