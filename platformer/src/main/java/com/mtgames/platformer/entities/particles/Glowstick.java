@@ -37,9 +37,9 @@ public class Glowstick extends Particle {
 
 	public void render(Screen screen) {
 		if (brightness < 0xff) {
-			screen.render(x-14, y-14, sheet, 0);
+			screen.render(x-8, y-8, sheet, 0);
 		} else {
-			screen.render(x-14, y-14, sheet, 1);
+			screen.render(x-8, y-8, sheet, 1);
 		}
 		screen.addLighting(x, y, 0, (int) brightness);
 	}
