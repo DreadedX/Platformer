@@ -202,6 +202,7 @@ public class Screen {
 
 					overlayAlpha[x + y * width] = alpha;
 					if (overlayLightColour > 0) {
+//						TODO: Make colour radius bigger
 						pixels[x + y * width] = alphaBlend(pixels[x + y * width], overlayLightColour + (c2Alpha << 24));
 					}
 				}

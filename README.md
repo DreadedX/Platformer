@@ -19,6 +19,6 @@ freecam: Enable/disable freecam
 
 lighting: Enable/disable lighting
 
-shake: Enable/disable shaky cam
+shake <time>: Make the screen shake
 
 exit: Exit the game

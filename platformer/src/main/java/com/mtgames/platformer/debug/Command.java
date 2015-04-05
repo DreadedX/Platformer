@@ -129,7 +129,17 @@ public class Command {
 						;
 
 			case "shake":
-				Game.shakeCam = !Game.shakeCam;
+//				TODO: Add check to make sure the command is valid
+//				NOTE: Do not use this command from anywhere in the code because then it freezes the game thread!
+				if (commands.length == 2) {
+					Game.shakeCam = true;
+					try {
+						Thread.sleep(Integer.parseInt(commands[1]));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Game.shakeCam = false;
+				}
 				break;
 
 			case "exit":
