@@ -6,6 +6,7 @@ public class Debug {
 	public final static  int SCRIPT   = 2;
 	private final static int DEBUG    = 3;
 	public final static  int WARNING  = 4;
+	public final static  int ERROR  = 5;
 	public static        int priority = WARNING;
 
 	public static boolean debug = false;
@@ -37,7 +38,12 @@ public class Debug {
 				break;
 
 			case 4:
-				System.out.println("[WARNING] " + message);
+				System.out.println("\u001B[33m[WARNING] " + message +"\u001B[0m" );
+				break;
+
+			case 5:
+				System.out.println("\u001b[31m[ERROR] " + message + "\u001b[0m");
+				Command.exec("exit 1");
 				break;
 		}
 	}
