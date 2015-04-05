@@ -15,8 +15,10 @@ spawn <id> <x> <y>: Spawn entity at coordinates, * to spawn on player
 
 kill <uid>: Kill entity
 
-freecam [true/false]: Turn on/off the freecam
+freecam: Enable/disable freecam
 
-lighting [true/false]: Turn on/off lighting
+lighting: Enable/disable lighting
+
+shake: Enable/disable shaky cam
 
 exit: Exit the game

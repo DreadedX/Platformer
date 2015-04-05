@@ -1,5 +1,6 @@
 package com.mtgames.platformer.debug;
 
+import com.mtgames.platformer.Game;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
@@ -105,13 +106,13 @@ public class Command {
 				break;
 
 			case "freecam":
-				if (commands.length == 2) {
-					if (commands[1].toLowerCase().equals("true") && level.entities.get(0) instanceof Player) {
+				if (commands.length == 1) {
+					if (level.entities.get(0) instanceof Player) {
 						level.entities.set(0, new FreeCamera(level, level.entities.get(0).x, level.entities.get(0).y, input));
-					} else if (commands[1].toLowerCase().equals("false") && level.entities.get(0) instanceof FreeCamera) {
+					} else if (level.entities.get(0) instanceof FreeCamera) {
 						level.entities.set(0, new Player(level, level.entities.get(0).x, level.entities.get(0).y, input));
 					} else {
-						Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
 					}
 				} else {
 					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
@@ -119,20 +120,23 @@ public class Command {
 				break;
 
 			case "lighting":
-				if (commands.length == 2) {
-					if (commands[1].toLowerCase().equals("true") && !screen.lighting) {
-						screen.lighting = true;
-					} else if (commands[1].toLowerCase().equals("false") && screen.lighting) {
-						screen.lighting = false;
-					} else {
-						Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
-					}
+				if (commands.length == 1) {
+					screen.lighting = !screen.lighting;
 				} else {
-					Debug.log("Invalid arguments, usage: lighting true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: lighting", Debug.WARNING);
 				}
+				break
+						;
+
+			case "shake":
+				Game.shakeCam = !Game.shakeCam;
 				break;
 
 			case "exit":
+//				TODO: Add check to make sure the command is valid
+				if (commands.length == 2) {
+					System.exit(Integer.parseInt(commands[1]));
+				}
 				System.exit(0);
 				break;
 

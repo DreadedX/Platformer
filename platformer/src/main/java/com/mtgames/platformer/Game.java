@@ -11,12 +11,14 @@ import com.mtgames.platformer.level.Level;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Objects;
 
-@SuppressWarnings({ "serial" }) class Game extends Canvas implements Runnable {
+@SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
 
 	private static final boolean FPSUNLOCK = true;
 	private static final int     TPS       = 60;
@@ -25,14 +27,18 @@ import java.util.Objects;
 	private static final String  NAME      = "FireRPG";
 
 	private static int scale;
-	private final BufferedImage image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private final int[]         pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	private       boolean       running = false;
-	private       int           fps     = 0;
+	private final BufferedImage image  = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private final int[]         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private AffineTransform tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
+	private AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	private boolean running = false;
+	private int     fps     = 0;
 	private Screen screen;
 
 	private InputHandler input;
 	private Level        level;
+
+	public static boolean shakeCam = false;
 
 	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -145,6 +151,11 @@ import java.util.Objects;
 
 	void tick() {
 		level.tick();
+
+		if (shakeCam) {
+			tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
+			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		}
 	}
 
 	void render() {
@@ -189,7 +200,11 @@ import java.util.Objects;
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		if (shakeCam) {
+			g.drawImage(op.filter(image, null), 0, 0, getWidth(), getHeight(), null);
+		} else {
+			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		}
 		g.dispose();
 		bs.show();
 	}
