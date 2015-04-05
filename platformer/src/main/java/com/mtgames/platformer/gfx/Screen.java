@@ -23,7 +23,7 @@ public class Screen {
 
 	private BufferedImage overlayBig  = null;
 	private BufferedImage overlayDash = null;
-	private final int[] overlayPixels;
+	private final int[] overlayAlpha;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
 	private       int   overlayColour;
@@ -35,7 +35,7 @@ public class Screen {
 		this.height = height;
 
 		pixels = new int[width * height];
-		overlayPixels = new int[width * height];
+		overlayAlpha = new int[width * height];
 
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
@@ -162,20 +162,20 @@ public class Screen {
 					if (x < 0 || x >= width) {
 						continue;
 					}
-					Color c1 = new Color(overlayPixels[x + y * width], true);
-					Color c2 = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true);
+					int c1Alpha = overlayAlpha[x + y * width];
+					int c2Alpha = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true).getAlpha();
 
 					int alpha;
-					if (c2.getAlpha() == 0) {
-						alpha = c1.getAlpha();
+					if (c2Alpha == 0) {
+						alpha = c1Alpha;
 					} else {
-						alpha = c1.getAlpha() - c2.getAlpha();
+						alpha = c1Alpha - c2Alpha;
 						if (alpha <= 0) {
 							alpha = 1;
 						}
 					}
 
-					overlayPixels[x + y * width] = alpha << 24;
+					overlayAlpha[x + y * width] = alpha;
 				}
 			}
 		}
@@ -183,12 +183,12 @@ public class Screen {
 
 	public void renderLighting() {
 		if (lighting) {
-			for (int i = 0; i < overlayPixels.length; i++) {
-				pixels[i] = alphaBlend(pixels[i], overlayPixels[i]);
+			for (int i = 0; i < overlayAlpha.length; i++) {
+				pixels[i] = alphaBlend(pixels[i], overlayAlpha[i] << 24);
 			}
 
-			for (int i = 0; i < overlayPixels.length; i++) {
-				overlayPixels[i] = overlayColour;
+			for (int i = 0; i < overlayAlpha.length; i++) {
+				overlayAlpha[i] = 0xea;
 			}
 		}
 	}
@@ -240,7 +240,7 @@ public class Screen {
 	}
 
 	int alphaBlend(int c1Hex, int c2Hex) {
-		if (c2Hex == overlayColour) {
+		if (c2Hex == 0xea) {
 			return overlayCache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlendCalc(c1Hex, c2Hex));
 		} else {
 			return alphaBlendCalc(c1Hex, c2Hex);
