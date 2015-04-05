@@ -16,9 +16,9 @@ import java.util.List;
 public class Level {
 
 	public final  List<Entity>     entities  = new ArrayList<>();
-	private final List<Particle>   particles = new ArrayList<>();
+	private final  List<Particle>   particles = new ArrayList<>();
 	private final List<Background> layers    = new ArrayList<>();
-	private final Script script;
+	private final Script       script;
 	private final InputHandler input;
 
 	private byte[] tiles;
@@ -114,7 +114,7 @@ public class Level {
 		this.layers.add(background);
 	}
 
-	void load(String path) {
+	private void load(String path) {
 		boolean external = false;
 
 		if (ClassLoader.getSystemResource(path) == null) {

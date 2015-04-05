@@ -26,9 +26,8 @@ public class Screen {
 	private final int[] overlayAlpha;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
-	private       int   overlayColour;
 
-	private final Map<Integer, Integer> overlayCache = new HashMap<>();
+	public final Map<Integer, Integer> overlayCache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -50,7 +49,6 @@ public class Screen {
 
 		overlayLightPixelsBig = overlayBig.getRGB(0, 0, overlayBig.getWidth(), overlayBig.getHeight(), null, 0, overlayBig.getWidth());
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
-		overlayColour = overlayLightPixelsBig[overlayBig.getWidth() / 2 + overlayBig.getWidth() / 2 * overlayBig.getWidth()];
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -68,7 +66,7 @@ public class Screen {
 		render(xPos, yPos, sheet, tile, small, 0x00);
 	}
 
-	void render(int xPos, int yPos, Sheet sheet, int tile, boolean small, int mirrorDir) {
+	private void render(int xPos, int yPos, Sheet sheet, int tile, boolean small, int mirrorDir) {
 		xPos -= xOffset;
 		yPos -= yOffset;
 
@@ -130,24 +128,37 @@ public class Screen {
 		addLighting(x1, y1, type, 0x00);
 	}
 
-	public void addLighting(int x1, int y1, int type, int modifier) {
+//	TODO: Make coloured lighting render over all entities
+	@SuppressWarnings("ConstantConditions") public void addLighting(int x1, int y1, int type, int modifier) {
 		if (lighting && modifier < 0xff) {
 			BufferedImage overlay;
 			int[] overlayLightPixels;
+			int overlayLightColour;
 
 			switch (type) {
+//				Mobs
 				case 0:
 					overlay = overlayBig;
 					overlayLightPixels = overlayLightPixelsBig;
+					overlayLightColour = 0xffae00;
 					break;
 
+//				Dash
 				case 1:
 					overlay = overlayDash;
 					overlayLightPixels = overlayLightPixelsDash;
+					overlayLightColour = 0x68afaf;
+					break;
+
+//				Glowstick
+				case 2:
+					overlay = overlayBig;
+					overlayLightPixels = overlayLightPixelsBig;
+					overlayLightColour = 0x27a10d;
 					break;
 
 				default:
-					Debug.log(type + " is not a valid light type!", Debug.WARNING);
+					Debug.log(type + " is not a valid light type!", Debug.ERROR);
 					return;
 			}
 
@@ -179,7 +190,20 @@ public class Screen {
 						}
 					}
 
+					c2Alpha -= modifier;
+
+					if (c2Alpha > 70) {
+						c2Alpha = 70;
+					}
+
+					if (c2Alpha < 0) {
+						c2Alpha = 0;
+					}
+
 					overlayAlpha[x + y * width] = alpha;
+					if (overlayLightColour > 0) {
+						pixels[x + y * width] = alphaBlend(pixels[x + y * width], overlayLightColour + (c2Alpha << 24));
+					}
 				}
 			}
 		}
@@ -192,7 +216,10 @@ public class Screen {
 			}
 
 			for (int i = 0; i < overlayAlpha.length; i++) {
-				overlayAlpha[i] = 0xea;
+//				TODO: Check if the if statement improves performance
+				if (overlayAlpha[i] != 0xea) {
+					overlayAlpha[i] = 0xea;
+				}
 			}
 		}
 	}
@@ -243,15 +270,15 @@ public class Screen {
 		}
 	}
 
-	int alphaBlend(int c1Hex, int c2Hex) {
-		if (c2Hex == 0xea) {
+	private int alphaBlend(int c1Hex, int c2Hex) {
+		if (c2Hex == 0xea000000) {
 			return overlayCache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlendCalc(c1Hex, c2Hex));
 		} else {
 			return alphaBlendCalc(c1Hex, c2Hex);
 		}
 	}
 
-	int alphaBlendCalc(int c1Hex, int c2Hex) {
+	private int alphaBlendCalc(int c1Hex, int c2Hex) {
 		Color c1 = new Color(c1Hex);
 		Color c2 = new Color(c2Hex, true);
 

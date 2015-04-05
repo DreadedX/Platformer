@@ -100,7 +100,7 @@ public abstract class Mob extends Entity {
 		return false;
 	}
 
-	boolean isSolidTile(int xa, int ya, int x, int y) {
+	private boolean isSolidTile(int xa, int ya, int x, int y) {
 		if (level == null)
 			return false;
 
@@ -139,7 +139,7 @@ public abstract class Mob extends Entity {
 		return ya;
 	}
 
-	void walkingAnimation() {
+	private void walkingAnimation() {
 		int ANIMATIONWAIT = 7;
 		if (walkingAnimationFrame >= ANIMATIONWAIT) {
 			walkingAnimationFrame = 0;

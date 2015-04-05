@@ -107,7 +107,7 @@ public class Player extends Mob {
 			}
 
 			if (input.throwItem.isPressed() && isAlive()) {
-				level.addParticle(new Glowstick(level, x, y, 0, movingDir));
+				level.addParticle(new Glowstick(level, x, y, movingDir));
 				input.throwItem.toggle(false);
 			}
 
@@ -241,7 +241,7 @@ public class Player extends Mob {
 		dashTime++;
 	}
 
-	boolean isAlive() {
+	private boolean isAlive() {
 		return health > 0;
 	}
 

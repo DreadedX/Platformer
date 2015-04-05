@@ -71,7 +71,7 @@ public class Script {
 		}
 	}
 
-	void cheat(String function, String cheat) {
+	private void cheat(String function, String cheat) {
 		try {
 			engine.eval(new InputStreamReader(new FileInputStream("platformer/cheats/" + cheat)));
 		} catch (ScriptException | FileNotFoundException e) {

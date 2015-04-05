@@ -7,7 +7,7 @@ import com.mtgames.platformer.level.tiles.Tile;
 public abstract class Particle extends Entity {
 	protected int x;
 	protected int y;
-	protected int life;
+	private   int life;
 	private int gravityWait = 0;
 
 	protected Particle(Level level, int x, int y, int life) {
@@ -70,7 +70,7 @@ public abstract class Particle extends Entity {
 	}
 
 //	TODO: Move this into entity code, now it is in both mobs and particles
-	boolean isSolidTile(int xa, int ya, int x, int y) {
+private boolean isSolidTile(int xa, int ya, int x, int y) {
 		if (level == null)
 			return false;
 

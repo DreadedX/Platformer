@@ -76,7 +76,7 @@ import java.util.Objects;
 		new Game().start();
 	}
 
-	void init() {
+	private void init() {
 		screen = new Screen(WIDTH, HEIGHT);
 		input = new InputHandler(this);
 		level = new Level("scripts/Level.js", input);
@@ -92,7 +92,7 @@ import java.util.Objects;
 
 	}
 
-	synchronized void start() {
+	private synchronized void start() {
 		running = true;
 		new Thread(this).start();
 	}
@@ -142,14 +142,14 @@ import java.util.Objects;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
+				Debug.log(frames + " Frames, " + ticks + " Ticks " + screen.overlayCache.size(), Debug.INFO);
 				frames = 0;
 				ticks = 0;
 			}
 		}
 	}
 
-	void tick() {
+	private void tick() {
 		level.tick();
 
 		if (shakeCam) {
@@ -158,7 +158,7 @@ import java.util.Objects;
 		}
 	}
 
-	void render() {
+	private void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
 			createBufferStrategy(3);
