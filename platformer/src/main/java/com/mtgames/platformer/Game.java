@@ -142,7 +142,7 @@ import java.util.Objects;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.log(frames + " Frames, " + ticks + " Ticks " + screen.overlayCache.size(), Debug.INFO);
+				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
 				frames = 0;
 				ticks = 0;
 			}

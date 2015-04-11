@@ -6,8 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Screen {
 
@@ -26,8 +24,6 @@ public class Screen {
 	private final int[] overlayAlpha;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
-
-	public final Map<Integer, Integer> overlayCache = new HashMap<>();
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -218,8 +214,9 @@ public class Screen {
 
 			for (int i = 0; i < overlayAlpha.length; i++) {
 //				TODO: Check if the if statement improves performance
-				if (overlayAlpha[i] != 0xea) {
-					overlayAlpha[i] = 0xea;
+//				TODO: This should be 0xea, but because overflow problems it is temp 0x7f
+				if (overlayAlpha[i] != 0x7f) {
+					overlayAlpha[i] = 0x7f;
 				}
 			}
 		}
@@ -272,26 +269,28 @@ public class Screen {
 	}
 
 	private int alphaBlend(int c1Hex, int c2Hex) {
-		if (c2Hex == 0xea000000) {
-			return overlayCache.computeIfAbsent(c1Hex + c2Hex, (key) -> alphaBlendCalc(c1Hex, c2Hex));
-		} else {
-			return alphaBlendCalc(c1Hex, c2Hex);
-		}
-	}
-
-	private int alphaBlendCalc(int c1Hex, int c2Hex) {
-		Color c1 = new Color(c1Hex);
-		Color c2 = new Color(c2Hex, true);
-
-		if (c2.getRGB() == 0) {
-			return c1.getRGB();
+//		TODO: FIX THE OVERFLOW ISSUE, MAX COLOUR SIZE IS 0x7FffFFff, NEEDS TO BE 0xFFffFFff
+		if (c2Hex >> 24 == 0) {
+			return c1Hex;
 		}
 
-		Color result;
-		result = new Color(((c2.getRed() * c2.getAlpha() + c1.getRed() * (255 - c2.getAlpha())) / 255), ((c2.getGreen() * c2.getAlpha() + c1.getGreen() * (255 - c2.getAlpha())) / 255),
-				((c2.getBlue() * c2.getAlpha() + c1.getBlue() * (255 - c2.getAlpha())) / 255));
+		int c1Alpha = c1Hex >> 24;
+		int c2Alpha = c2Hex >> 24;
 
-		return result.getRGB();
+		int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
+		int c2Red = (c2Hex >> 16) - (c2Alpha << 8);
+
+		int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
+		int c2Green = (c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16);
+
+		int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
+		int c2Blue = (c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24);
+
+		int resultRed = (c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255;
+		int resultGreen = (c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255;
+		int resultBlue = (c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255;
+
+		return ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {
