@@ -11,7 +11,7 @@ function init() {
 	STAGGERLENGTH = 20;
     MAXHEALTH = 100;
 
-	speed = 4;
+	speed = 6;
 	xMin = -10;
 	xMax = 8;
 	yMin = -16;

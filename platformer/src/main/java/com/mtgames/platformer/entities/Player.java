@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
+import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.gfx.Screen;
@@ -98,11 +99,11 @@ public class Player extends Mob {
 				animationFrame = 0;
 			}
 
-			if (input.left.isPressed() && isAlive()) {
+			if (input.left.isPressed() && isAlive() && !isDashing) {
 				xa -= speed;
 			}
 
-			if (input.right.isPressed() && isAlive()) {
+			if (input.right.isPressed() && isAlive() && !isDashing) {
 				xa += speed;
 			}
 
@@ -117,6 +118,18 @@ public class Player extends Mob {
 		}
 
 		isDashing = xaDash != 0;
+
+		if (xa > 0) {
+			xa -= 1;
+		} else if (xa < 0) {
+			xa += 1;
+		}
+
+		if (xa > speed && !isDashing) {
+			xa = speed;
+		} else if (xa < -speed && !isDashing) {
+			xa = -speed;
+		}
 
 		move(xa, ya);
 		dash();
@@ -214,7 +227,7 @@ public class Player extends Mob {
 		canDash = dashWait == DASHWAIT && !hasCollided(0, 1);
 
 		if (xaDash == 0) {
-			xa = 0;
+//			xa = 0;
 			return;
 		}
 
