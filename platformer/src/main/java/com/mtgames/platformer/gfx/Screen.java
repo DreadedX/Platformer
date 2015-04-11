@@ -21,7 +21,7 @@ public class Screen {
 
 	private BufferedImage overlayBig  = null;
 	private BufferedImage overlayDash = null;
-	private final int[] overlayAlpha;
+	private final long[] overlayAlpha;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
 
@@ -30,7 +30,7 @@ public class Screen {
 		this.height = height;
 
 		pixels = new int[width * height];
-		overlayAlpha = new int[width * height];
+		overlayAlpha = new long[width * height];
 
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
@@ -173,7 +173,7 @@ public class Screen {
 					if (x < 0 || x >= width) {
 						continue;
 					}
-					int c1Alpha = overlayAlpha[x + y * width];
+					int c1Alpha = (int) overlayAlpha[x + y * width];
 					int c2Alpha = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true).getAlpha() - modifier;
 
 					int alpha;
@@ -214,9 +214,8 @@ public class Screen {
 
 			for (int i = 0; i < overlayAlpha.length; i++) {
 //				TODO: Check if the if statement improves performance
-//				TODO: This should be 0xea, but because overflow problems it is temp 0x7f
-				if (overlayAlpha[i] != 0x7f) {
-					overlayAlpha[i] = 0x7f;
+				if (overlayAlpha[i] != 0xea) {
+					overlayAlpha[i] = 0xea;
 				}
 			}
 		}
@@ -248,7 +247,7 @@ public class Screen {
 		}
 	}
 
-	public void drawRectangle(int x1, int y1, int x2, int y2, int colour, boolean opaque) {
+	public void drawRectangle(int x1, int y1, int x2, int y2, long colour, boolean opaque) {
 		for (int y = y1; y < y2; y++) {
 			if (y < 0 || y >= height) {
 				continue;
@@ -260,7 +259,7 @@ public class Screen {
 				}
 
 				if (opaque) {
-					pixels[x + y * width] = colour;
+					pixels[x + y * width] = (int) colour;
 				} else {
 					pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour);
 				}
@@ -268,27 +267,26 @@ public class Screen {
 		}
 	}
 
-	private int alphaBlend(int c1Hex, int c2Hex) {
-//		TODO: FIX THE OVERFLOW ISSUE, MAX COLOUR SIZE IS 0x7FffFFff, NEEDS TO BE 0xFFffFFff
+	private int alphaBlend(int c1Hex, long c2Hex) {
 		if (c2Hex >> 24 == 0) {
 			return c1Hex;
 		}
 
 		int c1Alpha = c1Hex >> 24;
-		int c2Alpha = c2Hex >> 24;
+		long c2Alpha = c2Hex >> 24;
 
 		int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
-		int c2Red = (c2Hex >> 16) - (c2Alpha << 8);
+		int c2Red = (int) ((c2Hex >> 16) - (c2Alpha << 8));
 
 		int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
-		int c2Green = (c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16);
+		int c2Green = (int) ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
 
 		int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
-		int c2Blue = (c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24);
+		int c2Blue = (int) ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
 
-		int resultRed = (c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255;
-		int resultGreen = (c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255;
-		int resultBlue = (c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255;
+		int resultRed = (int) ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
+		int resultGreen = (int) ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
+		int resultBlue = (int) ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
 
 		return ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
 	}
