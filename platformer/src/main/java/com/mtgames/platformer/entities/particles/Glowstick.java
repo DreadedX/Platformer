@@ -41,6 +41,6 @@ public class Glowstick extends Particle {
 		} else {
 			screen.render(x-8, y-8, sheet, 1);
 		}
-		screen.addLighting(x, y, 2, (int) modifier);
+		screen.addLighting(x, y, 2, 0x27a10d, (int) modifier);
 	}
 }

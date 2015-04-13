@@ -4,6 +4,7 @@ import com.mtgames.platformer.Game;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
+import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 

@@ -102,6 +102,6 @@ public class BaseEnemy extends Mob {
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (sheet.width/16), dir);
 		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + (sheet.width/16) , dir);
 
-		screen.addLighting(x, y, 0);
+		screen.addLighting(x, y, 0, 0xffae00);
 	}
 }

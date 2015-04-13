@@ -21,11 +21,13 @@ public class Screen {
 
 	private BufferedImage overlayBig  = null;
 	private BufferedImage overlayDash = null;
+    private BufferedImage overlayTorch = null;
 	private final long[] overlayAlpha;
 	private       int[] overlayLightPixelsBig;
 	private       int[] overlayLightPixelsDash;
+    private       int[] overlayLightPixelsTorch;
 
-	public Screen(int width, int height) {
+    public Screen(int width, int height) {
 		this.width = width;
 		this.height = height;
 
@@ -35,16 +37,18 @@ public class Screen {
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
 			overlayDash = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/dash.png"));
+            overlayTorch = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/torch.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (overlayBig == null || overlayDash == null) {
+		if (overlayBig == null || overlayDash == null || overlayTorch == null) {
 			return;
 		}
 
 		overlayLightPixelsBig = overlayBig.getRGB(0, 0, overlayBig.getWidth(), overlayBig.getHeight(), null, 0, overlayBig.getWidth());
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
+        overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -120,38 +124,45 @@ public class Screen {
 		}
 	}
 
-	public void addLighting(int x1, int y1, int type) {
-		addLighting(x1, y1, type, 0x00);
+	public void addLighting(int x1, int y1, int type, int colour) {
+		addLighting(x1, y1, type, colour, 0x00);
 	}
 
 //	TODO: Make coloured lighting render over all entities
-	@SuppressWarnings("ConstantConditions") public void addLighting(int x1, int y1, int type, int modifier) {
+	@SuppressWarnings("ConstantConditions") public void addLighting(int x1, int y1, int type, int colour, int modifier) {
 		if (lighting && modifier < 0xff) {
 			BufferedImage overlay;
 			int[] overlayLightPixels;
-			int overlayLightColour;
+//			int colour;
 
 			switch (type) {
 //				Mobs
 				case 0:
 					overlay = overlayBig;
 					overlayLightPixels = overlayLightPixelsBig;
-					overlayLightColour = 0xffae00;
+//					colour = 0xffae00;
 					break;
 
 //				Dash
 				case 1:
 					overlay = overlayDash;
 					overlayLightPixels = overlayLightPixelsDash;
-					overlayLightColour = 0x68afaf;
+//					colour = 0x68afaf;
 					break;
 
 //				Glowstick
 				case 2:
 					overlay = overlayBig;
 					overlayLightPixels = overlayLightPixelsBig;
-					overlayLightColour = 0x27a10d;
+//					colour = 0x27a10d;
 					break;
+
+//				Torch
+                case 3:
+                    overlay = overlayTorch;
+                    overlayLightPixels = overlayLightPixelsTorch;
+//                    colour = 0xe87f22;
+                    break;
 
 				default:
 					Debug.log(type + " is not a valid light type!", Debug.ERROR);
@@ -197,9 +208,9 @@ public class Screen {
 					}
 
 					overlayAlpha[x + y * width] = alpha;
-					if (overlayLightColour > 0) {
+					if (colour > 0) {
 //						TODO: Make colour radius bigger
-						pixels[x + y * width] = alphaBlend(pixels[x + y * width], overlayLightColour + (c2Alpha << 24));
+						pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour + (c2Alpha << 24));
 					}
 				}
 			}
@@ -276,19 +287,19 @@ public class Screen {
 		long c2Alpha = c2Hex >> 24;
 
 		int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
-		int c2Red = (int) ((c2Hex >> 16) - (c2Alpha << 8));
+		long c2Red = ((c2Hex >> 16) - (c2Alpha << 8));
 
 		int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
-		int c2Green = (int) ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
+		long c2Green = ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
 
 		int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
-		int c2Blue = (int) ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
+		long c2Blue = ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
 
-		int resultRed = (int) ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
-		int resultGreen = (int) ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
-		int resultBlue = (int) ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
+		long resultRed = ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
+		long resultGreen = ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
+		long resultBlue = ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
 
-		return ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
+		return (int) ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {

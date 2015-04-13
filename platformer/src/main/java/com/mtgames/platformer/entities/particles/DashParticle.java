@@ -25,6 +25,6 @@ public class DashParticle extends Particle {
 		}
 
 		screen.drawPoint(x, y, colour);
-		screen.addLighting(x, y, 1);
+		screen.addLighting(x, y, 1, 0x68afaf);
 	}
 }
