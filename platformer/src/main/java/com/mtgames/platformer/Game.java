@@ -24,7 +24,7 @@ import java.util.Objects;
 	private static final int     TPS       = 60;
 	private static final int     WIDTH     = 608;
 	private static final int     HEIGHT    = WIDTH / 4 * 3;
-	private static final String  NAME      = "FireRPG";
+	private static final String  NAME      = "Platformer";
 
 	private static int scale;
 	private final BufferedImage image  = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
