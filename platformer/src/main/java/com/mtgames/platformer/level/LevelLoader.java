@@ -30,13 +30,12 @@ class LevelLoader {
 		String inBackground = null;
 		String inTiles = null;
 		String inEntities = null;
-		String inLights = null;
 
 		TarArchiveInputStream tarIn = new TarArchiveInputStream(new BufferedInputStream(gzIn));
 		TarArchiveEntry entry = tarIn.getNextTarEntry();
 		BufferedReader br;
 		while (entry != null) {
-			br = new BufferedReader(new InputStreamReader(tarIn)); // Read directly from tarInput
+			br = new BufferedReader(new InputStreamReader(tarIn));
 			String line;
 			String lines = "";
 			while ((line = br.readLine()) != null) {
@@ -54,13 +53,8 @@ class LevelLoader {
 				case "entities.json":
 					inEntities = lines;
 					break;
-
-				case "lights.json":
-					inLights = lines;
-					break;
-
 			}
-			entry = tarIn.getNextTarEntry(); // You forgot to iterate to the next file
+			entry = tarIn.getNextTarEntry();
 		}
 		tarIn.close();
 

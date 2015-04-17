@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.kamranzafar:jtar:2.2'
+  compile 'org.apache.commons:commons-compress:1.9'
 }
 
 jar {
