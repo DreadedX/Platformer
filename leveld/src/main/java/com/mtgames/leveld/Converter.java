@@ -89,7 +89,7 @@ class Converter {
 				}
 
 				InputStream archive = new FileInputStream(new File(archiveLocation + ".tar"));
-				GZIPOutputStream gzOut = new GZIPOutputStream(new FileOutputStream(archiveLocation + ".tgz"));
+				GZIPOutputStream gzOut = new GZIPOutputStream(new FileOutputStream(archiveLocation + ".mp"));
 
 				byte[] buffer = new byte[1024];
 				int len;
