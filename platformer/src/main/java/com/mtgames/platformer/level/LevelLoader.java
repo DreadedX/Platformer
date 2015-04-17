@@ -5,6 +5,7 @@ import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.AutoScoll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
+import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Background;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,26 +69,32 @@ class LevelLoader {
 			}
 		}
 
+        String type;
 		for (int i = 0; i < entityList.getLength(); i++) {
 
 			Node node = entityList.item(i);
 			if (node instanceof Element) {
-				id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
+				type = node.getAttributes().getNamedItem("id").getNodeValue();
 				x = Integer.parseInt(node.getAttributes().getNamedItem("x").getNodeValue());
 				y = Integer.parseInt(node.getAttributes().getNamedItem("y").getNodeValue());
 
-				switch (id) {
-					case 0:
+				switch (type) {
+//                  TODO: Change id numbers to names to make it easier to understand
+//                  TODO: Move the enity spawn code to seperate class so it can be called from other parts of the code
+					case "0":
 						level.addEntity(new Player(level, x, y, input));
 						Debug.log("Added Player: " + x + " " + y, Debug.LEVEL);
 						break;
 
-					case 1:
+					case "1":
 						level.addEntity(new BaseEnemy(level, x, y));
 						Debug.log("Added BaseEnemy: " + x + " " + y, Debug.LEVEL);
 						break;
 
-					case 99:
+                    case "2":
+                        level.addParticle(new Torch(level, x, y));
+
+					case "99":
 						level.addEntity(new AutoScoll(level, x, y));
 						Debug.log("Added AutoScroll: " + x + " " + y, Debug.LEVEL);
 						break;
