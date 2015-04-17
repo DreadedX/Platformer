@@ -4,7 +4,6 @@ import com.mtgames.platformer.Game;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
-import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
@@ -27,7 +26,7 @@ public class Command {
 
 			case "load":
 				if (commands.length == 2) {
-					level.path = "levels/" + commands[1] + ".map";
+					level.path = "levels/" + commands[1] + ".mp";
 					level.reload = true;
 				} else {
 					Debug.log("Invalid arguments, usage: load <level name>", Debug.WARNING);

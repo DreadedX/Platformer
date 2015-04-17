@@ -116,21 +116,11 @@ class Converter {
 		json = "{\n"
 				+ "  \"width\": " + width +",\n"
 				+ "  \"height\": " + height +",\n"
-				+ "  \"background\": {\n"
-				+ "    \"layer1\": {\n"
-				+ "      \"name\": \"forest1\",\n"
-				+ "      \"speed\": 2\n"
-				+ "    },\n"
-				+ "    \"layer2\":{\n"
-				+ "      \"name\": \"forest2\",\n"
-				+ "      \"speed\": 4\n"
-				+ "    }\n"
-				+ "  },\n"
 				+ "  \"tiles\": [\n";
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (x != 0) {
+				if (x != 0 || y != 0) {
 					json += ",";
 				}
 

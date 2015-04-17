@@ -1,9 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
-import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.particles.DashParticle;
-import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;

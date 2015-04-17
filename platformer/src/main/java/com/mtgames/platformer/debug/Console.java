@@ -11,7 +11,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 	private final JTextField inputField = new JTextField();
 
 	public Console() {
-		Dimension frameSize = new Dimension(300, 20);
+		Dimension frameSize = new Dimension(300, 50);
 		int x = frameSize.width / 2;
 		int y = frameSize.height / 2;
 		JFrame frame = new JFrame("Command Input");

@@ -6,7 +6,7 @@ import com.mtgames.platformer.level.Level;
 
 public class Torch extends Particle {
 
-    private int colour = (int) (Math.random() * 0xffffff);
+	private final int colour = (int) (Math.random() * 0xffffff);
 
 	public Torch(Level level, int x, int y) {
 		super(level, (int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000);
