@@ -1,7 +1,6 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
 
 public abstract class Particle extends Entity {

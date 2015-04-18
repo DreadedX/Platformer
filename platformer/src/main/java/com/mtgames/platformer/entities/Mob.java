@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
 
 public abstract class Mob extends Entity {

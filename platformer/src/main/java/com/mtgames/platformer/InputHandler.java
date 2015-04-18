@@ -5,15 +5,15 @@ import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener {
 
-	public final Key debug   = new Key();
-	public final Key reload  = new Key();
-	public final Key message = new Key();
-	public final Key up      = new Key();
-	public final Key down    = new Key();
-	public final Key left    = new Key();
-	public final Key right   = new Key();
-	public final Key space   = new Key();
-	public final Key shift   = new Key();
+	public final  Key debug   = new Key();
+	private final Key reload  = new Key();
+	public final  Key message = new Key();
+	public final  Key up      = new Key();
+	public final  Key down    = new Key();
+	public final  Key left    = new Key();
+	public final  Key right   = new Key();
+	public final  Key space   = new Key();
+	public final  Key shift   = new Key();
 
 	public final Key throwItem = new Key();
 

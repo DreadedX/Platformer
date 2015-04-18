@@ -18,8 +18,8 @@ public class Properties {
 	private int yMin          = 0;
 	private int yMax          = 0;
 
-	private Level        level = com.mtgames.platformer.Game.level;
-	private InputHandler input = com.mtgames.platformer.Game.input;
+	private final Level        level = com.mtgames.platformer.Game.level;
+	private final InputHandler input = com.mtgames.platformer.Game.input;
 
 	public Properties(String type) {
 		switch (type) {

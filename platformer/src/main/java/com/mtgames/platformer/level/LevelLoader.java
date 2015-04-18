@@ -1,6 +1,5 @@
 package com.mtgames.platformer.level;
 
-import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.AutoScoll;
 import com.mtgames.platformer.entities.Player;
@@ -12,7 +11,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.json.*;
 
 import java.io.*;
-import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 class LevelLoader {
@@ -21,7 +19,7 @@ class LevelLoader {
 	private static int    height;
 	private static byte[] tiles;
 
-	public LevelLoader(Level level, InputHandler input, String path, boolean external) throws Exception {
+	public LevelLoader(Level level, String path, boolean external) throws Exception {
 		GZIPInputStream gzIn;
 		if (external) {
 			gzIn = new GZIPInputStream(new FileInputStream(path));

@@ -135,7 +135,7 @@ public class Level {
 		}
 
 		try {
-			LevelLoader loader = new LevelLoader(this, input, path, external);
+			LevelLoader loader = new LevelLoader(this, path, external);
 			width = loader.getWidth();
 			height = loader.getHeight();
 

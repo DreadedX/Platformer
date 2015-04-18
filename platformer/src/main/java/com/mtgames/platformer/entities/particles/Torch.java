@@ -3,7 +3,6 @@ package com.mtgames.platformer.entities.particles;
 import com.mtgames.platformer.entities.Particle;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.level.Level;
 
 public class Torch extends Particle {
 
