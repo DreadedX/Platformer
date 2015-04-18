@@ -2,18 +2,17 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.level.Level;
 
 public class FreeCamera extends Mob {
 
 	private final InputHandler input;
 
-	public FreeCamera(Level level, int x, int y, InputHandler input) {
-		super(level, x, y);
-		this.level = level;
-		this.input = input;
+	public FreeCamera(int x, int y, Properties properties) {
+		super(properties, x, y);
 		movingDir = 1;
 		speed = 4;
+
+		this.input = properties.getInput();
 	}
 
 	public void tick() {

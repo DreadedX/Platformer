@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities.particles;
 
 import com.mtgames.platformer.entities.Particle;
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
@@ -9,8 +10,8 @@ public class DashParticle extends Particle {
 	private int ya = (int) (Math.random() * 2);
 	private final int colour = 0xff68afaf + (int) (Math.random() * 0x50); // 0xff68afff
 
-	public DashParticle(Level level, int x, int y, int particleOffset) {
-		super(level, (int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), (int) (Math.random() * 10));
+	public DashParticle(int x, int y, int particleOffset, Properties properties) {
+		super((int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), (int) (Math.random() * 10), properties);
 	}
 
 	public void tick() {

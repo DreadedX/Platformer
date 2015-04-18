@@ -1,15 +1,13 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.level.Level;
 
 public class AutoScoll extends Mob {
 
-	public AutoScoll(Level level, int x, int y) {
-		super(level, x, y);
-		this.level = level;
+	public AutoScoll(int x, int y, Properties properties) {
+		super(properties, x, y);
 		movingDir = 1;
-		speed = 2;
+		speed = properties.getSpeed();
 	}
 
 	public void tick() {

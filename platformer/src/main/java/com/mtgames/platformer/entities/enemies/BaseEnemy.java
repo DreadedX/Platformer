@@ -1,16 +1,13 @@
 package com.mtgames.platformer.entities.enemies;
 
 import com.mtgames.platformer.entities.Mob;
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
-import com.mtgames.platformer.level.Level;
-import com.mtgames.platformer.level.Script;
 
 public class BaseEnemy extends Mob {
 
 	private final int JUMPSPEED;
-
-	private final Script script;
 
 	private int ya = 0;
 	private int dir;
@@ -18,27 +15,21 @@ public class BaseEnemy extends Mob {
 
 	private final Sheet sheet = new Sheet("/graphics/entities/baseEnemy.png");
 
-	public BaseEnemy(Level level, int x, int y) {
-		super(level, x, y);
+	public BaseEnemy(int x, int y, Properties properties) {
+		super(properties, x, y);
 
-		this.script = new Script("scripts/BaseEnemy.js");
-		script.doInit();
+		JUMPSPEED = properties.getJumpSpeed();
 
-		JUMPSPEED = (int) script.get("JUMPSPEED");
+		speed = properties.getSpeed();
+		xMin = properties.getXMin();
+		xMax = properties.getXMax();
+		yMin = properties.getYMin();
+		yMax = properties.getYMax();
 
-		speed = (int) script.get("speed");
-		xMin = (int) script.get("xMin");
-		xMax = (int) script.get("xMax");
-		yMin = (int) script.get("yMin");
-		yMax = (int) script.get("yMax");
 		movingDir = (int) (Math.random() + .5);
-
-		this.level = level;
 	}
 
 	public void tick() {
-		script.invoke("tick");
-
 		int xa = 0;
 
 		if (!hasCollided(3, -16) && hasCollided(3, 0)) {

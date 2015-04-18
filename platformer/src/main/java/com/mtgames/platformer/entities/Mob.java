@@ -16,8 +16,8 @@ public abstract class Mob extends Entity {
 	int gravityWait = 0;
 	private int walkingAnimationFrame = 0;
 
-	protected Mob(Level level, int x, int y) {
-		super(level);
+	protected Mob(Properties properties, int x, int y) {
+		super(properties);
 		this.x = x;
 		this.y = y;
 	}

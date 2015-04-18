@@ -10,8 +10,8 @@ public abstract class Particle extends Entity {
 	private   int life;
 	private int gravityWait = 0;
 
-	protected Particle(Level level, int x, int y, int life) {
-		super(level);
+	protected Particle(int x, int y, int life, Properties properties) {
+		super(properties);
 		this.life = life;
 		this.x = x;
 		this.y = y;

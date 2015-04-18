@@ -4,6 +4,7 @@ import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.entities.AutoScoll;
 import com.mtgames.platformer.entities.Player;
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.gfx.Background;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -11,6 +12,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.json.*;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 class LevelLoader {
@@ -86,17 +88,22 @@ class LevelLoader {
 			int x = objEntities.getJSONObject(String.valueOf(i)).getInt("x");
 			int y = objEntities.getJSONObject(String.valueOf(i)).getInt("y");
 
+			Properties properties = new Properties(type);
+			if(objEntities.getJSONObject(String.valueOf(i)).has("properties")) {
+				properties.set(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
+			}
+
 			switch (type) {
 				case "player":
-					level.addEntity(new Player(level, x, y, input));
+					level.addEntity(new Player(x, y, properties));
 					break;
 
 				case "baseEnemy":
-					level.addEntity(new BaseEnemy(level, x, y));
+					level.addEntity(new BaseEnemy(x, y, properties));
 					break;
 
 				case "autoScroll":
-					level.addEntity(new AutoScoll(level, x, y));
+					level.addEntity(new AutoScoll(x, y, properties));
 					break;
 
 				default:

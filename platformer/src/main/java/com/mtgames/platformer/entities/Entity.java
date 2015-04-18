@@ -8,16 +8,17 @@ public abstract class Entity {
 	public    int   x;
 	public    int   y;
 	protected Level level;
+	Properties properties;
 
-	Entity(Level level) {
-		init(level);
-	}
-
-	private void init(Level level) {
-		this.level = level;
+	Entity(Properties properties) {
+		this.level = properties.getLevel();
 	}
 
 	public abstract void tick();
 
 	public abstract void render(Screen screen);
+
+	public Properties getProperties() {
+		return properties;
+	}
 }

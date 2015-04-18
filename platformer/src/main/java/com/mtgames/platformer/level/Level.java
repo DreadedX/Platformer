@@ -18,7 +18,6 @@ public class Level {
 	public final  List<Entity>     entities  = new ArrayList<>();
 	private final  List<Particle>   particles = new ArrayList<>();
 	private final List<Background> layers    = new ArrayList<>();
-	private final Script       script;
 	private final InputHandler input;
 
 	private byte[] tiles;
@@ -28,10 +27,8 @@ public class Level {
 	public String  path;
 	public boolean reload;
 
-	public Level(String scriptPath, InputHandler input) {
-		this.script = new Script(scriptPath);
+	public Level(InputHandler input) {
 		this.input = input;
-		script.doInit();
 	}
 
 	public void tick() {
@@ -39,8 +36,6 @@ public class Level {
 			load(path);
 			reload = false;
 		}
-
-		script.doTick();
 
 		entities.forEach(Entity::tick);
 

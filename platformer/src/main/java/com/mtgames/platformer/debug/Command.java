@@ -3,6 +3,7 @@ package com.mtgames.platformer.debug;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
@@ -10,6 +11,7 @@ import com.mtgames.platformer.level.Level;
 import java.util.Objects;
 
 import com.mtgames.platformer.entities.FreeCamera;
+import org.json.JSONObject;
 
 public class Command {
 	private static Level        level = null;
@@ -61,7 +63,7 @@ public class Command {
 				break;
 
 			case "spawn":
-				if (commands.length == 4) {
+				if (commands.length == 4 || commands.length == 5) {
 
 					if (commands[2].equals("*")) {
 						commands[2] = String.valueOf(level.entities.get(0).x);
@@ -71,21 +73,33 @@ public class Command {
 						commands[3] = String.valueOf(level.entities.get(0).y);
 					}
 
+					Properties properties;
+					JSONObject obj = new JSONObject("{}");
+					if (commands.length == 5) {
+						obj = new JSONObject(commands[4]);
+					}
+
 					switch (Integer.parseInt(commands[1])) {
 						default:
 							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 							break;
 
 						case 0:
-							level.addEntity(new Player(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), input));
+							properties = new Properties("player");
+							properties.set(obj);
+							level.addEntity(new Player(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 
 						case 1:
-							level.addEntity(new BaseEnemy(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3])));
+							properties = new Properties("baseEnemy");
+							properties.set(obj);
+							level.addEntity(new BaseEnemy(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 
 						case 99:
-							level.addEntity(new FreeCamera(level, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), input));
+							properties = new Properties("freeCamera");
+							properties.set(obj);
+							level.addEntity(new FreeCamera(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 					}
 				} else {
@@ -106,11 +120,13 @@ public class Command {
 				break;
 
 			case "freecam":
+//				TODO: This needs to be fixed
 				if (commands.length == 1) {
+					Properties properties = level.entities.get(0).getProperties();
 					if (level.entities.get(0) instanceof Player) {
-						level.entities.set(0, new FreeCamera(level, level.entities.get(0).x, level.entities.get(0).y, input));
+						level.entities.set(0, new FreeCamera(level.entities.get(0).x, level.entities.get(0).y, properties));
 					} else if (level.entities.get(0) instanceof FreeCamera) {
-						level.entities.set(0, new Player(level, level.entities.get(0).x, level.entities.get(0).y, input));
+						level.entities.set(0, new Player(level.entities.get(0).x, level.entities.get(0).y, properties));
 					} else {
 						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
 					}

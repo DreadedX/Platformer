@@ -27,16 +27,16 @@ import java.util.Objects;
 	private static final String  NAME      = "Platformer";
 
 	private static int scale;
-	private final BufferedImage image  = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private final int[]         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	private AffineTransform tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
-	private AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-	private boolean running = false;
-	private int     fps     = 0;
+	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private final int[]             pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private       AffineTransform   tx      = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
+	private       AffineTransformOp op      = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	private       boolean           running = false;
+	private       int               fps     = 0;
 	private Screen screen;
 
-	private InputHandler input;
-	private Level        level;
+	public static InputHandler input;
+	public static Level        level;
 
 	public static boolean shakeCam = false;
 
@@ -79,7 +79,7 @@ import java.util.Objects;
 	private void init() {
 		screen = new Screen(WIDTH, HEIGHT);
 		input = new InputHandler(this);
-		level = new Level("scripts/Level.js", input);
+		level = new Level(input);
 
 //		Initialize command system
 		Command.set(level, input, screen);

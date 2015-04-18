@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities.particles;
 
 import com.mtgames.platformer.entities.Particle;
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.level.Level;
@@ -12,8 +13,8 @@ public class Glowstick extends Particle {
 	private final Sheet  sheet    = new Sheet("/graphics/items/glowstick.png");
 	private       double modifier = 0;
 
-	public Glowstick(Level level, int x, int y, int movingDir) {
-		super(level, (int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000);
+	public Glowstick(int x, int y, int movingDir, Properties properties) {
+		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000, properties);
 		if (movingDir == 0) {
 			xa = -5 - (int) (Math.random() * 2);
 		} else {

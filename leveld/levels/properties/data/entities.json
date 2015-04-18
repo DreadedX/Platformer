@@ -1,0 +1,15 @@
+{
+  "0": {
+    "type": "player",
+    "x": 67,
+    "y": 528,
+    "properties": {
+      "jumpSpeed": 18
+    }
+  },
+  "1": {
+    "type": "baseEnemy",
+    "x": 430,
+    "y": 736
+  }
+}

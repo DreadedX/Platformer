@@ -7,8 +7,6 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
-import com.mtgames.platformer.level.Level;
-import com.mtgames.platformer.level.Script;
 
 public class Player extends Mob {
 
@@ -20,7 +18,6 @@ public class Player extends Mob {
 	private final int MAXHEALTH;
 
 	private final InputHandler input;
-	private final Script       script;
 	private final Sheet sheet = new Sheet("/graphics/entities/player.png");
 
 	private int xa     = 0;
@@ -40,35 +37,27 @@ public class Player extends Mob {
 	private boolean isStaggered = false;
 	private boolean isDashing   = false;
 
-	public Player(Level level, int x, int y, InputHandler input) {
-		super(level, x, y);
+	public Player(int x, int y, Properties properties) {
+		super(properties, x, y);
 
-		this.script = new Script("scripts/Player.js");
-		script.doInit();
+		JUMPWAIT = properties.getJumpWait();
+		JUMPSPEED = properties.getJumpSpeed();
+		DASHSPEED = properties.getDashSpeed();
+		DASHWAIT = properties.getDashWait();
+		STAGGERLENGTH = properties.getStaggerLength();
 
-		JUMPWAIT = (int) script.get("JUMPWAIT");
-		JUMPSPEED = (int) script.get("JUMPSPEED");
-		DASHSPEED = (int) script.get("DASHSPEED");
-		DASHWAIT = (int) script.get("DASHWAIT");
-		STAGGERLENGTH = (int) script.get("STAGGERLENGTH");
+		health = MAXHEALTH = properties.getMaxHealth();
 
-		health = MAXHEALTH = (int) script.get("MAXHEALTH");
+		speed = properties.getSpeed();
+		xMin = properties.getXMin();
+		xMax = properties.getXMax();
+		yMin = properties.getYMin();
+		yMax = properties.getYMax();
 
-		speed = (int) script.get("speed");
-		xMin = (int) script.get("xMin");
-		xMax = (int) script.get("xMax");
-		yMin = (int) script.get("yMin");
-		yMax = (int) script.get("yMax");
-
-		this.level = level;
-		this.input = input;
+		this.input = properties.getInput();
 	}
 
 	public void tick() {
-		if (input.reload.isPressed()) {
-			script.load();
-		}
-
 		isStaggered = staggerTime != 0;
 
 		if (!isStaggered) {
@@ -108,7 +97,7 @@ public class Player extends Mob {
 
             if (input.throwItem.isPressed() && isAlive()) {
 //                level.addParticle(new Glowstick(level, x, y, movingDir));
-                level.addParticle(new Torch(level, x, y));
+                level.addParticle(new Torch(x, y, new Properties("torch")));
 				input.throwItem.toggle(false);
 			}
 
@@ -145,22 +134,9 @@ public class Player extends Mob {
 			}
 
 			for (int i = 0; i < 40; i++) {
-				level.addParticle(new DashParticle(level, x, y, particleOffset));
+				level.addParticle(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
 			}
 		}
-
-		//		Scripting
-		script.set("x", x);
-		script.set("xa", xa);
-		script.set("y", y);
-		script.set("ya", ya);
-		script.set("health", health);
-		script.invoke("tick");
-		xa = (int) script.get("xa");
-		x = (int) script.get("x");
-		ya = (int) script.get("ya");
-		y = (int) script.get("y");
-		health = (int) script.get("health");
 	}
 
 	public void render(Screen screen) {
