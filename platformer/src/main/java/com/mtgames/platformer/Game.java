@@ -89,7 +89,6 @@ import java.util.Objects;
 		if (Debug.debug) {
 			new Console();
 		}
-
 	}
 
 	private synchronized void start() {
