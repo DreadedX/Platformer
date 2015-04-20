@@ -11,12 +11,11 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 repositories {
-    mavenCentral()
+    // mavenCentral()
 }
 
 dependencies {
-  compile 'org.apache.commons:commons-compress:1.9'
-  compile 'org.json:json:20141113'
+  compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 jar {
