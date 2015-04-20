@@ -2,9 +2,9 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
 
-public class AutoScoll extends Mob {
+public class AutoScroll extends Mob {
 
-	public AutoScoll(int x, int y, Properties properties) {
+	public AutoScroll(int x, int y, Properties properties) {
 		super(properties, x, y);
 		movingDir = 1;
 		speed = properties.getSpeed();

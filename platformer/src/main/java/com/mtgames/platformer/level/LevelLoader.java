@@ -1,7 +1,7 @@
 package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Debug;
-import com.mtgames.platformer.entities.AutoScoll;
+import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
@@ -101,7 +101,7 @@ class LevelLoader {
 					break;
 
 				case "autoScroll":
-					level.addEntity(new AutoScoll(x, y, properties));
+					level.addEntity(new AutoScroll(x, y, properties));
 					break;
 
 				default:
