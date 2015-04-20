@@ -1,5 +1,7 @@
 package com.mtgames.platformer.gfx;
 
+import com.amd.aparapi.Kernel;
+import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Debug;
 
 import javax.imageio.ImageIO;
@@ -13,8 +15,8 @@ public class Screen {
 	private static final byte BIT_MIRROR_Y = 0x02;
 
 	public final int[] pixels;
-	public final int   width;
-	public final int   height;
+	public final int   width = Game.WIDTH;
+	public final int   height = Game.HEIGHT;
 	public int     xOffset  = 0;
 	public int     yOffset  = 0;
 	public boolean lighting = true;
@@ -27,10 +29,10 @@ public class Screen {
 	private       int[] overlayLightPixelsDash;
     private       int[] overlayLightPixelsTorch;
 
-    public Screen(int width, int height) {
-		this.width = width;
-		this.height = height;
+	private boolean enableCL = true;
+	private Kernel kernel;
 
+    public Screen() {
 		pixels = new int[width * height];
 		overlayAlpha = new long[width * height];
 
@@ -49,6 +51,49 @@ public class Screen {
 		overlayLightPixelsBig = overlayBig.getRGB(0, 0, overlayBig.getWidth(), overlayBig.getHeight(), null, 0, overlayBig.getWidth());
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
         overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
+
+		int[] pixelsCL = pixels;
+		long[] overlayAlphaCL = overlayAlpha;
+
+		kernel = new Kernel() {
+			@Override public void run() {
+				int i = getGlobalId();
+				int c1Hex = pixelsCL[i];
+				long c2Hex = overlayAlphaCL[i] << 24;
+
+				if (c2Hex >> 24 == 0) {
+					return;
+				}
+
+				int c1Alpha = c1Hex >> 24;
+				long c2Alpha = c2Hex >> 24;
+
+				int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
+				long c2Red = ((c2Hex >> 16) - (c2Alpha << 8));
+
+				int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
+				long c2Green = ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
+
+				int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
+				long c2Blue = ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
+
+				long resultRed = ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
+				long resultGreen = ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
+				long resultBlue = ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
+
+				pixelsCL[i] = (int) ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
+			}
+		};
+
+//		TESTING
+//		kernel.setExecutionMode(Kernel.EXECUTION_MODE.JTP);
+
+		if (!kernel.getExecutionMode().equals(Kernel.EXECUTION_MODE.GPU) && !kernel.getExecutionMode().equals(Kernel.EXECUTION_MODE.CPU)) {
+			Debug.log("Could not run OpenCL, switching to fallback!", Debug.WARNING);
+			enableCL = false;
+		} else {
+			Debug.log("OpenCL running on: " + kernel.getExecutionMode(), Debug.INFO);
+		}
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -219,12 +264,23 @@ public class Screen {
 
 	public void renderLighting() {
 		if (lighting) {
-			for (int i = 0; i < overlayAlpha.length; i++) {
-				pixels[i] = alphaBlend(pixels[i], overlayAlpha[i] << 24);
+			if (enableCL) {
+
+				int[] pixelsCL = pixels;
+				long[] overlayAlphaCL = overlayAlpha;
+
+				kernel.put(pixelsCL).put(overlayAlphaCL);
+				kernel.execute(pixels.length);
+				kernel.get(pixelsCL);
+
+				System.arraycopy(pixelsCL, 0, pixels, 0, pixels.length);
+			} else {
+				for (int i = 0; i < overlayAlpha.length; i++) {
+					pixels[i] = alphaBlend(pixels[i], overlayAlpha[i] << 24);
+				}
 			}
 
 			for (int i = 0; i < overlayAlpha.length; i++) {
-//				TODO: Check if the if statement improves performance
 				if (overlayAlpha[i] != 0xea) {
 					overlayAlpha[i] = 0xea;
 				}

@@ -22,8 +22,8 @@ import java.util.Objects;
 
 	private static final boolean FPSUNLOCK = true;
 	private static final int     TPS       = 60;
-	private static final int     WIDTH     = 608;
-	private static final int     HEIGHT    = WIDTH / 4 * 3;
+	public static final  int     WIDTH     = 608;
+	public static final  int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "Platformer";
 
 	private static int scale;
@@ -77,9 +77,9 @@ import java.util.Objects;
 	}
 
 	private void init() {
-		screen = new Screen(WIDTH, HEIGHT);
+		screen = new Screen();
 		input = new InputHandler(this);
-		level = new Level(input);
+		level = new Level();
 
 //		Initialize command system
 		Command.set(level, input, screen);

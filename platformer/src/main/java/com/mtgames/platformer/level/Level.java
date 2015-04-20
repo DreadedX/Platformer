@@ -18,7 +18,6 @@ public class Level {
 	public final  List<Entity>     entities  = new ArrayList<>();
 	private final  List<Particle>   particles = new ArrayList<>();
 	private final List<Background> layers    = new ArrayList<>();
-	private final InputHandler input;
 
 	private byte[] tiles;
 	private int    width;
@@ -26,10 +25,6 @@ public class Level {
 
 	public String  path;
 	public boolean reload;
-
-	public Level(InputHandler input) {
-		this.input = input;
-	}
 
 	public void tick() {
 		if (reload) {

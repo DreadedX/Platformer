@@ -9,6 +9,9 @@
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = 'com.mtgames.platformer.Game'
 
 repositories {
     // mavenCentral()
@@ -16,17 +19,12 @@ repositories {
 
 dependencies {
   compile fileTree(dir: 'libs', include: '*.jar')
+  runtime fileTree(dir: 'libs/natives', include: '*')
 }
 
 jar {
   from configurations.compile.collect {zipTree it}
-  manifest.attributes "Main-Class": "com.mtgames.platformer.Game"
+  manifest.attributes "Main-Class": "$mainClassName"
     baseName = "platformer"
     // version = "0.1.0"
-}
-
-//noinspection GroovyAssignabilityCheck
-task run(dependsOn:jar) << {
-  javaexec { main="-jar"; //noinspection GroovyAssignabilityCheck
-      args jar.archivePath }
 }
