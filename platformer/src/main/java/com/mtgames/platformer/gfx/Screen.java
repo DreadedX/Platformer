@@ -131,10 +131,6 @@ public class Screen {
 		}
 	}
 
-	public void addLighting(int x, int y, int type, int colour) {
-		addLighting(x, y, type, colour, 0x00);
-	}
-
 //	TODO: Make coloured lighting render over all entities
 	@SuppressWarnings("ConstantConditions") public void addLighting(int x, int y, int type, int colour, int modifier) {
 		if (lighting && modifier < 0xff) {
