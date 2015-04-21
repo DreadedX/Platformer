@@ -33,16 +33,22 @@ public class Level {
 			reload = false;
 		}
 
-		lightSources.forEach(LightSource::tick);
+//		lightSources.forEach(LightSource::tick);
 
 		entities.forEach(Entity::tick);
 
 		particles.forEach(Particle::tick);
 
-		Iterator<Particle> iterator = particles.iterator();
-		while (iterator.hasNext()) {
-			if (!iterator.next().isAlive()) {
-				iterator.remove();
+		Iterator<Particle> iteratorParticles = particles.iterator();
+		while (iteratorParticles.hasNext()) {
+			if (!iteratorParticles.next().isAlive()) {
+				iteratorParticles.remove();
+			}
+		}
+		Iterator<LightSource> iteratorLightSources = lightSources.iterator();
+		while (iteratorLightSources.hasNext()) {
+			if (!iteratorLightSources.next().isAlive()) {
+				iteratorLightSources.remove();
 			}
 		}
 	}

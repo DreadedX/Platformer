@@ -93,7 +93,9 @@ import java.util.Objects;
 
 	private synchronized void start() {
 		running = true;
-		new Thread(this).start();
+		Thread main = new Thread(this);
+		main.setName(NAME + " - Main");
+		main.start();
 	}
 
 	public void run() {
