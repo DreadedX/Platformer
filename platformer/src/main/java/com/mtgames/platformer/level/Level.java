@@ -33,7 +33,7 @@ public class Level {
 			reload = false;
 		}
 
-//		lightSources.forEach(LightSource::tick);
+		lightSources.forEach(LightSource::tick);
 
 		entities.forEach(Entity::tick);
 

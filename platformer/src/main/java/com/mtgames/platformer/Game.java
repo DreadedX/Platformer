@@ -16,6 +16,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 @SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
@@ -58,7 +59,7 @@ import java.util.Objects;
 		frame.setVisible(true);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
 		if (args.length > 0) {
 			scale = Integer.parseInt(args[0]);
 		} else {
