@@ -7,7 +7,7 @@ import com.mtgames.platformer.gfx.lighting.LightSource;
 public class FreeCamera extends Mob {
 
 	private final InputHandler input;
-	private LightSource lightSource;
+	private final LightSource  lightSource;
 
 	public FreeCamera(int x, int y, Properties properties) {
 		super(properties, x, y);

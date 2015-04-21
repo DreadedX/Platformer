@@ -16,7 +16,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 @SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
@@ -27,7 +26,7 @@ import java.util.Objects;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "Platformer";
 
-	public static int scale;
+	private static int scale;
 	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private final int[]             pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private       AffineTransform   tx      = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
@@ -41,7 +40,7 @@ import java.util.Objects;
 
 	public static boolean shakeCam = false;
 
-	public Game() {
+	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -59,6 +58,26 @@ import java.util.Objects;
 		frame.setVisible(true);
 	}
 
+	public static void main(String[] args) {
+		if (args.length > 0) {
+			Game.scale = Integer.parseInt(args[0]);
+		} else {
+			Game.scale = 2;
+		}
+
+		if (args.length > 1) {
+			if (Objects.equals(args[1], "debug")) {
+				Debug.priority = Debug.DEBUG;
+				Debug.debug = true;
+			}
+			if (Objects.equals(args[1], "log")) {
+				Debug.priority = Debug.INFO;
+			}
+		}
+
+		new Game().start();
+	}
+
 	private void init() {
 		screen = new Screen();
 		input = new InputHandler(this);
@@ -74,7 +93,7 @@ import java.util.Objects;
 		}
 	}
 
-	public synchronized void start() {
+	private synchronized void start() {
 		running = true;
 		Thread main = new Thread(this);
 		main.setName(NAME + " - Main");

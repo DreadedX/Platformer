@@ -12,7 +12,7 @@ public class Glowstick extends Particle {
 	private       int    ya       = -10 - (int) (Math.random());
 	private final Sheet  sheet    = new Sheet("/graphics/items/glowstick.png");
 	private       double modifier = 0;
-	private LightSource lightSource;
+	private final LightSource lightSource;
 
 	public Glowstick(int x, int y, int movingDir, Properties properties) {
 		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000, properties);

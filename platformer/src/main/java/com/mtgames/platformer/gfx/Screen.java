@@ -1,6 +1,5 @@
 package com.mtgames.platformer.gfx;
 
-import com.amd.aparapi.Kernel;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Debug;
 import com.mtgames.platformer.gfx.lighting.OpenCL;

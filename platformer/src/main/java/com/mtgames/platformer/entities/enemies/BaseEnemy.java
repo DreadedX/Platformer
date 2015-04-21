@@ -14,7 +14,7 @@ public class BaseEnemy extends Mob {
 	private int dir;
 	private int modifier;
 
-	private LightSource lightSource;
+	private final LightSource lightSource;
 
 	private final Sheet sheet = new Sheet("/graphics/entities/baseEnemy.png");
 
