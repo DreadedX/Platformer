@@ -27,7 +27,7 @@ import java.util.Objects;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "Platformer";
 
-	private static int scale;
+	public static int scale;
 	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private final int[]             pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private       AffineTransform   tx      = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
@@ -41,7 +41,7 @@ import java.util.Objects;
 
 	public static boolean shakeCam = false;
 
-	private Game() {
+	public Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -59,30 +59,12 @@ import java.util.Objects;
 		frame.setVisible(true);
 	}
 
-	public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-		if (args.length > 0) {
-			scale = Integer.parseInt(args[0]);
-		} else {
-			scale = 2;
-		}
-
-		if (args.length > 1) {
-			if (Objects.equals(args[1], "debug")) {
-				Debug.priority = Debug.INFO;
-//				Debug.priority = Debug.DEBUG;
-				Debug.debug = true;
-			}
-		}
-
-		new Game().start();
-	}
-
 	private void init() {
 		screen = new Screen();
 		input = new InputHandler(this);
 		level = new Level();
 
-//		Initialize command system
+		//		Initialize command system
 		Command.set(level, input, screen);
 //		Load debug level
 		Command.exec("load debug_level");
@@ -92,7 +74,7 @@ import java.util.Objects;
 		}
 	}
 
-	private synchronized void start() {
+	public synchronized void start() {
 		running = true;
 		Thread main = new Thread(this);
 		main.setName(NAME + " - Main");
