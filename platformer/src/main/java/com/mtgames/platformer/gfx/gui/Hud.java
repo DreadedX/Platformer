@@ -7,7 +7,7 @@ public class Hud {
 
 	private static       double dashRatio   = 0;
 	private static       double healthRatio = 0;
-	private static final Sheet  sheet       = new Sheet("/graphics/hud.png");
+	private static final Sheet  sheet       = new Sheet("/assets/graphics/hud.png");
 
 	public static void render(Screen screen) {
 		renderOther(screen);

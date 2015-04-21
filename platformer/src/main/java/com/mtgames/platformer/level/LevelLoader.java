@@ -67,7 +67,7 @@ class LevelLoader {
 		for (int i = 0; i < objBackground.length(); i++) {
 			String name = objBackground.getJSONObject(String.valueOf(i)).getString("name");
 			int speed = objBackground.getJSONObject(String.valueOf(i)).getInt("speed");
-			level.addBackground(new Background("/graphics/backgrounds/" + name + ".png", speed));
+			level.addBackground(new Background("/assets/graphics/backgrounds/" + name + ".png", speed));
 		}
 
 		JSONObject objTiles = new JSONObject(inTiles);

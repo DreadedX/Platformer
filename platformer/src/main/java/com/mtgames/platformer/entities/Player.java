@@ -20,7 +20,7 @@ public class Player extends Mob {
 	private final int MAXHEALTH;
 
 	private final InputHandler input;
-	private final Sheet sheet = new Sheet("/graphics/entities/player.png");
+	private final Sheet sheet = new Sheet("/assets/graphics/entities/player.png");
 
 	private int xa     = 0;
 	private int xaDash = 0;

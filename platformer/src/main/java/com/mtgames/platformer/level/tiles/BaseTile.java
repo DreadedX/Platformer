@@ -11,7 +11,7 @@ class BaseTile extends Tile {
 	public BaseTile(int id, String name, int tileId) {
 		super(id, false);
 		this.tileId = tileId;
-		this.sheet = new Sheet("/graphics/tiles/" + name + ".png");
+		this.sheet = new Sheet("/assets/graphics/tiles/" + name + ".png");
 	}
 
 	public void render(Screen screen, int x, int y) {

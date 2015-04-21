@@ -1,7 +1,7 @@
 package com.mtgames.platformer.gfx;
 
 public class Font {
-	private static final Sheet sheet = new Sheet("/graphics/font.png");
+	private static final Sheet sheet = new Sheet("/assets/graphics/font.png");
 
 	public static void render(String msg, Screen screen, int x, int y) {
 		int line = 0;

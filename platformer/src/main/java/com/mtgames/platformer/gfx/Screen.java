@@ -36,9 +36,9 @@ public class Screen {
 		overlayAlpha = new long[width * height];
 
 		try {
-			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
-			overlayDash = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/dash.png"));
-			overlayTorch = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/torch.png"));
+			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/assets/graphics/lights/big.png"));
+			overlayDash = ImageIO.read(Sheet.class.getResourceAsStream("/assets/graphics/lights/dash.png"));
+			overlayTorch = ImageIO.read(Sheet.class.getResourceAsStream("/assets/graphics/lights/torch.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
