@@ -49,7 +49,7 @@ public class OpenCL {
 	}
 
 	public boolean running() {
-		if (!alphaBlendCL.getExecutionMode().equals(Kernel.EXECUTION_MODE.GPU) && !alphaBlendCL.getExecutionMode().equals(Kernel.EXECUTION_MODE.CPU)) {
+		if (alphaBlendCL.getExecutionMode().equals(Kernel.EXECUTION_MODE.JTP)) {
 			if (firstTime) {
 				Debug.log("Could not run OpenCL, switching to fallback!", Debug.WARNING);
 				firstTime = false;

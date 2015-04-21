@@ -32,8 +32,6 @@ public class Screen {
 
 	private OpenCL openCL;
 
-	private boolean enableCL = true;
-
 	public Screen() {
 		pixels = new int[width * height];
 		overlayAlpha = new long[width * height];
@@ -55,7 +53,7 @@ public class Screen {
         overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
 
 		openCL = new OpenCL(pixels, overlayAlpha);
-		openCL.setMode(Kernel.EXECUTION_MODE.GPU);
+//		openCL.setMode(Kernel.EXECUTION_MODE.GPU);
 	}
 
 	//	Default to 16x tileset and no mirror
