@@ -1,6 +1,6 @@
-package com.mtgames.platformer;
+package com.mtgames;
 
-import com.mtgames.platformer.debug.Debug;
+import com.mtgames.platformer.Game;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 
 class Launcher {
-	public static void main(String[] args) throws NoSuchFieldException {
+	public static void main(String[] args) throws IOException, NoSuchFieldException {
 		getNatives();
 
 		System.setProperty("java.library.path", "natives");
@@ -22,11 +22,12 @@ class Launcher {
 			e.printStackTrace();
 		}
 
+		System.out.println("[LAUNCHER] Starting: " + Game.NAME);
 		Game.main(args);
 	}
 
 	private static void getNatives() {
-		String osName = System.getProperty("os.name");
+		String osName = System.getProperty("os.name").toLowerCase();
 		if (osName.contains(" ")) {
 			osName = osName.substring(0, osName.indexOf(' '));
 		}
@@ -34,13 +35,14 @@ class Launcher {
 		String libExt = libExt(osName);
 		String libArch = libArch(osArch);
 
-		Debug.log("Detected system: " + osName + "_" + osArch, Debug.LAUNCHER);
+		System.out.println("[LAUNCHER] Detected system: " + osName + "-" + osArch);
 
 		File directory = new File("natives");
 		if(!directory.exists()) {
-			Debug.log("Creating natives folder", Debug.LAUNCHER);
+			System.out.println("[LAUNCHER] Creating natives folder");
 			if (!directory.mkdir()) {
-				Debug.log("Unable to create natives folder", Debug.ERROR);
+				System.out.println("\u001b[31m[ERROR] Unable to create natives folder\u001b[0m");
+				System.exit(0);
 			}
 		}
 
@@ -52,7 +54,7 @@ class Launcher {
 	private static void extract(String location) {
 		File file = new File(location);
 		if (!file.exists()) {
-			Debug.log("Extracting: " + location, Debug.LAUNCHER);
+			System.out.println("[LAUNCHER] Extracting: " + location);
 			InputStream link = (ClassLoader.getSystemResourceAsStream(location));
 			try {
 				Files.copy(link, file.getAbsoluteFile().toPath());
@@ -66,16 +68,17 @@ class Launcher {
 	private static String libExt(String osName) {
 		switch (osName) {
 			default:
-				Debug.log("Unsupported OS: " + osName, Debug.ERROR);
+				System.out.println("\u001b[31m[ERROR] Unsupported OS: " + osName + "\u001b[0m");
+				System.exit(0);
 				break;
 
-			case "Linux":
+			case "linux":
 				return "so";
 
-			case "Mac":
+			case "mac":
 				return "dylib";
 
-			case "Windows":
+			case "windows":
 				return "dll";
 		}
 		return "";
@@ -84,7 +87,8 @@ class Launcher {
 	private static String libArch(String osArch) {
 		switch (osArch) {
 			default:
-				Debug.log("Unsupported architecture: " + osArch, Debug.ERROR);
+				System.out.println("\u001b[31m[ERRORR] Unsupported architecture: " + osArch + "\u001b[0m");
+				System.exit(0);
 				break;
 
 			case "64":

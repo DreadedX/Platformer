@@ -3,9 +3,8 @@ package com.mtgames.platformer.debug;
 public class Debug {
 	//	Debug mode
 	public final static int DEBUG    = 0;
-	//	Logging mode
+	//	Info mode
 	public final static int INFO     = 10;
-	public final static int LAUNCHER = 11;
 	//	Regular mode
 	public final static int WARNING  = 20;
 	public final static int ERROR    = 30;

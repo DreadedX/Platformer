@@ -24,7 +24,7 @@ import java.util.Objects;
 	private static final int     TPS       = 60;
 	public static final  int     WIDTH     = 608;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
-	private static final String  NAME      = "Platformer";
+	public static final  String  NAME      = "Platformer";
 
 	private static int scale;
 	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -70,7 +70,7 @@ import java.util.Objects;
 				Debug.priority = Debug.DEBUG;
 				Debug.debug = true;
 			}
-			if (Objects.equals(args[1], "log")) {
+			if (Objects.equals(args[1], "info")) {
 				Debug.priority = Debug.INFO;
 			}
 		}

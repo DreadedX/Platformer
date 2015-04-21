@@ -11,7 +11,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'application'
 
-mainClassName = 'com.mtgames.platformer.Launcher'
+mainClassName = 'com.mtgames.Launcher'
 
 repositories {
     // mavenCentral()
@@ -24,7 +24,9 @@ dependencies {
 
 jar {
   from configurations.compile.collect {zipTree it}
-  manifest.attributes "Main-Class": "$mainClassName"
+  manifest {
+      attributes("Main-Class": "$mainClassName")
+    }
     baseName = "platformer"
     // version = "0.1.0"
 }
