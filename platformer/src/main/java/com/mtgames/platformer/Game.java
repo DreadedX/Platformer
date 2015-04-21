@@ -180,6 +180,8 @@ import java.util.Objects;
 
 		level.renderEntities(screen);
 
+		level.renderLights(screen);
+
 		screen.renderLighting();
 
 		Hud.render(screen);

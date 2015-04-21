@@ -4,6 +4,7 @@ import com.mtgames.platformer.entities.Mob;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
+import com.mtgames.platformer.gfx.lighting.LightSource;
 
 public class BaseEnemy extends Mob {
 
@@ -13,10 +14,14 @@ public class BaseEnemy extends Mob {
 	private int dir;
 	private int modifier;
 
+	private LightSource lightSource;
+
 	private final Sheet sheet = new Sheet("/graphics/entities/baseEnemy.png");
 
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
+
+		level.addLightSource(lightSource = new LightSource(x, y, 0, 0xffae00));
 
 		JUMPSPEED = properties.getJumpSpeed();
 
@@ -56,6 +61,7 @@ public class BaseEnemy extends Mob {
 
 		move(xa, ya);
 		ya = gravity(ya);
+		lightSource.move(x, y);
 	}
 
 	public void render(Screen screen) {
@@ -92,7 +98,5 @@ public class BaseEnemy extends Mob {
 		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (sheet.width/16), dir);
 		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + (sheet.width/16) , dir);
-
-		screen.addLighting(x, y, 0, 0xffae00);
 	}
 }

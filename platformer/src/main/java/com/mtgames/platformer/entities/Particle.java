@@ -21,7 +21,7 @@ public abstract class Particle extends Entity {
 	}
 
 	public boolean isAlive() {
-		return life >= 0;
+		return life > 0 || life <= -10;
 	}
 
 	protected boolean isOnScreen(Screen screen) {

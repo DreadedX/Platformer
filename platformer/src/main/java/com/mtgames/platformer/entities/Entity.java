@@ -5,10 +5,10 @@ import com.mtgames.platformer.level.Level;
 
 public abstract class Entity {
 
-	public  int        x;
-	public  int        y;
-	final   Level      level;
-	private Properties properties;
+	public          int        x;
+	public          int        y;
+	protected final Level      level;
+	private         Properties properties;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();

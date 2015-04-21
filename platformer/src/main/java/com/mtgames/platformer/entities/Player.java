@@ -2,11 +2,14 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
+import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
+import com.mtgames.platformer.gfx.lighting.LightSource;
+import org.json.JSONObject;
 
 public class Player extends Mob {
 
@@ -37,8 +40,12 @@ public class Player extends Mob {
 	private boolean isStaggered = false;
 	private boolean isDashing   = false;
 
+	private final LightSource lightSource;
+
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
+
+		level.addLightSource(lightSource = new LightSource(x, y, 0, 0xffae00));
 
 		JUMPWAIT = properties.getJumpWait();
 		JUMPSPEED = properties.getJumpSpeed();
@@ -95,9 +102,11 @@ public class Player extends Mob {
 				xa += speed;
 			}
 
-            if (input.throwItem.isPressed() && isAlive()) {
-//                level.addParticle(new Glowstick(level, x, y, movingDir));
-                level.addParticle(new Torch(x, y, new Properties("torch")));
+			if (input.throwItem.isPressed() && isAlive()) {
+//				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
+				Properties properties = new Properties("torch");
+				properties.set(new JSONObject("{\"colour\":" + Math.random() * 0xffffff +"}"));
+				level.addParticle(new Torch(x, y, properties));
 				input.throwItem.toggle(false);
 			}
 
@@ -137,6 +146,7 @@ public class Player extends Mob {
 				level.addParticle(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
 			}
 		}
+		lightSource.move(x, y);
 	}
 
 	public void render(Screen screen) {
@@ -178,9 +188,9 @@ public class Player extends Mob {
 		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
 		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
 		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
-		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width/16, dir);
+		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width / 16, dir);
 
-		screen.addLighting(x, y, 0, 0xffae00);
+//		screen.addLighting(x, y, 0, 0xffae00);
 
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);

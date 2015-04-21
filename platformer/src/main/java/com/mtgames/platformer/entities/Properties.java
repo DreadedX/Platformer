@@ -17,6 +17,7 @@ public class Properties {
 	private int xMax          = 0;
 	private int yMin          = 0;
 	private int yMax          = 0;
+	private int colour		  = 0;
 
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
@@ -52,6 +53,8 @@ public class Properties {
 				yMax = 15;
 				break;
 
+			case "torch":
+				colour = 0;
 		}
 	}
 
@@ -89,6 +92,9 @@ public class Properties {
 		}
 		if (obj.has("yMax")) {
 			yMax = obj.getInt("yMax");
+		}
+		if (obj.has("colour")) {
+			colour = obj.getInt("colour");
 		}
 	}
 
@@ -134,6 +140,10 @@ public class Properties {
 
 	public int getYMax() {
 		return yMax;
+	}
+
+	public int getColour() {
+		return colour;
 	}
 
 	public Level getLevel() {

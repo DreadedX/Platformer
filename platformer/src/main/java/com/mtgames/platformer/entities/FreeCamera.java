@@ -2,13 +2,18 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.gfx.lighting.LightSource;
 
 public class FreeCamera extends Mob {
 
 	private final InputHandler input;
+	private LightSource lightSource;
 
 	public FreeCamera(int x, int y, Properties properties) {
 		super(properties, x, y);
+
+		level.addLightSource(lightSource = new LightSource(x, y, 0, 0xffae00));
+
 		movingDir = 1;
 		speed = 4;
 
@@ -42,11 +47,11 @@ public class FreeCamera extends Mob {
 		}
 
 		move(xa, ya);
+		lightSource.move(x, y);
 	}
 
 	public void render(Screen screen) {
 		screen.drawRectangle(x-4-screen.xOffset, y-4-screen.yOffset ,x+4-screen.xOffset, y+4-screen.yOffset, 0x7F000000, false);
-		screen.addLighting(x, y, 0, 0xffae00);
 	}
 
 	@Override public boolean hasCollided(int xa, int ya) {

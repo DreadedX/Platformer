@@ -3,6 +3,7 @@ package com.mtgames.platformer.gfx;
 import com.amd.aparapi.Kernel;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Debug;
+import com.mtgames.platformer.gfx.lighting.OpenCL;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,32 +15,33 @@ public class Screen {
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 
-	public final int[] pixels;
-	public final int   width = Game.WIDTH;
-	public final int   height = Game.HEIGHT;
-	public int     xOffset  = 0;
-	public int     yOffset  = 0;
-	public boolean lighting = true;
+	public int[] pixels;
+	public final int     width    = Game.WIDTH;
+	public final int     height   = Game.HEIGHT;
+	public       int     xOffset  = 0;
+	public       int     yOffset  = 0;
+	public       boolean lighting = true;
 
-	private BufferedImage overlayBig  = null;
-	private BufferedImage overlayDash = null;
-    private BufferedImage overlayTorch = null;
-	private final long[] overlayAlpha;
-	private       int[] overlayLightPixelsBig;
-	private       int[] overlayLightPixelsDash;
-    private       int[] overlayLightPixelsTorch;
+	private BufferedImage overlayBig   = null;
+	private BufferedImage overlayDash  = null;
+	private BufferedImage overlayTorch = null;
+	private long[] overlayAlpha;
+	private int[]  overlayLightPixelsBig;
+	private int[]  overlayLightPixelsDash;
+	private int[]  overlayLightPixelsTorch;
+
+	private OpenCL openCL;
 
 	private boolean enableCL = true;
-	private Kernel kernel;
 
-    public Screen() {
+	public Screen() {
 		pixels = new int[width * height];
 		overlayAlpha = new long[width * height];
 
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/big.png"));
 			overlayDash = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/dash.png"));
-            overlayTorch = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/torch.png"));
+			overlayTorch = ImageIO.read(Sheet.class.getResourceAsStream("/graphics/lights/torch.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -52,48 +54,8 @@ public class Screen {
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
         overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
 
-		int[] pixelsCL = pixels;
-		long[] overlayAlphaCL = overlayAlpha;
-
-		kernel = new Kernel() {
-			@Override public void run() {
-				int i = getGlobalId();
-				int c1Hex = pixelsCL[i];
-				long c2Hex = overlayAlphaCL[i] << 24;
-
-				if (c2Hex >> 24 == 0) {
-					return;
-				}
-
-				int c1Alpha = c1Hex >> 24;
-				long c2Alpha = c2Hex >> 24;
-
-				int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
-				long c2Red = ((c2Hex >> 16) - (c2Alpha << 8));
-
-				int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
-				long c2Green = ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
-
-				int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
-				long c2Blue = ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
-
-				long resultRed = ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
-				long resultGreen = ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
-				long resultBlue = ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
-
-				pixelsCL[i] = (int) ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
-			}
-		};
-
-//		TESTING
-//		kernel.setExecutionMode(Kernel.EXECUTION_MODE.JTP);
-
-		if (!kernel.getExecutionMode().equals(Kernel.EXECUTION_MODE.GPU) && !kernel.getExecutionMode().equals(Kernel.EXECUTION_MODE.CPU)) {
-			Debug.log("Could not run OpenCL, switching to fallback!", Debug.WARNING);
-			enableCL = false;
-		} else {
-			Debug.log("OpenCL running on: " + kernel.getExecutionMode(), Debug.INFO);
-		}
+		openCL = new OpenCL(pixels, overlayAlpha);
+		openCL.setMode(Kernel.EXECUTION_MODE.GPU);
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -169,12 +131,12 @@ public class Screen {
 		}
 	}
 
-	public void addLighting(int x1, int y1, int type, int colour) {
-		addLighting(x1, y1, type, colour, 0x00);
+	public void addLighting(int x, int y, int type, int colour) {
+		addLighting(x, y, type, colour, 0x00);
 	}
 
 //	TODO: Make coloured lighting render over all entities
-	@SuppressWarnings("ConstantConditions") public void addLighting(int x1, int y1, int type, int colour, int modifier) {
+	@SuppressWarnings("ConstantConditions") public void addLighting(int x, int y, int type, int colour, int modifier) {
 		if (lighting && modifier < 0xff) {
 			BufferedImage overlay;
 			int[] overlayLightPixels;
@@ -185,28 +147,18 @@ public class Screen {
 				case 0:
 					overlay = overlayBig;
 					overlayLightPixels = overlayLightPixelsBig;
-//					colour = 0xffae00;
 					break;
 
 //				Dash
 				case 1:
 					overlay = overlayDash;
 					overlayLightPixels = overlayLightPixelsDash;
-//					colour = 0x68afaf;
-					break;
-
-//				Glowstick
-				case 2:
-					overlay = overlayBig;
-					overlayLightPixels = overlayLightPixelsBig;
-//					colour = 0x27a10d;
 					break;
 
 //				Torch
-                case 3:
+                case 2:
                     overlay = overlayTorch;
                     overlayLightPixels = overlayLightPixelsTorch;
-//                    colour = 0xe87f22;
                     break;
 
 				default:
@@ -214,26 +166,26 @@ public class Screen {
 					return;
 			}
 
-			x1 -= overlay.getWidth()/2 + xOffset;
-			y1 -= overlay.getHeight()/2 + yOffset;
+			x -= overlay.getWidth()/2 + xOffset;
+			y -= overlay.getHeight()/2 + yOffset;
 
-			int x2 = x1 + overlay.getWidth();
-			int y2 = y1 + overlay.getHeight();
+			int x2 = x + overlay.getWidth();
+			int y2 = y + overlay.getHeight();
 
-			for (int y = y1; y < y2; y++) {
-				if (y < 0 || y >= height) {
+			for (int forY = y; forY < y2; forY++) {
+				if (forY < 0 || forY >= height) {
 					continue;
 				}
 
-				for (int x = x1; x < x2; x++) {
-					if (x < 0 || x >= width) {
+				for (int forX = x; forX < x2; forX++) {
+					if (forX < 0 || forX >= width) {
 						continue;
 					}
-					int c1Alpha = (int) overlayAlpha[x + y * width];
-					int c2Alpha = new Color(overlayLightPixels[(x - x1) + (y - y1) * overlay.getWidth()], true).getAlpha() - modifier;
+					int c1Alpha = (int) overlayAlpha[forX + forY * width];
+					int c2Alpha = new Color(overlayLightPixels[(forX - x) + (forY - y) * overlay.getWidth()], true).getAlpha() - modifier;
 
 					int alpha;
-					if (c2Alpha <= 0) {
+					if (c2Alpha <= 1) {
 						alpha = c1Alpha;
 					} else {
 						alpha = c1Alpha - c2Alpha;
@@ -242,7 +194,7 @@ public class Screen {
 						}
 					}
 
-					c2Alpha -= modifier;
+					overlayAlpha[forX + forY * width] = alpha;
 
 					if (c2Alpha > 70) {
 						c2Alpha = 70;
@@ -252,10 +204,9 @@ public class Screen {
 						c2Alpha = 0;
 					}
 
-					overlayAlpha[x + y * width] = alpha;
 					if (colour > 0) {
 //						TODO: Make colour radius bigger
-						pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour + (c2Alpha << 24));
+						pixels[forX + forY * width] = alphaBlend(pixels[forX + forY * width], colour + (c2Alpha << 24));
 					}
 				}
 			}
@@ -264,27 +215,26 @@ public class Screen {
 
 	public void renderLighting() {
 		if (lighting) {
-			if (enableCL) {
-
+			if (openCL.running()) {
 				int[] pixelsCL = pixels;
 				long[] overlayAlphaCL = overlayAlpha;
 
-				kernel.put(pixelsCL).put(overlayAlphaCL);
-				kernel.execute(pixels.length);
-				kernel.get(pixelsCL);
+				openCL.alphaBlendCL.put(pixelsCL).put(overlayAlphaCL).execute(pixels.length).get(pixelsCL).get(overlayAlphaCL);
 
-				System.arraycopy(pixelsCL, 0, pixels, 0, pixels.length);
+				pixels = pixelsCL;
+				overlayAlpha = overlayAlphaCL;
 			} else {
 				for (int i = 0; i < overlayAlpha.length; i++) {
 					pixels[i] = alphaBlend(pixels[i], overlayAlpha[i] << 24);
 				}
-			}
 
-			for (int i = 0; i < overlayAlpha.length; i++) {
-				if (overlayAlpha[i] != 0xea) {
-					overlayAlpha[i] = 0xea;
+				for (int i = 0; i < overlayAlpha.length; i++) {
+					if (overlayAlpha[i] != openCL.ALPHA) {
+						overlayAlpha[i] = openCL.ALPHA;
+					}
 				}
 			}
+
 		}
 	}
 
