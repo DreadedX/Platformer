@@ -1,8 +1,9 @@
 package com.mtgames.platformer.gfx;
 
+import com.amd.aparapi.Kernel;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Debug;
-import com.mtgames.platformer.gfx.lighting.OpenCL;
+import com.mtgames.platformer.gfx.opencl.BrightnessCL;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,16 +25,16 @@ public class Screen {
 	private BufferedImage overlayBig   = null;
 	private BufferedImage overlayDash  = null;
 	private BufferedImage overlayTorch = null;
-	private long[] overlayAlpha;
-	private int[]  overlayLightPixelsBig;
-	private int[]  overlayLightPixelsDash;
-	private int[]  overlayLightPixelsTorch;
+	private int[] overlayAlpha;
+	private int[] overlayLightPixelsBig;
+	private int[] overlayLightPixelsDash;
+	private int[] overlayLightPixelsTorch;
 
-	private OpenCL openCL;
+	private BrightnessCL brightnessCL;
 
 	public Screen() {
 		pixels = new int[width * height];
-		overlayAlpha = new long[width * height];
+		overlayAlpha = new int[width * height];
 
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/assets/graphics/lights/big.png"));
@@ -51,8 +52,8 @@ public class Screen {
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
         overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
 
-		openCL = new OpenCL(pixels, overlayAlpha);
-//		openCL.setMode(Kernel.EXECUTION_MODE.GPU);
+		brightnessCL = new BrightnessCL(pixels, overlayAlpha);
+//		brightnessCL.setMode(Kernel.EXECUTION_MODE.JTP);
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -208,26 +209,25 @@ public class Screen {
 
 	public void renderLighting() {
 		if (lighting) {
-			if (openCL.running()) {
+			if (brightnessCL.running()) {
 				int[] pixelsCL = pixels;
-				long[] overlayAlphaCL = overlayAlpha;
+				int[] overlayAlphaCL = overlayAlpha;
 
-				openCL.alphaBlendCL.put(pixelsCL).put(overlayAlphaCL).execute(pixels.length).get(pixelsCL).get(overlayAlphaCL);
+				brightnessCL.brightnessCL.put(pixelsCL).put(overlayAlphaCL).execute(pixels.length).get(pixelsCL).get(overlayAlphaCL);
 
 				pixels = pixelsCL;
 				overlayAlpha = overlayAlphaCL;
 			} else {
 				for (int i = 0; i < overlayAlpha.length; i++) {
-					pixels[i] = alphaBlend(pixels[i], overlayAlpha[i] << 24);
+					pixels[i] = alphaBlend(pixels[i], (long) (overlayAlpha[i]) << 24);
 				}
 
 				for (int i = 0; i < overlayAlpha.length; i++) {
-					if (overlayAlpha[i] != openCL.ALPHA) {
-						overlayAlpha[i] = openCL.ALPHA;
+					if (overlayAlpha[i] != brightnessCL.ALPHA) {
+						overlayAlpha[i] = brightnessCL.ALPHA;
 					}
 				}
 			}
-
 		}
 	}
 

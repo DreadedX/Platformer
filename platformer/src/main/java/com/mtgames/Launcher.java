@@ -7,12 +7,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.util.Objects;
 
 class Launcher {
 	public static void main(String[] args) throws IOException, NoSuchFieldException {
 		getNatives();
 
 		System.setProperty("java.library.path", "natives");
+		if (args.length > 1) {
+			if (Objects.equals(args[1], "debug")) {
+				System.setProperty("com.amd.aparapi.enableShowGeneratedOpenCL", "true");
+			}
+		}
 
 		try {
 			Field fieldSysPath = ClassLoader.class.getDeclaredField( "sys_paths" );
