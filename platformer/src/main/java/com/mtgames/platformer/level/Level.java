@@ -1,6 +1,6 @@
 package com.mtgames.platformer.level;
 
-import com.mtgames.platformer.debug.Debug;
+import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.Entity;
 import com.mtgames.platformer.entities.Particle;
 import com.mtgames.platformer.gfx.Background;

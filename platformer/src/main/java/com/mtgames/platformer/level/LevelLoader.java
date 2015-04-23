@@ -1,6 +1,6 @@
 package com.mtgames.platformer.level;
 
-import com.mtgames.platformer.debug.Debug;
+import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.Properties;

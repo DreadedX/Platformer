@@ -2,7 +2,7 @@ package com.mtgames.platformer;
 
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.debug.Console;
-import com.mtgames.platformer.debug.Debug;
+import com.mtgames.utils.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
@@ -39,6 +39,7 @@ import java.util.Objects;
 	public static Level        level;
 
 	public static boolean shakeCam = false;
+	public static boolean debug    = false;
 
 	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -59,20 +60,15 @@ import java.util.Objects;
 	}
 
 	public static void main(String[] args) {
-		if (args.length > 0) {
-			Game.scale = Integer.parseInt(args[0]);
+		if (Integer.getInteger("com.mtgames.scale") != null) {
+			Game.scale = Integer.getInteger("com.mtgames.scale");
 		} else {
-			Game.scale = 2;
+			Game.scale = 1;
 		}
 
-		if (args.length > 1) {
-			if (Objects.equals(args[1], "debug")) {
-				Debug.priority = Debug.DEBUG;
-				Debug.debug = true;
-			}
-			if (Objects.equals(args[1], "info")) {
-				Debug.priority = Debug.INFO;
-			}
+		if (Debug.getPriority() == 0) {
+				debug = true;
+//				System.setProperty("com.amd.aparapi.enableShowGeneratedOpenCL", "true");
 		}
 
 		new Game().start();
@@ -88,7 +84,7 @@ import java.util.Objects;
 //		Load debug level
 		Command.exec("load debug_level");
 
-		if (Debug.debug) {
+		if (debug) {
 			new Console();
 		}
 	}
@@ -191,7 +187,7 @@ import java.util.Objects;
 		Hud.render(screen);
 
 		/* Debug text */
-		if (input.debug.isPressed() && Debug.debug) {
+		if (input.debug.isPressed() && debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
 		}

@@ -1,7 +1,7 @@
 package com.mtgames.platformer.gfx.opencl;
 
 import com.amd.aparapi.Kernel;
-import com.mtgames.platformer.debug.Debug;
+import com.mtgames.utils.Debug;
 
 public class BrightnessCL {
 	public final Kernel brightnessCL;

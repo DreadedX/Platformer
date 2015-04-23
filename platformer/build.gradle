@@ -25,7 +25,8 @@ dependencies {
 jar {
   from configurations.compile.collect {zipTree it}
   manifest {
-      attributes("Main-Class": "$mainClassName")
+      attributes("Main-Class": "$mainClassName",
+      "Application-Name": "Platformer")
     }
     baseName = "platformer"
     // version = "0.1.0"

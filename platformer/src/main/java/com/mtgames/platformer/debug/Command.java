@@ -11,11 +11,11 @@ import com.mtgames.platformer.level.Level;
 import java.util.Objects;
 
 import com.mtgames.platformer.entities.FreeCamera;
+import com.mtgames.utils.Debug;
 import org.json.JSONObject;
 
 public class Command {
 	private static Level        level = null;
-	private static InputHandler input = null;
 	private static Screen screen = null;
 
 	public static void exec(String command) {
@@ -171,7 +171,6 @@ public class Command {
 
 	public static void set(Level level, InputHandler input, Screen screen) {
 		Command.level = level;
-		Command.input = input;
 		Command.screen = screen;
 	}
 }
