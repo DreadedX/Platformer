@@ -1,0 +1,145 @@
+commit ff906bb6185e1db6a6ef8154d22c1272237277ca
+Author: Dreaded_X <tim.huizinga@gmail.com>
+Date:   Thu Apr 23 23:29:55 2015 +0200
+
+    Made aparapi load from /natives in jar, linux only
+
+diff --git a/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java b/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
+index 3514c9d..fb62d2f 100644
+--- a/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
++++ b/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
+@@ -1,9 +1,11 @@
+ package com.amd.aparapi.internal.opencl;
+ 
++import java.io.IOException;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
+ 
+ import com.amd.aparapi.Config;
++import cz.adamh.utils.NativeUtils;
+ import com.amd.aparapi.internal.jni.OpenCLJNI;
+ 
+ /**
+@@ -37,14 +39,14 @@ public class OpenCLLoader extends OpenCLJNI{
+          if (aparapiLibraryName != null) {
+             logger.fine("attempting to load aparapi shared lib " + aparapiLibraryName);
+ 
+-            try {
+-               Runtime.getRuntime().loadLibrary(aparapiLibraryName);
+-               openCLAvailable = true;
+-            } catch (final UnsatisfiedLinkError e) {
+-               logger.log(Level.SEVERE, "Check your environment. Failed to load aparapi native library " + aparapiLibraryName
+-                     + " or possibly failed to locate opencl native library (opencl.dll/opencl.so)."
+-                     + " Ensure that both are in your PATH (windows) or in LD_LIBRARY_PATH (linux).");
+-            }
++          	try {
++				NativeUtils.loadLibraryFromJar("/natives/" + aparapiLibraryName + ".so");
++				openCLAvailable = true;
++			} catch (IOException e2) {
++				logger.log(Level.SEVERE, "Check your environment. Failed to load aparapi native library " + aparapiLibraryName
++                    + " or possibly failed to locate opencl native library (opencl.dll/opencl.so)."
++                    + " Ensure that both are in your PATH (windows) or in LD_LIBRARY_PATH (linux).");
++			}
+          }
+       }
+    }
+diff --git a/com.amd.aparapi/src/java/cz/adamh/utils/NativeUtils.java b/com.amd.aparapi/src/java/cz/adamh/utils/NativeUtils.java
+new file mode 100644
+index 0000000..ba17048
+--- /dev/null
++++ b/com.amd.aparapi/src/java/cz/adamh/utils/NativeUtils.java
+@@ -0,0 +1,93 @@
++package cz.adamh.utils;
++ 
++import java.io.File;
++import java.io.FileNotFoundException;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.OutputStream;
++ 
++/**
++ * Simple library class for working with JNI (Java Native Interface)
++ * 
++ * @see http://adamheinrich.com/2012/how-to-load-native-jni-library-from-jar
++ *
++ * @author Adam Heirnich &lt;adam@adamh.cz&gt;, http://www.adamh.cz
++ */
++public class NativeUtils {
++ 
++    /**
++     * Private constructor - this class will never be instanced
++     */
++    private NativeUtils() {
++    }
++ 
++    /**
++     * Loads library from current JAR archive
++     * 
++     * The file from JAR is copied into system temporary directory and then loaded. The temporary file is deleted after exiting.
++     * Method uses String as filename because the pathname is "abstract", not system-dependent.
++     * 
++     * @param filename The filename inside JAR as absolute path (beginning with '/'), e.g. /package/File.ext
++     * @throws IOException If temporary file creation or read/write operation fails
++     * @throws IllegalArgumentException If source file (param path) does not exist
++     * @throws IllegalArgumentException If the path is not absolute or if the filename is shorter than three characters (restriction of {@see File#createTempFile(java.lang.String, java.lang.String)}).
++     */
++    public static void loadLibraryFromJar(String path) throws IOException {
++ 
++        if (!path.startsWith("/")) {
++            throw new IllegalArgumentException("The path has to be absolute (start with '/').");
++        }
++ 
++        // Obtain filename from path
++        String[] parts = path.split("/");
++        String filename = (parts.length > 1) ? parts[parts.length - 1] : null;
++ 
++        // Split filename to prexif and suffix (extension)
++        String prefix = "";
++        String suffix = null;
++        if (filename != null) {
++            parts = filename.split("\\.", 2);
++            prefix = parts[0];
++            suffix = (parts.length > 1) ? "."+parts[parts.length - 1] : null; // Thanks, davs! :-)
++        }
++ 
++        // Check if the filename is okay
++        if (filename == null || prefix.length() < 3) {
++            throw new IllegalArgumentException("The filename has to be at least 3 characters long.");
++        }
++ 
++        // Prepare temporary file
++        File temp = File.createTempFile(prefix, suffix);
++        temp.deleteOnExit();
++ 
++        if (!temp.exists()) {
++            throw new FileNotFoundException("File " + temp.getAbsolutePath() + " does not exist.");
++        }
++ 
++        // Prepare buffer for data copying
++        byte[] buffer = new byte[1024];
++        int readBytes;
++ 
++        // Open and check input stream
++        InputStream is = NativeUtils.class.getResourceAsStream(path);
++        if (is == null) {
++            throw new FileNotFoundException("File " + path + " was not found inside JAR.");
++        }
++ 
++        // Open output stream and copy data between source file in JAR and the temporary file
++        OutputStream os = new FileOutputStream(temp);
++        try {
++            while ((readBytes = is.read(buffer)) != -1) {
++                os.write(buffer, 0, readBytes);
++            }
++        } finally {
++            // If read/write fails, close streams safely before throwing an exception
++            os.close();
++            is.close();
++        }
++ 
++        // Finally, load the library
++        System.load(temp.getAbsolutePath());
++    }
++}
+\ No newline at end of file
