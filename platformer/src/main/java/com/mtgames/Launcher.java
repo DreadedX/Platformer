@@ -100,7 +100,7 @@ class Launcher {
 			case "64":
 				return "x86_64";
 
-			case "86":
+			case "32":
 				return "x86";
 		}
 		return "";
