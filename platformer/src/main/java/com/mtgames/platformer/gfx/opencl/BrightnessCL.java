@@ -37,10 +37,6 @@ public class BrightnessCL {
 		};
 	}
 
-	public void setMode(Kernel.EXECUTION_MODE Mode) {
-		brightnessCL.setExecutionMode(Mode);
-	}
-
 	public boolean running() {
 		if (brightnessCL.getExecutionMode().equals(Kernel.EXECUTION_MODE.JTP)) {
 			if (firstTime) {
@@ -49,6 +45,10 @@ public class BrightnessCL {
 			}
 			return false;
 		} else {
+			if (firstTime) {
+				Debug.log("Aparapi execution mode: " + brightnessCL.getExecutionMode(), Debug.DEBUG);
+				firstTime = false;
+			}
 			return true;
 		}
 	}

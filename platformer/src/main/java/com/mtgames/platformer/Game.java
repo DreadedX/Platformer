@@ -66,7 +66,7 @@ import java.util.Objects;
 			Game.scale = 1;
 		}
 
-		if (Debug.getPriority() == 0) {
+		if (Integer.getInteger("com.mtgames.debug") == 0) {
 				debug = true;
 //				System.setProperty("com.amd.aparapi.enableShowGeneratedOpenCL", "true");
 		}
