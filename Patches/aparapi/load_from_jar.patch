@@ -1,3 +1,49 @@
+commit 6cca924077e213690b8d2b26ea8a307180687b70
+Author: Dreaded_X <tim.huizinga@gmail.com>
+Date:   Fri Apr 24 17:21:54 2015 +0200
+
+    Added operating system detection
+
+diff --git a/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java b/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
+index fb62d2f..efaa261 100644
+--- a/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
++++ b/com.amd.aparapi/src/java/com/amd/aparapi/internal/opencl/OpenCLLoader.java
+@@ -27,6 +27,7 @@ public class OpenCLLoader extends OpenCLJNI{
+          final String arch = System.getProperty("os.arch");
+          logger.fine("arch = " + arch);
+          String aparapiLibraryName = null;
++         String extension = null;
+ 
+          if (arch.equals("amd64") || arch.equals("x86_64")) {
+             aparapiLibraryName = "aparapi_x86_64";
+@@ -36,11 +37,23 @@ public class OpenCLLoader extends OpenCLJNI{
+             logger.warning("Expected property os.arch to contain amd64, x86_64, x86 or i386 but instead found " + arch
+                   + " as a result we don't know which aparapi to attempt to load.");
+          }
+-         if (aparapiLibraryName != null) {
+-            logger.fine("attempting to load aparapi shared lib " + aparapiLibraryName);
++         String os = System.getProperty("os.name");
++         if (os.startsWith("Windows")) {
++          	extension = ".dll";
++         } else if (os.startsWith("Mac")) {
++           	extension = ".dylib";
++         } else if (os.startsWith("Linux")) {
++          	extension = ".so";
++         } else {
++           	logger.warning("Expected property os.name to contain Windows, Mac or Linux but instead found " + os
++           			+ " as a result we don't know which aparapi to attempt to load.");
++         }
+ 
++         if (aparapiLibraryName != null && extension != null) {
++            logger.fine("attempting to load aparapi shared lib " + aparapiLibraryName);
++            
+           	try {
+-				NativeUtils.loadLibraryFromJar("/natives/" + aparapiLibraryName + ".so");
++				NativeUtils.loadLibraryFromJar("/natives/" + aparapiLibraryName + extension);
+ 				openCLAvailable = true;
+ 			} catch (IOException e2) {
+ 				logger.log(Level.SEVERE, "Check your environment. Failed to load aparapi native library " + aparapiLibraryName
+
 commit ff906bb6185e1db6a6ef8154d22c1272237277ca
 Author: Dreaded_X <tim.huizinga@gmail.com>
 Date:   Thu Apr 23 23:29:55 2015 +0200
