@@ -1,7 +1,6 @@
 package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
-import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;

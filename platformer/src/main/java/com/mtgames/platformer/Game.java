@@ -1,7 +1,6 @@
 package com.mtgames.platformer;
 
 import com.mtgames.platformer.debug.Command;
-import com.mtgames.platformer.debug.Console;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
@@ -82,9 +81,9 @@ import java.awt.image.DataBufferInt;
 //		Load debug level
 		Command.exec("load debug_level");
 
-		if (debug) {
-			new Console();
-		}
+//		if (debug) {
+//			new Console();
+//		}
 	}
 
 	private synchronized void start() {

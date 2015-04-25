@@ -8,7 +8,7 @@ public abstract class Entity {
 	public          int        x;
 	public          int        y;
 	protected final Level      level;
-	private         Properties properties;
+	private final   Properties properties;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
