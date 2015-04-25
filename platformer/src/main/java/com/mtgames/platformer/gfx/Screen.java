@@ -2,7 +2,6 @@ package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.utils.Debug;
-import com.mtgames.platformer.gfx.opencl.BrightnessCL;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,7 +13,7 @@ public class Screen {
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 
-	public int[] pixels;
+	public final int[] pixels;
 	public final int     width    = Game.WIDTH;
 	public final int     height   = Game.HEIGHT;
 	public       int     xOffset  = 0;
@@ -24,16 +23,20 @@ public class Screen {
 	private BufferedImage overlayBig   = null;
 	private BufferedImage overlayDash  = null;
 	private BufferedImage overlayTorch = null;
-	private int[] overlayAlpha;
-	private int[] overlayLightPixelsBig;
-	private int[] overlayLightPixelsDash;
-	private int[] overlayLightPixelsTorch;
-
-	private BrightnessCL brightnessCL;
+	private final int[] overlayAlpha;
+	private final int[] overlayAlphaDefault;
+	private       int[] overlayLightPixelsBig;
+	private       int[] overlayLightPixelsDash;
+	private       int[] overlayLightPixelsTorch;
 
 	public Screen() {
 		pixels = new int[width * height];
 		overlayAlpha = new int[width * height];
+		overlayAlphaDefault = new int[width * height];
+
+		for (int i = 0; i < overlayAlphaDefault.length; i++) {
+			overlayAlphaDefault[i] = 0xea;
+		}
 
 		try {
 			overlayBig = ImageIO.read(Sheet.class.getResourceAsStream("/assets/graphics/lights/big.png"));
@@ -51,8 +54,6 @@ public class Screen {
 		overlayLightPixelsDash = overlayDash.getRGB(0, 0, overlayDash.getWidth(), overlayDash.getHeight(), null, 0, overlayDash.getWidth());
         overlayLightPixelsTorch = overlayTorch.getRGB(0, 0, overlayTorch.getWidth(), overlayTorch.getHeight(), null, 0, overlayTorch.getWidth());
 
-		brightnessCL = new BrightnessCL(pixels, overlayAlpha);
-//		brightnessCL.setMode(Kernel.EXECUTION_MODE.JTP);
 	}
 
 	//	Default to 16x tileset and no mirror
@@ -174,7 +175,7 @@ public class Screen {
 					if (forX < 0 || forX >= width) {
 						continue;
 					}
-					int c1Alpha = (int) overlayAlpha[forX + forY * width];
+					int c1Alpha = overlayAlpha[forX + forY * width];
 					int c2Alpha = new Color(overlayLightPixels[(forX - x) + (forY - y) * overlay.getWidth()], true).getAlpha() - modifier;
 
 					int alpha;
@@ -208,25 +209,10 @@ public class Screen {
 
 	public void renderLighting() {
 		if (lighting) {
-			if (brightnessCL.running()) {
-				int[] pixelsCL = pixels;
-				int[] overlayAlphaCL = overlayAlpha;
-
-				brightnessCL.brightnessCL.put(pixelsCL).put(overlayAlphaCL).execute(pixels.length).get(pixelsCL).get(overlayAlphaCL);
-
-				pixels = pixelsCL;
-				overlayAlpha = overlayAlphaCL;
-			} else {
-				for (int i = 0; i < overlayAlpha.length; i++) {
-					pixels[i] = alphaBlend(pixels[i], (long) (overlayAlpha[i]) << 24);
-				}
-
-				for (int i = 0; i < overlayAlpha.length; i++) {
-					if (overlayAlpha[i] != brightnessCL.ALPHA) {
-						overlayAlpha[i] = brightnessCL.ALPHA;
-					}
-				}
+			for (int i = 0; i < overlayAlpha.length; i++) {
+				pixels[i] = alphaBlend(pixels[i], (long) (overlayAlpha[i]) << 24);
 			}
+			System.arraycopy(overlayAlphaDefault, 0, overlayAlpha, 0, overlayAlpha.length);
 		}
 	}
 
@@ -276,28 +262,14 @@ public class Screen {
 		}
 	}
 
-	private int alphaBlend(int c1Hex, long c2Hex) {
-		if (c2Hex >> 24 == 0) {
-			return c1Hex;
-		}
+	private int alphaBlend(int c1, long c2) {
+		int factor = (int) (c2 >> 24);
+		int f1 = 256 - factor;
+//		if (factor == 0) {
+//			return c1;
+//		}
 
-		int c1Alpha = c1Hex >> 24;
-		long c2Alpha = c2Hex >> 24;
-
-		int c1Red = (c1Hex >> 16) - (c1Alpha << 8);
-		long c2Red = ((c2Hex >> 16) - (c2Alpha << 8));
-
-		int c1Green = (c1Hex >> 8) - (c1Red << 8) - (c1Alpha << 16);
-		long c2Green = ((c2Hex >> 8) - (c2Red << 8) - (c2Alpha << 16));
-
-		int c1Blue = (c1Hex) - (c1Red << 16) - (c1Green << 8) - (c1Alpha << 24);
-		long c2Blue = ((c2Hex) - (c2Red << 16) - (c2Green << 8) - (c2Alpha << 24));
-
-		long resultRed = ((c2Red * c2Alpha + c1Red * (255 - c2Alpha)) / 255);
-		long resultGreen = ((c2Green * c2Alpha + c1Green * (255 - c2Alpha)) / 255);
-		long resultBlue = ((c2Blue * c2Alpha + c1Blue * (255 - c2Alpha)) / 255);
-
-		return (int) ((resultRed << 16) + (resultGreen << 8) + (resultBlue));
+		return (int) ((   (  ( (c1&0xFF00FF)*f1 + (c2&0xFF00FF)*factor )  &0xFF00FF00  )  | (   ( (c1&0x00FF00)*f1 + (c2&0x00FF00)*factor )  &0x00FF0000  )   ) >>>8);
 	}
 
 	public void drawPoint(int xPos, int yPos, int colour) {

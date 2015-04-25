@@ -12,6 +12,7 @@ public abstract class Entity {
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
+		this.properties = properties;
 	}
 
 	public abstract void tick();

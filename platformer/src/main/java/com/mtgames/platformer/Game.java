@@ -16,7 +16,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Objects;
 
 @SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
 
@@ -24,7 +23,7 @@ import java.util.Objects;
 	private static final int     TPS       = 60;
 	public static final  int     WIDTH     = 608;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
-	public static final  String  NAME      = "Platformer";
+	private static final String  NAME      = "Platformer";
 
 	private static int scale;
 	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -38,8 +37,8 @@ import java.util.Objects;
 	public static InputHandler input;
 	public static Level        level;
 
-	public static boolean shakeCam = false;
-	public static boolean debug    = false;
+	public static  boolean shakeCam = false;
+	private static boolean debug    = false;
 
 	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -68,7 +67,6 @@ import java.util.Objects;
 
 		if (Integer.getInteger("com.mtgames.debug") == 0) {
 				debug = true;
-//				System.setProperty("com.amd.aparapi.enableShowGeneratedOpenCL", "true");
 		}
 
 		new Game().start();
@@ -80,7 +78,7 @@ import java.util.Objects;
 		level = new Level();
 
 		//		Initialize command system
-		Command.set(level, input, screen);
+		Command.set(level, screen);
 //		Load debug level
 		Command.exec("load debug_level");
 

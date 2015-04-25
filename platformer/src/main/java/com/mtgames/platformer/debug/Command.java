@@ -169,7 +169,7 @@ public class Command {
 		}
 	}
 
-	public static void set(Level level, InputHandler input, Screen screen) {
+	public static void set(Level level, Screen screen) {
 		Command.level = level;
 		Command.screen = screen;
 	}
