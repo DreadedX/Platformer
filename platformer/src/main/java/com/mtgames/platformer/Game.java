@@ -42,6 +42,8 @@ import java.awt.image.DataBufferInt;
 	private int xOffset;
 	private int yOffset;
 
+	public static boolean paused = false;
+
 	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -119,8 +121,10 @@ import java.awt.image.DataBufferInt;
 			boolean shouldRender = FPSUNLOCK;
 
 			while (delta >= 1) {
+				if (!paused) {
+					tick();
+				}
 				ticks++;
-				tick();
 				delta -= 1;
 				shouldRender = true;
 			}
@@ -203,6 +207,12 @@ import java.awt.image.DataBufferInt;
 		if (input.debug.isPressed() && debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
+		}
+
+//		Pausing the game TODO: should not be in render()
+		if (input.pause.isPressed()) {
+			Command.exec("pause");
+			input.pause.toggle(false);
 		}
 
 		if (input.message.isPressed()) {

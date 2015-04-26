@@ -1,5 +1,6 @@
 package com.mtgames.platformer.level;
 
+import com.mtgames.platformer.debug.Command;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
@@ -86,27 +87,13 @@ class LevelLoader {
 			int x = objEntities.getJSONObject(String.valueOf(i)).getInt("x");
 			int y = objEntities.getJSONObject(String.valueOf(i)).getInt("y");
 
-			Properties properties = new Properties(type);
+			String properties = "";
 			if(objEntities.getJSONObject(String.valueOf(i)).has("properties")) {
-				properties.set(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
+				properties = String.valueOf(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
 			}
 
-			switch (type) {
-				case "player":
-					level.addEntity(new Player(x, y, properties));
-					break;
+			Command.exec("spawn " + type + " " + x + " " + y + " " + properties);
 
-				case "baseEnemy":
-					level.addEntity(new BaseEnemy(x, y, properties));
-					break;
-
-				case "autoScroll":
-					level.addEntity(new AutoScroll(x, y, properties));
-					break;
-
-				default:
-					Debug.log(type + " is not a valid entity type", Debug.ERROR);
-			}
 		}
 	}
 

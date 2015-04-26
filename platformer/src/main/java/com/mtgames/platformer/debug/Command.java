@@ -1,6 +1,7 @@
 package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
+import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
@@ -57,7 +58,7 @@ public class Command {
 					}
 
 				} else {
-					Debug.log("Invalid arguments, usage: move <id> <x> <y>", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: move <uid> <x> <y>", Debug.WARNING);
 				}
 				break;
 
@@ -78,31 +79,37 @@ public class Command {
 						obj = new JSONObject(commands[4]);
 					}
 
-					switch (Integer.parseInt(commands[1])) {
+					switch (commands[1]) {
 						default:
 							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 							break;
 
-						case 0:
+						case "player":
 							properties = new Properties("player");
 							properties.set(obj);
 							level.addEntity(new Player(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 
-						case 1:
+						case "baseEnemy":
 							properties = new Properties("baseEnemy");
 							properties.set(obj);
 							level.addEntity(new BaseEnemy(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 
-						case 99:
+						case "autoScroll":
+							properties = new Properties("autoScroll");
+							properties.set(obj);
+							level.addEntity(new AutoScroll(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
+							break;
+
+						case "freeCamera":
 							properties = new Properties("freeCamera");
 							properties.set(obj);
 							level.addEntity(new FreeCamera(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 							break;
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: spawn <id> <x> <y>", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
 				}
 				break;
 
@@ -130,7 +137,7 @@ public class Command {
 						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
 					}
 				} else {
-					Debug.log("Invalid arguments, usage: freecam true/false", Debug.WARNING);
+					Debug.log("Invalid arguments, usage: freecam", Debug.WARNING);
 				}
 				break;
 
@@ -155,6 +162,10 @@ public class Command {
 					}
 					Game.shakeCam = false;
 				}
+				break;
+
+			case "pause":
+				Game.paused = !Game.paused;
 				break;
 
 			case "exit":

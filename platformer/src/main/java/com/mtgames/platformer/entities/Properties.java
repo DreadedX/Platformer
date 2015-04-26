@@ -2,6 +2,7 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.utils.Debug;
 import org.json.JSONObject;
 
 public class Properties {
@@ -58,6 +59,8 @@ public class Properties {
 	}
 
 	public void set(JSONObject obj) {
+		Debug.log(String.valueOf(obj), Debug.DEBUG);
+
 		if (obj.has("jumpWait")) {
 			jumpWait = obj.getInt("jumpWait");
 		}

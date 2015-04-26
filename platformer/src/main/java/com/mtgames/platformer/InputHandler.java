@@ -14,6 +14,7 @@ public class InputHandler implements KeyListener {
 	public final  Key right   = new Key();
 	public final  Key space   = new Key();
 	public final  Key shift   = new Key();
+	public final Key pause = new Key();
 
 	public final Key throwItem = new Key();
 
@@ -25,6 +26,10 @@ public class InputHandler implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_F3:
 				debug.toggle(!debug.isPressed());
+				break;
+
+			case KeyEvent.VK_P:
+				pause.toggle(!pause.isPressed());
 				break;
 
 			case KeyEvent.VK_R:
