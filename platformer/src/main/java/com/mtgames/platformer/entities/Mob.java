@@ -71,6 +71,9 @@ public abstract class Mob extends Entity {
 	}
 
 	public boolean hasCollided(int xa, int ya) {
+		this.xa = xa;
+		this.ya = ya;
+
 		for (int x = xMin; x <= xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;

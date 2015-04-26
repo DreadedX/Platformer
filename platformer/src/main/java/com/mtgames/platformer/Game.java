@@ -39,6 +39,9 @@ import java.awt.image.DataBufferInt;
 	public static  boolean shakeCam = false;
 	private static boolean debug    = false;
 
+	private int xOffset;
+	private int yOffset;
+
 	private Game() {
 		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -75,6 +78,9 @@ import java.awt.image.DataBufferInt;
 		screen = new Screen();
 		input = new InputHandler(this);
 		level = new Level();
+
+		xOffset = screen.width / 2;
+		yOffset = screen.height / 2;
 
 		//		Initialize command system
 		Command.set(level, screen);
@@ -161,12 +167,22 @@ import java.awt.image.DataBufferInt;
 			return;
 		}
 
-		int xOffset = screen.width / 2;
-		int yOffset = screen.height / 2;
-
 		if (level.entities.size() > 0) {
-			xOffset = level.entities.get(0).x + 30 - (screen.width / 2);
-			yOffset = level.entities.get(0).y - 10 - (screen.height / 2);
+			if (level.entities.get(0).x > xOffset + screen.width/2 + 50) {
+				xOffset = level.entities.get(0).x - (screen.width/2 + 50);
+			}
+
+			if (level.entities.get(0).x < xOffset + screen.width/2 - 50) {
+				xOffset = level.entities.get(0).x - (screen.width/2 - 50);
+			}
+
+			if (level.entities.get(0).y > yOffset + screen.height/2 + 50) {
+				yOffset = level.entities.get(0).y - (screen.height/2 + 50);
+			}
+
+			if (level.entities.get(0).y < yOffset + screen.height/2 - 50) {
+				yOffset = level.entities.get(0).y - (screen.height/2 - 50);
+			}
 		}
 
 		level.renderBackground(screen);

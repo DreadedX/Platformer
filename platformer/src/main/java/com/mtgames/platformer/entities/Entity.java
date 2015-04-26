@@ -7,6 +7,8 @@ public abstract class Entity {
 
 	public          int        x;
 	public          int        y;
+	public int xa;
+	public int ya;
 	protected final Level      level;
 	private final   Properties properties;
 	int gravityWait = 0;
