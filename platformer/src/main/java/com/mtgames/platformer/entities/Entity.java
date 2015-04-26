@@ -9,6 +9,7 @@ public abstract class Entity {
 	public          int        y;
 	protected final Level      level;
 	private final   Properties properties;
+	int gravityWait = 0;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
@@ -18,6 +19,36 @@ public abstract class Entity {
 	public abstract void tick();
 
 	public abstract void render(Screen screen);
+
+	public abstract boolean hasCollided(int xa, int ya);
+
+	protected int gravity(int ya) {
+		if (hasCollided(0, 1) && ya > 0) {
+			ya = 0;
+		}
+
+		if (hasCollided(0, 1)) {
+			gravityWait = 0;
+			return ya;
+		}
+
+		if (hasCollided(0, 1) && ya > 0) {
+			ya = 0;
+		}
+
+		if (hasCollided(0, -1))
+			ya = 0;
+
+		if (gravityWait > 1) {
+			int gravity = 1;
+			if (ya < 12)
+				ya = ya + gravity;
+			gravityWait = 0;
+		}
+
+		gravityWait++;
+		return ya;
+	}
 
 	public Properties getProperties() {
 		return properties;

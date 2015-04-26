@@ -12,7 +12,6 @@ public abstract class Mob extends Entity {
 	protected int     yMax           = 1;
 	protected int     animationFrame = 0;
 	protected boolean isJumping      = false;
-	int gravityWait = 0;
 	private int walkingAnimationFrame = 0;
 
 	protected Mob(Properties properties, int x, int y) {
@@ -71,7 +70,7 @@ public abstract class Mob extends Entity {
 		}
 	}
 
-	protected boolean hasCollided(int xa, int ya) {
+	public boolean hasCollided(int xa, int ya) {
 		for (int x = xMin; x <= xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;
@@ -108,34 +107,6 @@ public abstract class Mob extends Entity {
 
 		return !lastTile.equals(newTile) && newTile.isSolid();
 
-	}
-
-	protected int gravity(int ya) {
-		if (hasCollided(0, 1) && ya > 0) {
-			ya = 0;
-		}
-
-		if (hasCollided(0, 1)) {
-			gravityWait = 0;
-			return ya;
-		}
-
-		if (hasCollided(0, 1) && ya > 0) {
-			ya = 0;
-		}
-
-		if (hasCollided(0, -1))
-			ya = 0;
-
-		if (gravityWait > 1) {
-			int gravity = 1;
-			if (ya < 12)
-				ya = ya + gravity;
-			gravityWait = 0;
-		}
-
-		gravityWait++;
-		return ya;
 	}
 
 	private void walkingAnimation() {

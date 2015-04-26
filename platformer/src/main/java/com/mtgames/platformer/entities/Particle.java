@@ -7,7 +7,6 @@ public abstract class Particle extends Entity {
 	protected int x;
 	protected int y;
 	private   int life;
-	private int gravityWait = 0;
 
 	protected Particle(int x, int y, int life, Properties properties) {
 		super(properties);
@@ -26,7 +25,6 @@ public abstract class Particle extends Entity {
 
 	protected boolean isOnScreen(Screen screen) {
 		return !(x - screen.xOffset < 0 || x - screen.xOffset >= screen.width || y - screen.yOffset < 0 || y - screen.yOffset >= screen.height);
-
 	}
 
 	protected void move(int xa, int ya) {
@@ -63,7 +61,7 @@ public abstract class Particle extends Entity {
 		}
 	}
 
-	protected boolean hasCollided(int xa, int ya) {
+	public boolean hasCollided(int xa, int ya) {
 		return isSolidTile(xa, ya, 0, 0);
 
 	}
@@ -78,33 +76,5 @@ private boolean isSolidTile(int xa, int ya, int x, int y) {
 
 		return !lastTile.equals(newTile) && newTile.isSolid();
 
-	}
-
-	protected int gravity(int ya) {
-		if (hasCollided(0, 1) && ya > 0) {
-			ya = 0;
-		}
-
-		if (hasCollided(0, 1)) {
-			gravityWait = 0;
-			return ya;
-		}
-
-		if (hasCollided(0, 1) && ya > 0) {
-			ya = 0;
-		}
-
-		if (hasCollided(0, -1))
-			ya = 0;
-
-		if (gravityWait > 1) {
-			int gravity = 1;
-			if (ya < 12)
-				ya = ya + gravity;
-			gravityWait = 0;
-		}
-
-		gravityWait++;
-		return ya;
 	}
 }
