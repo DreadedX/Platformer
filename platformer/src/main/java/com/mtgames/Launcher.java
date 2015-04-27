@@ -5,6 +5,7 @@ import com.mtgames.platformer.debug.Command;
 import com.mtgames.utils.LauncherBase;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
+import org.lwjgl.Sys;
 
 public class Launcher extends LauncherBase {
 
@@ -24,7 +25,7 @@ public class Launcher extends LauncherBase {
 	@Override protected void run() {
 		System.setProperty("com.mtgames.scale", String.valueOf(scale.getValue()));
 
-		Game.main(new String[]{""});
+		Game.main(new String[] { "" });
 	}
 
 	@Override protected void consoleCommand(String s) {

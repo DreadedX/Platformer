@@ -154,6 +154,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 			errorCallback.release();
 		}
 
+		System.exit(0);
 	}
 
 	private void loop() {
@@ -172,7 +173,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		glLoadIdentity();
 		glOrtho(0, WIDTH * scale, HEIGHT * scale, 0, 1, -1);
 		glMatrixMode(GL11.GL_MODELVIEW);
-		glClearColor(0.56f, 0.258f, 0.425f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glEnable(GL_TEXTURE_2D);
 
 		Debug.log("OpenGL version: " + glGetString(GL_VERSION), Debug.DEBUG);
