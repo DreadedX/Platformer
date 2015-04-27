@@ -39,7 +39,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
 	private static final String  NAME      = "Platformer";
 
-	private static int scale;
+	public static int scale;
 	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private final int[]             pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private       AffineTransform   tx      = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
@@ -60,26 +60,26 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 	public static boolean paused = false;
 
 	private GLFWErrorCallback errorCallback;
-	private GLFWKeyCallback keyCallback;
-	private long window;
+	private GLFWKeyCallback   keyCallback;
+	private long              window;
 
-//	private Game() {
-//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-//		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-//		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-//
-//		JFrame frame = new JFrame(NAME);
-//
-//		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		frame.setLayout(new BorderLayout());
-//
-//		frame.add(this, BorderLayout.CENTER);
-//		frame.pack();
-//
-//		frame.setResizable(true);
-//		frame.setLocationRelativeTo(null);
-//		frame.setVisible(true);
-//	}
+	//	private Game() {
+	//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+	//		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+	//		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+	//
+	//		JFrame frame = new JFrame(NAME);
+	//
+	//		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	//		frame.setLayout(new BorderLayout());
+	//
+	//		frame.add(this, BorderLayout.CENTER);
+	//		frame.pack();
+	//
+	//		frame.setResizable(true);
+	//		frame.setLocationRelativeTo(null);
+	//		frame.setVisible(true);
+	//	}
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -89,7 +89,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		}
 
 		if (Integer.getInteger("com.mtgames.debug") == 0) {
-				debug = true;
+			debug = true;
 		}
 
 		new Game().start();
@@ -106,7 +106,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		//		Initialize command system
 		Command.set(level, screen);
 //		Load debug level
-		Command.exec("load debug_level");
+		Command.exec("load opengl");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
@@ -129,7 +129,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 
 		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - WIDTH) / 2, (GLFWvidmode.height(vidmode) - HEIGHT) / 2);
 		glfwMakeContextCurrent(window);
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 		glfwShowWindow(window);
 	}
 
@@ -170,7 +170,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		GLContext.createFromCurrent();
 		glMatrixMode(GL11.GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, WIDTH * scale, 0, HEIGHT * scale, 1, -1);
+		glOrtho(0, WIDTH * scale, HEIGHT * scale, 0, 1, -1);
 		glMatrixMode(GL11.GL_MODELVIEW);
 		glClearColor(0.56f, 0.258f, 0.425f, 1.0f);
 		glEnable(GL_TEXTURE_2D);
@@ -211,7 +211,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.log(frames + " Frames, " + ticks + " Ticks " + level.entities.get(0).x + " " + level.entities.get(0).y, Debug.INFO);
+				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
 				frames = 0;
 				ticks = 0;
 			}
@@ -248,9 +248,16 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 			}
 		}
 
+		if (input.isPressed(GLFW_KEY_P)) {
+			Command.exec("pause");
+			input.set(GLFW_KEY_P, false);
+		}
+
 //		screen.render(16, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
 //		screen.render(32, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
+		level.renderBackground(screen);
 		level.renderTiles(screen, xOffset, yOffset);
+		level.renderEntities(screen);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

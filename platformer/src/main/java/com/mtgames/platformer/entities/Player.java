@@ -8,6 +8,7 @@ import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,13 +23,12 @@ public class Player extends Mob {
 	private final int MAXHEALTH;
 
 	private final InputHandler input;
-	private final Sheet sheet = new Sheet("/assets/graphics/entities/player.png");
+	private final Sheet sheet     = new Sheet("/assets/graphics/entities/player.png");
+	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/player_stand.png"));
 
 	private int xa     = 0;
 	private int xaDash = 0;
 	private int ya     = 0;
-	private int dir;
-	private int modifier;
 	private int jumpWait    = 0;
 	private int dashWait    = 0;
 	private int dashTime    = 0;
@@ -151,45 +151,36 @@ public class Player extends Mob {
 	}
 
 	public void render(Screen screen) {
-		int xTile = 0;
+//		int xTile = 0;
+//
+//		int xOffset = x;
+//		int yOffset = y;
 
-		int xOffset = x;
-		int yOffset = y;
+		boolean flipX = false;
 
-		switch (movingDir) {
-			case 0:
-				dir = 0x01;
-				modifier = 16;
-				break;
-
-			case 1:
-				dir = 0x00;
-				modifier = 0;
-				break;
+		if (movingDir == 0) {
+			flipX = true;
 		}
 
-		if (isJumping && !isDashing && !isStaggered) {
-			xTile = 8;
-		} else if (isDashing) {
-			xTile = 12;
-			animationFrame = 0;
-		} else if (isStaggered) {
-			xTile = 14;
-			animationFrame = 0;
-		}
+//		if (isJumping && !isDashing && !isStaggered) {
+//			xTile = 8;
+//		} else if (isDashing) {
+//			xTile = 12;
+//			animationFrame = 0;
+//		} else if (isStaggered) {
+//			xTile = 14;
+//			animationFrame = 0;
+//		}
+//
+//		if (animationFrame == 1) {
+//			xTile += 2;
+//		} else if (animationFrame == 2) {
+//			xTile += 4;
+//		} else if (animationFrame == 3) {
+//			xTile += 6;
+//		}
 
-		if (animationFrame == 1) {
-			xTile += 2;
-		} else if (animationFrame == 2) {
-			xTile += 4;
-		} else if (animationFrame == 3) {
-			xTile += 6;
-		}
-
-//		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
-//		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
-//		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
-//		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width / 16, dir);
+		screen.render(x - 16, y - 16, textureID, 32, flipX);
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 

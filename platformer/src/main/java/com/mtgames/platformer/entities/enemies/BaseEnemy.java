@@ -5,18 +5,18 @@ import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
 public class BaseEnemy extends Mob {
 
 	private final int JUMPSPEED;
 
 	private int ya = 0;
-	private int dir;
-	private int modifier;
 
 	private final LightSource lightSource;
 
-	private final Sheet sheet = new Sheet("/assets/graphics/entities/baseEnemy.png");
+	private final Sheet sheet     = new Sheet("/assets/graphics/entities/baseEnemy.png");
+	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/baseEnemy_stand.png"));
 
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
@@ -65,38 +65,29 @@ public class BaseEnemy extends Mob {
 	}
 
 	public void render(Screen screen) {
-		int xTile = 0;
+//		int xTile = 0;
+//
+//		int xOffset = x;
+//		int yOffset = y;
 
-		int xOffset = x;
-		int yOffset = y;
+		boolean flipX = false;
 
-		switch (movingDir) {
-			case 0:
-				dir = 0x01;
-				modifier = 16;
-				break;
-
-			case 1:
-				dir = 0x00;
-				modifier = 0;
-				break;
+		if (movingDir == 0) {
+			flipX = true;
 		}
 
-		if (isJumping) {
-			xTile = 8;
-		}
+//		if (isJumping) {
+//			xTile = 8;
+//		}
+//
+//		if (animationFrame == 1) {
+//			xTile += 2;
+//		} else if (animationFrame == 2) {
+//			xTile += 4;
+//		} else if (animationFrame == 3) {
+//			xTile += 6;
+//		}
 
-		if (animationFrame == 1) {
-			xTile += 2;
-		} else if (animationFrame == 2) {
-			xTile += 4;
-		} else if (animationFrame == 3) {
-			xTile += 6;
-		}
-
-//		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
-//		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
-//		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + (sheet.width/16), dir);
-//		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + (sheet.width/16) , dir);
+		screen.render(x - 16, y - 16, textureID, 32, flipX);
 	}
 }

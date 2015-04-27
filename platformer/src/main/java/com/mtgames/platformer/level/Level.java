@@ -80,7 +80,9 @@ public class Level {
 	}
 
 	public void renderBackground(Screen screen) {
-		backgrounds.forEach(screen::renderBackground);
+		for (Background b : backgrounds) {
+			screen.renderBackground(b.textureID);
+		}
 	}
 
 	public void renderEntities(Screen screen) {
