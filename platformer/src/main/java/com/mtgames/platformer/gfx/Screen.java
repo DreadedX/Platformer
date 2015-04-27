@@ -1,12 +1,15 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.mtgames.utils.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Screen {
 
@@ -57,76 +60,39 @@ public class Screen {
 	}
 
 	//	Default to 16x tileset and no mirror
-	public void render(int xPos, int yPos, Sheet sheet, int tile) {
-		render(xPos, yPos, sheet, tile, false, 0x00);
-	}
+//	public void render(int xPos, int yPos, Sheet sheet, int tile) {
+//		render(xPos, yPos, sheet, tile, false, 0x00);
+//	}
 
 	//	Default to 16x tileset
-	public void render(int xPos, int yPos, Sheet sheet, int tile, int mirrorDir) {
-		render(xPos, yPos, sheet, tile, false, mirrorDir);
-	}
+//	public void render(int xPos, int yPos, Sheet sheet, int tile, int mirrorDir) {
+//		render(xPos, yPos, sheet, tile, false, mirrorDir);
+//	}
 
 	//	Default to no mirror
-	public void render(int xPos, int yPos, Sheet sheet, int tile, boolean small) {
-		render(xPos, yPos, sheet, tile, small, 0x00);
-	}
+//	public void render(int xPos, int yPos, Sheet sheet, int tile, boolean small) {
+//		render(xPos, yPos, sheet, tile, small, 0x00);
+//	}
 
-	private void render(int xPos, int yPos, Sheet sheet, int tile, boolean small, int mirrorDir) {
-		xPos -= xOffset;
-		yPos -= yOffset;
+	public void render(int xPos, int yPos, int textureID) {
+//		xPos -= xOffset;
+//		yPos -= yOffset;
+		int modifier = 16;
 
-		int tileSize;
-		int bitSize;
-		if (small) {
-			tileSize = 8;
-			bitSize = 3;
-		} else {
-			tileSize = 16;
-			bitSize = 4;
-		}
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0); // top left
+			glVertex2f(xPos, yPos);
 
-		int scale = 1;
+			glTexCoord2f(1, 0); // bottom left
+			glVertex2f(xPos + modifier, yPos);
 
-		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
-		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
+			glTexCoord2f(1, 1); // bottom right
+			glVertex2f(xPos + modifier, yPos + modifier);
 
-		int scaleMap = scale - 1;
-		int xTile = tile % (sheet.width/tileSize);
-		int yTile = tile / (sheet.width/tileSize);
-
-		int tileOffset = (xTile << bitSize) + (yTile << bitSize) * sheet.width;
-		for (int y = 0; y < tileSize; y++) {
-			int ySheet = y;
-			if (mirrorY) {
-				ySheet = tileSize - 1 - y;
-			}
-
-			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << bitSize) / 2);
-			for (int x = 0; x < tileSize; x++) {
-				int xSheet = x;
-				if (mirrorX) {
-					xSheet = 15 - x;
-				}
-
-				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << bitSize) / 2);
-				int col = sheet.pixels[xSheet + ySheet * sheet.width + tileOffset];
-				if (col != 0xffff00ff && col != 0xff7f007f) {
-					for (int yScale = 0; yScale < scale; yScale++) {
-						if (yPixel + yScale < 0 || yPixel + yScale >= height) {
-							continue;
-						}
-
-						for (int xScale = 0; xScale < scale; xScale++) {
-							if (xPixel + xScale < 0 || xPixel + xScale >= width) {
-								continue;
-							}
-
-							pixels[(xPixel + xScale) + (yPixel + yScale) * width] = col;
-						}
-					}
-				}
-			}
-		}
+			glTexCoord2f(0, 1); // top right
+			glVertex2f(xPos, yPos + modifier);
+		glEnd();
 	}
 
 //	TODO: Make coloured lighting render over all entities

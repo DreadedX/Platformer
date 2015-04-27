@@ -10,6 +10,8 @@ import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import org.json.JSONObject;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 public class Player extends Mob {
 
 	private final int JUMPWAIT;
@@ -80,33 +82,33 @@ public class Player extends Mob {
 				canJump = false;
 			}
 
-			if (input.space.isPressed() && canJump && isAlive()) {
+			if (input.isPressed(GLFW_KEY_SPACE) && canJump && isAlive()) {
 				ya = -JUMPSPEED;
 				canJump = false;
 				animationFrame = 0;
 			}
 
-			if (input.up.isPressed() && canDash && isAlive()) {
+			if (input.isPressed(GLFW_KEY_W) && canDash && isAlive()) {
 				xaDash = DASHSPEED;
 				canDash = false;
 				dashWait = 0;
 				animationFrame = 0;
 			}
 
-			if (input.left.isPressed() && isAlive() && !isDashing) {
+			if (input.isPressed(GLFW_KEY_A) && isAlive() && !isDashing) {
 				xa -= speed;
 			}
 
-			if (input.right.isPressed() && isAlive() && !isDashing) {
+			if (input.isPressed(GLFW_KEY_D) && isAlive() && !isDashing) {
 				xa += speed;
 			}
 
-			if (input.throwItem.isPressed() && isAlive()) {
+			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
 //				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
 				Properties properties = new Properties("torch");
 				properties.set(new JSONObject("{\"colour\":" + Math.random() * 0xffffff +"}"));
 				level.addParticle(new Torch(x, y, properties));
-				input.throwItem.toggle(false);
+				input.set(GLFW_KEY_Q, false);
 			}
 
 		} else {
@@ -184,10 +186,10 @@ public class Player extends Mob {
 			xTile += 6;
 		}
 
-		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
-		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
-		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
-		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width / 16, dir);
+//		screen.render(xOffset - 16 + modifier, yOffset - 16, sheet, xTile, dir);
+//		screen.render(xOffset - modifier, yOffset - 16, sheet, xTile + 1, dir);
+//		screen.render(xOffset - 16 + modifier, yOffset, sheet, xTile + sheet.width/16, dir);
+//		screen.render(xOffset - modifier, yOffset, sheet, xTile + 1 + sheet.width / 16, dir);
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 

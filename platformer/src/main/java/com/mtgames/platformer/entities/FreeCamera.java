@@ -3,6 +3,9 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import org.lwjgl.glfw.GLFW;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class FreeCamera extends Mob {
 
@@ -24,25 +27,25 @@ public class FreeCamera extends Mob {
 		int xa = 0;
 		int ya = 0;
 
-		if (input.shift.isPressed()) {
+		if (input.isPressed(GLFW_KEY_LEFT_SHIFT)) {
 			speed = 8;
 		} else {
 			speed = 3;
 		}
 
-		if (input.left.isPressed()) {
+		if (input.isPressed(GLFW_KEY_A)) {
 			xa -= speed;
 		}
 
-		if (input.right.isPressed()) {
+		if (input.isPressed(GLFW_KEY_D)) {
 			xa += speed;
 		}
 
-		if (input.up.isPressed()) {
+		if (input.isPressed(GLFW_KEY_W)) {
 			ya -= speed;
 		}
 
-		if (input.down.isPressed()) {
+		if (input.isPressed(GLFW_KEY_S)) {
 			ya += speed;
 		}
 

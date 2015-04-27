@@ -1,6 +1,7 @@
 package com.mtgames.platformer;
 
 import com.mtgames.platformer.debug.Command;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
@@ -15,6 +16,20 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+
+import org.lwjgl.Sys;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.*;
+
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryUtil.*;
+
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 
 @SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
 
@@ -44,23 +59,27 @@ import java.awt.image.DataBufferInt;
 
 	public static boolean paused = false;
 
-	private Game() {
-		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+	private GLFWErrorCallback errorCallback;
+	private GLFWKeyCallback keyCallback;
+	private long window;
 
-		JFrame frame = new JFrame(NAME);
-
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-
-		frame.add(this, BorderLayout.CENTER);
-		frame.pack();
-
-		frame.setResizable(true);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
+//	private Game() {
+//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+//		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+//		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
+//
+//		JFrame frame = new JFrame(NAME);
+//
+//		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//		frame.setLayout(new BorderLayout());
+//
+//		frame.add(this, BorderLayout.CENTER);
+//		frame.pack();
+//
+//		frame.setResizable(true);
+//		frame.setLocationRelativeTo(null);
+//		frame.setVisible(true);
+//	}
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -78,7 +97,7 @@ import java.awt.image.DataBufferInt;
 
 	private void init() {
 		screen = new Screen();
-		input = new InputHandler(this);
+		input = new InputHandler();
 		level = new Level();
 
 		xOffset = screen.width / 2;
@@ -89,9 +108,29 @@ import java.awt.image.DataBufferInt;
 //		Load debug level
 		Command.exec("load debug_level");
 
-//		if (debug) {
-//			new Console();
-//		}
+		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
+
+		if (glfwInit() != GL_TRUE) {
+			throw new IllegalStateException("Unable to initialize GLFW");
+		}
+
+		glfwDefaultWindowHints();
+		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+
+		window = glfwCreateWindow(WIDTH * scale, HEIGHT * scale, "Hello World!", NULL, NULL);
+		if ( window == NULL ) {
+			throw new RuntimeException("Failed to create the GLFW window");
+		}
+
+		glfwSetKeyCallback(window, keyCallback = new InputHandler());
+
+		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - WIDTH) / 2, (GLFWvidmode.height(vidmode) - HEIGHT) / 2);
+		glfwMakeContextCurrent(window);
+		glfwSwapInterval(1);
+		glfwShowWindow(window);
 	}
 
 	private synchronized void start() {
@@ -102,6 +141,22 @@ import java.awt.image.DataBufferInt;
 	}
 
 	public void run() {
+		Debug.log("LWGJL verion: " + Sys.getVersion(), Debug.DEBUG);
+
+		try {
+			init();
+			loop();
+
+			glfwDestroyWindow(window);
+			keyCallback.release();
+		} finally {
+			glfwTerminate();
+			errorCallback.release();
+		}
+
+	}
+
+	private void loop() {
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000d / TPS;
 
@@ -112,9 +167,17 @@ import java.awt.image.DataBufferInt;
 		long lastTimerShort = System.currentTimeMillis();
 		double delta = 0;
 
-		init();
+		GLContext.createFromCurrent();
+		glMatrixMode(GL11.GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, WIDTH * scale, 0, HEIGHT * scale, 1, -1);
+		glMatrixMode(GL11.GL_MODELVIEW);
+		glClearColor(0.56f, 0.258f, 0.425f, 1.0f);
+		glEnable(GL_TEXTURE_2D);
 
-		while (running) {
+		Debug.log("OpenGL version: " + glGetString(GL_VERSION), Debug.DEBUG);
+
+		while (glfwWindowShouldClose(window) == GL_FALSE) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
@@ -148,7 +211,7 @@ import java.awt.image.DataBufferInt;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
+				Debug.log(frames + " Frames, " + ticks + " Ticks " + level.entities.get(0).x + " " + level.entities.get(0).y, Debug.INFO);
 				frames = 0;
 				ticks = 0;
 			}
@@ -158,13 +221,42 @@ import java.awt.image.DataBufferInt;
 	private void tick() {
 		level.tick();
 
-		if (shakeCam) {
-			tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
-			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-		}
+//		if (shakeCam) {
+//			tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
+//			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+//		}
 	}
 
 	private void render() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		if (level.entities.size() > 0) {
+			if (level.entities.get(0).x > xOffset + screen.width/2 + 50) {
+				xOffset = level.entities.get(0).x - (screen.width/2 + 50);
+			}
+
+			if (level.entities.get(0).x < xOffset + screen.width/2 - 50) {
+				xOffset = level.entities.get(0).x - (screen.width/2 - 50);
+			}
+
+			if (level.entities.get(0).y > yOffset + screen.height/2 + 50) {
+				yOffset = level.entities.get(0).y - (screen.height/2 + 50);
+			}
+
+			if (level.entities.get(0).y < yOffset + screen.height/2 - 50) {
+				yOffset = level.entities.get(0).y - (screen.height/2 - 50);
+			}
+		}
+
+//		screen.render(16, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
+//		screen.render(32, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
+		level.renderTiles(screen, xOffset, yOffset);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	private void renderOld() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
 			createBufferStrategy(3);
@@ -204,18 +296,18 @@ import java.awt.image.DataBufferInt;
 		Hud.render(screen);
 
 		/* Debug text */
-		if (input.debug.isPressed() && debug) {
+		if (input.isPressed(GLFW_KEY_F3) && debug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
 		}
 
 //		Pausing the game TODO: should not be in render()
-		if (input.pause.isPressed()) {
+		if (input.isPressed(GLFW_KEY_P)) {
 			Command.exec("pause");
-			input.pause.toggle(false);
+			input.set(GLFW_KEY_P, false);
 		}
 
-		if (input.message.isPressed()) {
+		if (input.isPressed(GLFW_KEY_M)) {
 			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ      abcdefghijklmnopqrstuvwxyz      0123456789.,:;'\"!?$%()-=+/*[]");
 		}
 

@@ -44,9 +44,9 @@ public class Glowstick extends Particle {
 
 	public void render(Screen screen) {
 		if (modifier < 0xff) {
-			screen.render(x-8, y-8, sheet, 0);
+//			screen.render(x-8, y-8, sheet, 0);
 		} else {
-			screen.render(x-8, y-8, sheet, 1);
+//			screen.render(x-8, y-8, sheet, 1);
 		}
 	}
 }
