@@ -11,7 +11,7 @@ public class Text {
 		int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
 		int height = msg.length() - msg.replace("|", "").length();
 
-		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 8 * height, 0xff000000, true);
+		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 8 * height, 0xff000000);
 		Font.render(title.toUpperCase(), screen, xTitle, screen.yOffset + screen.height / 2 - 40);
 		Font.render(msg, screen, screen.xOffset + 16, screen.yOffset + screen.height / 2 - 24);
 	}

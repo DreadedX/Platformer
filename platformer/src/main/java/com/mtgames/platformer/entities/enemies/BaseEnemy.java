@@ -15,8 +15,7 @@ public class BaseEnemy extends Mob {
 
 	private final LightSource lightSource;
 
-	private final Sheet sheet     = new Sheet("/assets/graphics/entities/baseEnemy.png");
-	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/baseEnemy_stand.png"));
+	private final int   textureIDStand = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/baseEnemy/stand.png"));
 
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
@@ -87,6 +86,7 @@ public class BaseEnemy extends Mob {
 //		} else if (animationFrame == 3) {
 //			xTile += 6;
 //		}
+		int textureID = textureIDStand;
 
 		screen.render(x - 16, y - 16, textureID, 32, flipX);
 	}

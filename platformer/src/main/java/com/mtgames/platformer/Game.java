@@ -1,35 +1,32 @@
 package com.mtgames.platformer;
 
 import com.mtgames.platformer.debug.Command;
-import com.mtgames.platformer.gfx.opengl.TextureLoader;
-import com.mtgames.utils.Debug;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.utils.Debug;
+import org.lwjgl.Sys;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-
-import org.lwjgl.Sys;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
-import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
-
-import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
 
@@ -51,8 +48,9 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 	public static InputHandler input;
 	public static Level        level;
 
-	public static  boolean shakeCam = false;
-	private static boolean debug    = false;
+	public static  boolean shakeCam  = false;
+	private static boolean debug     = false;
+	private static boolean showDebug = false;
 
 	private int xOffset;
 	private int yOffset;
@@ -62,6 +60,10 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 	private GLFWErrorCallback errorCallback;
 	private GLFWKeyCallback   keyCallback;
 	private long              window;
+
+//	TESTCODE
+	private int TESTTEXTUREID;
+
 
 	//	private Game() {
 	//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -118,7 +120,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-		window = glfwCreateWindow(WIDTH * scale, HEIGHT * scale, "Hello World!", NULL, NULL);
+		window = glfwCreateWindow(WIDTH * scale, HEIGHT * scale, NAME, NULL, NULL);
 		if ( window == NULL ) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
@@ -174,7 +176,13 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 		glOrtho(0, WIDTH * scale, HEIGHT * scale, 0, 1, -1);
 		glMatrixMode(GL11.GL_MODELVIEW);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		Font.init();
+
+//		TESTCODE
+		TESTTEXTUREID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/lights/torch.png"));
 
 		Debug.log("OpenGL version: " + glGetString(GL_VERSION), Debug.DEBUG);
 
@@ -222,6 +230,11 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 	private void tick() {
 		level.tick();
 
+		if (input.isPressed(GLFW_KEY_F3) && debug) {
+			showDebug = !showDebug;
+			input.set(GLFW_KEY_F3, false);
+		}
+
 //		if (shakeCam) {
 //			tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
 //			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
@@ -254,11 +267,48 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 			input.set(GLFW_KEY_P, false);
 		}
 
-//		screen.render(16, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
-//		screen.render(32, 16, TextureLoader.loadImage("/assets/graphics/tiles/bigBlock1.png"), 1, true, 1);
 		level.renderBackground(screen);
 		level.renderTiles(screen, xOffset, yOffset);
 		level.renderEntities(screen);
+
+		if (showDebug) {
+			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
+			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
+		}
+
+		if (input.isPressed(GLFW_KEY_M)) {
+			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ");
+		}
+
+//		TESTCODE
+		glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, TESTTEXTUREID);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(100, 100);
+			glTexCoord2f(1, 0);
+			glVertex2f(500, 100);
+			glTexCoord2f(1, 1);
+			glVertex2f(500, 500);
+			glTexCoord2f(0, 1);
+			glVertex2f(100, 500);
+		glEnd();
+
+		glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(150, 150);
+			glTexCoord2f(1, 0);
+			glVertex2f(600, 150);
+			glTexCoord2f(1, 1);
+			glVertex2f(600, 600);
+			glTexCoord2f(0, 1);
+			glVertex2f(150, 600);
+		glEnd();
+//		glDisable(GL_TEXTURE_2D);
+		glColor3f(1.0f, 1.0f, 1.0f);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

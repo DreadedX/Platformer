@@ -59,7 +59,7 @@ public class Properties {
 	}
 
 	public void set(JSONObject obj) {
-		Debug.log(String.valueOf(obj), Debug.DEBUG);
+		Debug.log("Setting properties: " + String.valueOf(obj), Debug.DEBUG);
 
 		if (obj.has("jumpWait")) {
 			jumpWait = obj.getInt("jumpWait");

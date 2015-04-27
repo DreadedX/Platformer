@@ -72,8 +72,8 @@ public class Level {
 
 		screen.setOffset(xOffset, yOffset);
 
-		for (int y = (yOffset >> 4); y <= (yOffset + screen.height >> 4); y++) {
-			for (int x = (xOffset >> 4); x <= (xOffset + screen.width >> 4); x++) {
+		for (int y = (yOffset >> 4) - 1; y <= (yOffset + screen.height >> 4) + 1; y++) {
+			for (int x = (xOffset >> 4) - 1; x <= (xOffset + screen.width >> 4) + 1; x++) {
 				getTile(x, y).render(screen, x << 4, y << 4);
 			}
 		}

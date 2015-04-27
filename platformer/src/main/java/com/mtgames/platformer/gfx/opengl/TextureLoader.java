@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import com.mtgames.platformer.Game;
+import com.mtgames.utils.Debug;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL12;
 
@@ -58,6 +59,7 @@ public class TextureLoader {
 	public static BufferedImage loadImage(String loc)
 	{
 		try {
+			Debug.log("Loading texture: " + loc, Debug.DEBUG);
 			return ImageIO.read(Game.class.getResource(loc));
 		} catch (IOException e) {
 			//Error Handling Here

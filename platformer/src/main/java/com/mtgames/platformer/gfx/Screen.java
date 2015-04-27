@@ -89,6 +89,8 @@ public class Screen {
 		y *= scale;
 		int modifier = size * scale;
 
+		glEnable(GL_TEXTURE_2D);
+
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glBegin(GL_QUADS);
 		if (flipX) {
@@ -117,6 +119,8 @@ public class Screen {
 			glVertex2f(x, y + modifier);
 		}
 		glEnd();
+
+		glDisable(GL_TEXTURE_2D);
 
 //		glDeleteTextures(textureID);
 	}
@@ -209,6 +213,8 @@ public class Screen {
 	}
 
 	public void renderBackground(int textureID) {
+		glEnable(GL_TEXTURE_2D);
+
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 0); // top left
@@ -224,6 +230,7 @@ public class Screen {
 			glVertex2f(0, height * scale);
 		glEnd();
 
+		glDisable(GL_TEXTURE_2D);
 
 //		int speed = background.getSpeed();
 //		int xOffsetSpeed = xOffset / speed;
@@ -250,24 +257,15 @@ public class Screen {
 //		}
 	}
 
-	public void drawRectangle(int x1, int y1, int x2, int y2, long colour, boolean opaque) {
-		for (int y = y1; y < y2; y++) {
-			if (y < 0 || y >= height) {
-				continue;
-			}
-
-			for (int x = x1; x < x2; x++) {
-				if (x < 0 || x >= width) {
-					continue;
-				}
-
-				if (opaque) {
-					pixels[x + y * width] = (int) colour;
-				} else {
-					pixels[x + y * width] = alphaBlend(pixels[x + y * width], colour);
-				}
-			}
-		}
+	public void drawRectangle(int x1, int y1, int x2, int y2, long colour) {
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glBegin(GL_QUADS);
+			glVertex2f(x1 * scale, y1 * scale);
+			glVertex2f(x2 * scale, y1 * scale);
+			glVertex2f(x2 * scale, y2 * scale);
+			glVertex2f(x1 * scale, y2 * scale);
+		glEnd();
+		glColor3f(1.0f, 1.0f, 1.0f);
 	}
 
 	private int alphaBlend(int c1, long c2) {

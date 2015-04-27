@@ -23,8 +23,7 @@ public class Player extends Mob {
 	private final int MAXHEALTH;
 
 	private final InputHandler input;
-	private final Sheet sheet     = new Sheet("/assets/graphics/entities/player.png");
-	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/player_stand.png"));
+	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/player/stand.png"));
 
 	private int xa     = 0;
 	private int xaDash = 0;
