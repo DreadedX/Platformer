@@ -2,14 +2,12 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
-import com.mtgames.platformer.entities.particles.Torch;
+import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
-import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -23,11 +21,11 @@ public class Player extends Mob {
 	private final int MAXHEALTH;
 
 	private final InputHandler input;
-	private final int   textureID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/player/stand.png"));
+	private static final int[] textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/player", 8);
 
-	private int xa     = 0;
-	private int xaDash = 0;
-	private int ya     = 0;
+	private int xa          = 0;
+	private int xaDash      = 0;
+	private int ya          = 0;
 	private int jumpWait    = 0;
 	private int dashWait    = 0;
 	private int dashTime    = 0;
@@ -103,10 +101,10 @@ public class Player extends Mob {
 			}
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
-//				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
-				Properties properties = new Properties("torch");
-				properties.set(new JSONObject("{\"colour\":" + Math.random() * 0xffffff +"}"));
-				level.addParticle(new Torch(x, y, properties));
+				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
+//				Properties properties = new Properties("torch");
+//				properties.set(new JSONObject("{\"colour\":" + Math.random() * 0xffffff +"}"));
+//				level.addParticle(new Torch(x, y, properties));
 				input.set(GLFW_KEY_Q, false);
 			}
 
@@ -150,10 +148,7 @@ public class Player extends Mob {
 	}
 
 	public void render(Screen screen) {
-//		int xTile = 0;
-//
-//		int xOffset = x;
-//		int yOffset = y;
+		int xTile = 0;
 
 		boolean flipX = false;
 
@@ -161,25 +156,25 @@ public class Player extends Mob {
 			flipX = true;
 		}
 
-//		if (isJumping && !isDashing && !isStaggered) {
-//			xTile = 8;
-//		} else if (isDashing) {
-//			xTile = 12;
-//			animationFrame = 0;
-//		} else if (isStaggered) {
-//			xTile = 14;
-//			animationFrame = 0;
-//		}
-//
-//		if (animationFrame == 1) {
-//			xTile += 2;
-//		} else if (animationFrame == 2) {
-//			xTile += 4;
-//		} else if (animationFrame == 3) {
-//			xTile += 6;
-//		}
+		if (isJumping && !isDashing && !isStaggered) {
+			xTile = 4;
+		} else if (isDashing) {
+			xTile = 6;
+			animationFrame = 0;
+		} else if (isStaggered) {
+			xTile = 7;
+			animationFrame = 0;
+		}
 
-		screen.render(x - 16, y - 16, textureID, 32, flipX);
+		if (animationFrame == 1) {
+			xTile += 1;
+		} else if (animationFrame == 2) {
+			xTile += 2;
+		} else if (animationFrame == 3) {
+			xTile += 3;
+		}
+
+		screen.renderEntity(x, y, textureID[xTile], 32, flipX);
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 

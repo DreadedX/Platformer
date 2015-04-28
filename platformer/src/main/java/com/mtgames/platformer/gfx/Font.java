@@ -8,10 +8,10 @@ public class Font {
 
 	public static void init() {
 		for (int i = 0; i < chars.length() - 1; i++) {
-			textureID[i] = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/font/" + chars.charAt(i) + ".png"));
+			textureID[i] = TextureLoader.loadTexture("/assets/graphics/font/" + chars.charAt(i) + ".png");
 		}
 
-		textureID[chars.length()-1] = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/font/space.png"));
+		textureID[chars.length()-1] = TextureLoader.loadTexture("/assets/graphics/font/space.png");
 
 	}
 
@@ -28,7 +28,7 @@ public class Font {
 
 			int charIndex = chars.indexOf(msg.charAt(i));
 			if (charIndex >= 0) {
-				screen.render(x + (location * 8), y + 9 * line, textureID[charIndex], 8);
+				screen.renderTile(x + (location * 8), y + 9 * line, textureID[charIndex], 8);
 			}
 			location++;
 		}

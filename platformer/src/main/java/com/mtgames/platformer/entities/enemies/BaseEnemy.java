@@ -3,7 +3,6 @@ package com.mtgames.platformer.entities.enemies;
 import com.mtgames.platformer.entities.Mob;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
@@ -15,7 +14,7 @@ public class BaseEnemy extends Mob {
 
 	private final LightSource lightSource;
 
-	private final int   textureIDStand = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/entities/baseEnemy/stand.png"));
+	private static final int[] textureIDStand = TextureLoader.loadTextureArray("/assets/graphics/entities/baseEnemy", 6);
 
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
@@ -64,10 +63,7 @@ public class BaseEnemy extends Mob {
 	}
 
 	public void render(Screen screen) {
-//		int xTile = 0;
-//
-//		int xOffset = x;
-//		int yOffset = y;
+		int xTile = 0;
 
 		boolean flipX = false;
 
@@ -75,19 +71,19 @@ public class BaseEnemy extends Mob {
 			flipX = true;
 		}
 
-//		if (isJumping) {
-//			xTile = 8;
-//		}
-//
-//		if (animationFrame == 1) {
-//			xTile += 2;
-//		} else if (animationFrame == 2) {
-//			xTile += 4;
-//		} else if (animationFrame == 3) {
-//			xTile += 6;
-//		}
-		int textureID = textureIDStand;
+		if (isJumping) {
+			xTile = 4;
+		}
 
-		screen.render(x - 16, y - 16, textureID, 32, flipX);
+		if (animationFrame == 1) {
+			xTile += 1;
+		} else if (animationFrame == 2) {
+			xTile += 2;
+		} else if (animationFrame == 3) {
+			xTile += 3;
+		}
+		int textureID = textureIDStand[xTile];
+
+		screen.renderEntity(x, y, textureID, 32, flipX);
 	}
 }

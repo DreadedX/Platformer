@@ -74,17 +74,62 @@ public class Screen {
 //		render(xPos, yPos, sheet, tile, small, 0x00);
 //	}
 
-	public void render(int x, int y, int textureID) {
-		render(x, y, textureID, 16, false);
+	public void renderTile(int x, int y, int textureID) {
+		renderTile(x, y, textureID, 16, 0);
 	}
 
-	public void render(int x, int y, int textureID, int size) {
-		render(x, y, textureID, size, false);
+	public void renderTile(int x, int y, int textureID, int size) {
+		renderTile(x, y, textureID, size, 0);
 	}
 
-	public void render(int x, int y, int textureID, int size, boolean flipX) {
+	public void renderTile(int x, int y, int textureID, int size, int part) {
 		x -= xOffset;
 		y -= yOffset;
+		x *= scale;
+		y *= scale;
+		int modifier = size * scale;
+
+		float partX1 = 0;
+		float partY1 = 0;
+		float partX2 = 1.0f;
+		float partY2 = 1.0f;
+
+		if (size > 16) {
+			float partSize = 16f / size;
+
+			modifier = 16 * scale;
+
+			partX1 = (partSize * part) % 1.0f;
+			partX2 = partX1 + partSize % 1.0f;
+
+			partY1 = partSize * (part / (size / 16));
+			partY2 = partY1 + partSize;
+
+		}
+
+		glEnable(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glBegin(GL_QUADS);
+			glTexCoord2f(partX1, partY1); // top left
+			glVertex2f(x, y);
+
+			glTexCoord2f(partX2, partY1); // top right
+			glVertex2f(x + modifier, y);
+
+			glTexCoord2f(partX2, partY2); // bottom right
+			glVertex2f(x + modifier, y + modifier);
+
+			glTexCoord2f(partX1, partY2); // bottom left
+			glVertex2f(x, y + modifier);
+		glEnd();
+
+		glDisable(GL_TEXTURE_2D);
+	}
+
+	public void renderEntity(int x, int y, int textureID, int size, boolean flipX) {
+		x -= xOffset + size / 2;
+		y -= yOffset + size / 2;
 		x *= scale;
 		y *= scale;
 		int modifier = size * scale;
@@ -94,28 +139,28 @@ public class Screen {
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glBegin(GL_QUADS);
 		if (flipX) {
-			glTexCoord2f(0, 0); // top left
+			glTexCoord2f(0, 0);
 			glVertex2f(x + modifier, y);
 
-			glTexCoord2f(1, 0); // bottom left
+			glTexCoord2f(1.0f, 0);
 			glVertex2f(x, y);
 
-			glTexCoord2f(1, 1); // bottom right
+			glTexCoord2f(1.0f, 1.0f);
 			glVertex2f(x, y + modifier);
 
-			glTexCoord2f(0, 1); // top right
+			glTexCoord2f(0, 1.0f);
 			glVertex2f(x + modifier, y + modifier);
 		} else {
-			glTexCoord2f(0, 0); // top left
+			glTexCoord2f(0, 0);
 			glVertex2f(x, y);
 
-			glTexCoord2f(1, 0); // bottom left
+			glTexCoord2f(1.0f, 0);
 			glVertex2f(x + modifier, y);
 
-			glTexCoord2f(1, 1); // bottom right
+			glTexCoord2f(1.0f, 1.0f);
 			glVertex2f(x + modifier, y + modifier);
 
-			glTexCoord2f(0, 1); // top right
+			glTexCoord2f(0, 1.0f);
 			glVertex2f(x, y + modifier);
 		}
 		glEnd();
@@ -212,49 +257,31 @@ public class Screen {
 		}
 	}
 
-	public void renderBackground(int textureID) {
+	public void renderBackground(int textureID, int speed, int backgroundWidth, int levelWidth) {
+		int xOffsetSpeed = xOffset / speed;
+		levelWidth = levelWidth << 4;
+		float repeat = (float) levelWidth / width;
+
 		glEnable(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0); // top left
-			glVertex2f(0, 0);
+			glTexCoord2f(0, 0);
+			glVertex2f(-xOffsetSpeed, 0);
 
-			glTexCoord2f(1, 0); // bottom left
-			glVertex2f(width * scale, 0);
+			glTexCoord2f(repeat, 0);
+			glVertex2f(levelWidth * scale - xOffsetSpeed, 0);
 
-			glTexCoord2f(1, 1); // bottom right
-			glVertex2f(width * scale, height * scale);
+			glTexCoord2f(repeat, 1);
+			glVertex2f(levelWidth * scale - xOffsetSpeed, height * scale);
 
-			glTexCoord2f(0, 1); // top right
-			glVertex2f(0, height * scale);
+			glTexCoord2f(0, 1);
+			glVertex2f(-xOffsetSpeed, height * scale);
 		glEnd();
 
 		glDisable(GL_TEXTURE_2D);
-
-//		int speed = background.getSpeed();
-//		int xOffsetSpeed = xOffset / speed;
-//		int yOffsetSpeed = yOffset / speed;
-//
-//		for (int y = yOffset; y < (height + yOffset); y++) {
-//			int yPixel = y - yOffset;
-//
-//			for (int x = xOffset; x < (width + xOffset); x++) {
-//				int xPixel = x - xOffset;
-//				int col = background.pixels[(x - xOffsetSpeed) + (y - yOffsetSpeed) * background.width];
-//				if (col != 0xffff00ff && col != 0xff7f007f) {
-//					if (yPixel < 0 || yPixel >= height) {
-//						continue;
-//					}
-//
-//					if (xPixel < 0 || xPixel >= width) {
-//						continue;
-//					}
-//
-//					pixels[(xPixel) + (yPixel) * width] = col;
-//				}
-//			}
-//		}
 	}
 
 	public void drawRectangle(int x1, int y1, int x2, int y2, long colour) {

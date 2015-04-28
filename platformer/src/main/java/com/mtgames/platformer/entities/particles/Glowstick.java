@@ -3,15 +3,15 @@ package com.mtgames.platformer.entities.particles;
 import com.mtgames.platformer.entities.Particle;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.Sheet;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
 public class Glowstick extends Particle {
 
 	private int xa;
-	private       int    ya       = -10 - (int) (Math.random());
-	private final Sheet  sheet    = new Sheet("/assets/graphics/items/glowstick.png");
-	private       double modifier = 0;
+	private int    ya        = -10 - (int) (Math.random());
+	private static int[]    textureID = TextureLoader.loadTextureArray("/assets/graphics/items/glowstick", 2);
+	private double modifier  = 0;
 	private final LightSource lightSource;
 
 	public Glowstick(int x, int y, int movingDir, Properties properties) {
@@ -44,9 +44,9 @@ public class Glowstick extends Particle {
 
 	public void render(Screen screen) {
 		if (modifier < 0xff) {
-//			screen.render(x-8, y-8, sheet, 0);
+			screen.renderTile(x - 8, y - 8, textureID[0]);
 		} else {
-//			screen.render(x-8, y-8, sheet, 1);
+			screen.renderTile(x - 8, y - 8, textureID[1]);
 		}
 	}
 }

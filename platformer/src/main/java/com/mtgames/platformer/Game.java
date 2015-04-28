@@ -61,10 +61,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private GLFWKeyCallback   keyCallback;
 	private long              window;
 
-//	TESTCODE
-	private int TESTTEXTUREID;
-
-
 	//	private Game() {
 	//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
 	//		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
@@ -108,7 +104,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		//		Initialize command system
 		Command.set(level, screen);
 //		Load debug level
-		Command.exec("load opengl");
+		Command.exec("load debug_level");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
@@ -132,6 +128,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - WIDTH) / 2, (GLFWvidmode.height(vidmode) - HEIGHT) / 2);
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(0);
+//		glfwSwapInterval(1);
 		glfwShowWindow(window);
 	}
 
@@ -180,9 +177,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		Font.init();
-
-//		TESTCODE
-		TESTTEXTUREID = TextureLoader.loadTexture(TextureLoader.loadImage("/assets/graphics/lights/torch.png"));
 
 		Debug.log("OpenGL version: " + glGetString(GL_VERSION), Debug.DEBUG);
 
@@ -269,6 +263,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		level.renderBackground(screen);
 		level.renderTiles(screen, xOffset, yOffset);
+		level.renderParticles(screen);
 		level.renderEntities(screen);
 
 		if (showDebug) {
@@ -279,35 +274,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		if (input.isPressed(GLFW_KEY_M)) {
 			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ");
 		}
-
-//		TESTCODE
-		glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, TESTTEXTUREID);
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(100, 100);
-			glTexCoord2f(1, 0);
-			glVertex2f(500, 100);
-			glTexCoord2f(1, 1);
-			glVertex2f(500, 500);
-			glTexCoord2f(0, 1);
-			glVertex2f(100, 500);
-		glEnd();
-
-		glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(150, 150);
-			glTexCoord2f(1, 0);
-			glVertex2f(600, 150);
-			glTexCoord2f(1, 1);
-			glVertex2f(600, 600);
-			glTexCoord2f(0, 1);
-			glVertex2f(150, 600);
-		glEnd();
-//		glDisable(GL_TEXTURE_2D);
-		glColor3f(1.0f, 1.0f, 1.0f);
 
 
 		glfwSwapBuffers(window);
