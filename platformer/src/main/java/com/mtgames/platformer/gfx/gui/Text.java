@@ -2,6 +2,7 @@ package com.mtgames.platformer.gfx.gui;
 
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
+import com.sun.javafx.geom.Vec4f;
 
 public class Text {
 
@@ -11,7 +12,7 @@ public class Text {
 		int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
 		int height = msg.length() - msg.replace("|", "").length();
 
-		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 8 * height, 0xff000000);
+		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 8 * height, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
 		Font.render(title.toUpperCase(), screen, xTitle, screen.yOffset + screen.height / 2 - 40);
 		Font.render(msg, screen, screen.xOffset + 16, screen.yOffset + screen.height / 2 - 24);
 	}

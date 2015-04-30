@@ -3,7 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
-import org.lwjgl.glfw.GLFW;
+import com.sun.javafx.geom.Vec4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -54,7 +54,7 @@ public class FreeCamera extends Mob {
 	}
 
 	public void render(Screen screen) {
-		screen.drawRectangle(x-4-screen.xOffset, y-4-screen.yOffset ,x+4-screen.xOffset, y+4-screen.yOffset, 0x7F000000);
+		screen.drawRectangle(x-4-screen.xOffset, y-4-screen.yOffset ,x+4-screen.xOffset, y+4-screen.yOffset, new Vec4f(0.0f, 0.0f, 0.0f, 0.5f));
 	}
 
 	@Override public boolean hasCollided(int xa, int ya) {

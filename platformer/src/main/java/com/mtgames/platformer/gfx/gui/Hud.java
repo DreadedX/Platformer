@@ -41,8 +41,8 @@ public class Hud {
 //			screen.render(screen.xOffset + 12 + i * 16, screen.yOffset + 28, sheet, 7, 0x02);
 		}
 
-		screen.drawRectangle(12, 12, 140, 28, 0xff2f558d);
-		screen.drawRectangle(12, 12, (int) (dashRatio * 140), 28, 0xff3662a2);
+//		screen.drawRectangle(12, 12, 140, 28, 0xff2f558d);
+//		screen.drawRectangle(12, 12, (int) (dashRatio * 140), 28, 0xff3662a2);
 	}
 
 	private static void renderHealth(Screen screen) {
@@ -62,8 +62,8 @@ public class Hud {
 //			screen.render(screen.xOffset + screen.width - 140 + i * 16, screen.yOffset + 28, sheet, 4, 0x02);
 		}
 
-		screen.drawRectangle(screen.width - 140, 12, screen.width - 12, 28, 0xff9d3d2f);
-		screen.drawRectangle(screen.width - 140, 12, (int) ((screen.width - 156) + (healthRatio * 144)), 28, 0xffb44c36);
+//		screen.drawRectangle(screen.width - 140, 12, screen.width - 12, 28, 0xff9d3d2f);
+//		screen.drawRectangle(screen.width - 140, 12, (int) ((screen.width - 156) + (healthRatio * 144)), 28, 0xffb44c36);
 	}
 
 //	private static void renderLives(Screen screen) {

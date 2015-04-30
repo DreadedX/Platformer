@@ -32,7 +32,7 @@ public class Background {
 	}
 
 	public void render(Screen screen, int levelWidth) {
-		screen.renderBackground(textureID, speed, width, levelWidth);
+		screen.renderBackground(textureID, speed, levelWidth);
 	}
 
 	public int getSpeed() {

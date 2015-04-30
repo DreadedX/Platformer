@@ -3,32 +3,25 @@ package com.mtgames.platformer;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
-import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-@SuppressWarnings({ "serial" }) public class Game extends Canvas implements Runnable {
+@SuppressWarnings({ "serial" }) public class Game implements Runnable {
 
 	private static final boolean FPSUNLOCK = true;
 	private static final int     TPS       = 60;
@@ -37,18 +30,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private static final String  NAME      = "Platformer";
 
 	public static int scale;
-	private final BufferedImage     image   = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private final int[]             pixels  = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	private       AffineTransform   tx      = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
-	private       AffineTransformOp op      = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-	private       boolean           running = false;
-	private       int               fps     = 0;
+	private boolean running = false;
+	private int     fps     = 0;
 	private Screen screen;
 
 	public static InputHandler input;
 	public static Level        level;
 
-	public static  boolean shakeCam  = false;
 	private static boolean debug     = false;
 	private static boolean showDebug = false;
 
@@ -61,23 +49,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private GLFWKeyCallback   keyCallback;
 	private long              window;
 
-	//	private Game() {
-	//		setMinimumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-	//		setMaximumSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-	//		setPreferredSize(new Dimension(WIDTH * scale, HEIGHT * scale));
-	//
-	//		JFrame frame = new JFrame(NAME);
-	//
-	//		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	//		frame.setLayout(new BorderLayout());
-	//
-	//		frame.add(this, BorderLayout.CENTER);
-	//		frame.pack();
-	//
-	//		frame.setResizable(true);
-	//		frame.setLocationRelativeTo(null);
-	//		frame.setVisible(true);
-	//	}
+	private int lightShader;
+
+	private int lightBuffferID;
+	private int lightTextureID;
+	private int lightDepthBufferID;
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -103,7 +79,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		//		Initialize command system
 		Command.set(level, screen);
-//		Load debug level
+		//		Load debug level
 		Command.exec("load debug_level");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
@@ -117,7 +93,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		window = glfwCreateWindow(WIDTH * scale, HEIGHT * scale, NAME, NULL, NULL);
-		if ( window == NULL ) {
+		if (window == NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
 
@@ -168,10 +144,41 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		double delta = 0;
 
 		GLContext.createFromCurrent();
-		glMatrixMode(GL11.GL_PROJECTION);
+
+		glClearColor (0.0f, 0.0f, 0.0f, 0.5f);
+		glClearDepth (1.0f);
+		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_DEPTH_TEST);
+		glShadeModel(GL_SMOOTH);
+		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+//		lightShader = ShaderLoader.initialize("shaders/light.frag");
+
+//		SETUP LIGHT FBO
+
+		lightBuffferID = glGenFramebuffersEXT();
+		lightTextureID = glGenTextures();
+		lightDepthBufferID = glGenRenderbuffersEXT();
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
+
+		glBindTexture(GL_TEXTURE_2D, lightTextureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, WIDTH * scale, HEIGHT * scale, 0, GL_RGBA, GL_INT, (ByteBuffer) null);
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, lightTextureID, 0);
+
+		glBindFramebufferEXT(GL_RENDERBUFFER_EXT, lightDepthBufferID);
+		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, WIDTH * scale, HEIGHT * scale);
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, lightDepthBufferID);
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+//		END SETUP LIGHT FBO
+
+		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, WIDTH * scale, HEIGHT * scale, 0, 1, -1);
-		glMatrixMode(GL11.GL_MODELVIEW);
+		glMatrixMode(GL_MODELVIEW);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -206,6 +213,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				render();
 			}
 
+			if (input.isPressed(GLFW_KEY_P)) {
+				Command.exec("pause");
+				input.set(GLFW_KEY_P, false);
+			}
+
+			if (input.isPressed(GLFW_KEY_F3) && debug) {
+				showDebug = !showDebug;
+				input.set(GLFW_KEY_F3, false);
+			}
+
 			/* Determine current fps */
 			if (System.currentTimeMillis() - lastTimerShort >= 100) {
 				lastTimerShort += 100;
@@ -223,19 +240,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	private void tick() {
 		level.tick();
-
-		if (input.isPressed(GLFW_KEY_F3) && debug) {
-			showDebug = !showDebug;
-			input.set(GLFW_KEY_F3, false);
-		}
-
-//		if (shakeCam) {
-//			tx = AffineTransform.getRotateInstance(Math.toRadians(Math.random() - 0.5), WIDTH / 2, HEIGHT / 2);
-//			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-//		}
 	}
 
 	private void render() {
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+		glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		if (level.entities.size() > 0) {
@@ -243,28 +253,74 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				xOffset = level.entities.get(0).x - (screen.width/2 + 50);
 			}
 
-			if (level.entities.get(0).x < xOffset + screen.width/2 - 50) {
-				xOffset = level.entities.get(0).x - (screen.width/2 - 50);
+			if (level.entities.get(0).x < xOffset + screen.width / 2 - 50) {
+				xOffset = level.entities.get(0).x - (screen.width / 2 - 50);
 			}
 
 			if (level.entities.get(0).y > yOffset + screen.height/2 + 50) {
-				yOffset = level.entities.get(0).y - (screen.height/2 + 50);
+				yOffset = level.entities.get(0).y - (screen.height / 2 + 50);
 			}
 
-			if (level.entities.get(0).y < yOffset + screen.height/2 - 50) {
+			if (level.entities.get(0).y < yOffset + screen.height / 2 - 50) {
 				yOffset = level.entities.get(0).y - (screen.height/2 - 50);
 			}
-		}
-
-		if (input.isPressed(GLFW_KEY_P)) {
-			Command.exec("pause");
-			input.set(GLFW_KEY_P, false);
 		}
 
 		level.renderBackground(screen);
 		level.renderTiles(screen, xOffset, yOffset);
 		level.renderParticles(screen);
 		level.renderEntities(screen);
+
+//		RENDER LIGHT FBO
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.9f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+//		glBegin(GL_QUADS);
+//			glTexCoord2f(0, 1);
+//			glVertex2f(0, 0);
+//
+//			glTexCoord2f(1, 1);
+//			glVertex2f(WIDTH * scale, 0);
+//
+//			glTexCoord2f(1, 0);
+//			glVertex2f(WIDTH * scale, HEIGHT * scale);
+//
+//			glTexCoord2f(0, 0);
+//			glVertex2f(0, HEIGHT * scale);
+//		glEnd();
+//		glColor3f(1.0f, 1.0f, 1.0f);
+
+//		glBlendFunc(GL_ONE, GL_ONE);
+		glBlendEquation(GL_FUNC_SUBTRACT);
+		level.renderLights(screen);
+		glBlendEquation(GL_FUNC_ADD);
+//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, lightTextureID);
+
+//		glBlendFunc(GL_ONE, GL_ONE);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 1);
+			glVertex2f(0, 0);
+
+			glTexCoord2f(1, 1);
+			glVertex2f(WIDTH * scale, 0);
+
+			glTexCoord2f(1, 0);
+			glVertex2f(WIDTH * scale, HEIGHT * scale);
+
+			glTexCoord2f(0, 0);
+			glVertex2f(0, HEIGHT * scale);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+//		END LIGHT FBO
 
 		if (showDebug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
@@ -275,77 +331,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ");
 		}
 
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-	}
-
-	private void renderOld() {
-		BufferStrategy bs = getBufferStrategy();
-		if (bs == null) {
-			createBufferStrategy(3);
-			return;
-		}
-
-		if (level.entities.size() > 0) {
-			if (level.entities.get(0).x > xOffset + screen.width/2 + 50) {
-				xOffset = level.entities.get(0).x - (screen.width/2 + 50);
-			}
-
-			if (level.entities.get(0).x < xOffset + screen.width/2 - 50) {
-				xOffset = level.entities.get(0).x - (screen.width/2 - 50);
-			}
-
-			if (level.entities.get(0).y > yOffset + screen.height/2 + 50) {
-				yOffset = level.entities.get(0).y - (screen.height/2 + 50);
-			}
-
-			if (level.entities.get(0).y < yOffset + screen.height/2 - 50) {
-				yOffset = level.entities.get(0).y - (screen.height/2 - 50);
-			}
-		}
-
-		level.renderBackground(screen);
-
-		level.renderTiles(screen, xOffset, yOffset);
-
-		level.renderParticles(screen);
-
-		level.renderEntities(screen);
-
-		level.renderLights(screen);
-
-		screen.renderLighting();
-
-		Hud.render(screen);
-
-		/* Debug text */
-		if (input.isPressed(GLFW_KEY_F3) && debug) {
-			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
-			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
-		}
-
-//		Pausing the game TODO: should not be in render()
-		if (input.isPressed(GLFW_KEY_P)) {
-			Command.exec("pause");
-			input.set(GLFW_KEY_P, false);
-		}
-
-		if (input.isPressed(GLFW_KEY_M)) {
-			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ      abcdefghijklmnopqrstuvwxyz      0123456789.,:;'\"!?$%()-=+/*[]");
-		}
-
-		for (int y = 0; y < screen.height; y++) {
-			System.arraycopy(screen.pixels, y * screen.width, pixels, y * WIDTH, screen.width);
-		}
-
-		Graphics g = bs.getDrawGraphics();
-		if (shakeCam) {
-			g.drawImage(op.filter(image, null), 0, 0, getWidth(), getHeight(), null);
-		} else {
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		}
-		g.dispose();
-		bs.show();
+		glFlush();
 	}
 }
