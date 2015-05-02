@@ -5,6 +5,7 @@ import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.sun.javafx.geom.Vec3f;
 
 public class Glowstick extends Particle {
 
@@ -17,7 +18,7 @@ public class Glowstick extends Particle {
 	public Glowstick(int x, int y, int movingDir, Properties properties) {
 		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000, properties);
 
-		level.addLightSource(lightSource = new LightSource(x, y, 0, 0x27a10d));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(0.15f, 0.63f, 0.0f), 100));
 
 		if (movingDir == 0) {
 			xa = -5 - (int) (Math.random() * 2);

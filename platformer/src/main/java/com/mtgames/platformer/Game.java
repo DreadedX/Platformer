@@ -80,7 +80,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		//		Initialize command system
 		Command.set(level, screen);
 		//		Load debug level
-		Command.exec("load debug_level");
+//		Command.exec("load debug_level");
+		Command.exec("load white");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
@@ -274,21 +275,19 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 //		RENDER LIGHT FBO
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.9f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//		glBlendFunc(GL_ONE, GL_ONE);
-		glBlendEquation(GL_FUNC_SUBTRACT);
+		glBlendFunc(GL_ONE, GL_ONE);
 		level.renderLights(screen);
-		glBlendEquation(GL_FUNC_ADD);
-//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
+		glBlendFunc(GL_DST_COLOR, GL_ZERO);
+
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, lightTextureID);
-
-//		glBlendFunc(GL_ONE, GL_ONE);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 1);
 			glVertex2f(0, 0);
@@ -303,7 +302,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			glVertex2f(0, HEIGHT * scale);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 //		END LIGHT FBO
 

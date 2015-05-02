@@ -5,6 +5,7 @@ import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.sun.javafx.geom.Vec3f;
 
 public class BaseEnemy extends Mob {
 
@@ -19,7 +20,7 @@ public class BaseEnemy extends Mob {
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		level.addLightSource(lightSource = new LightSource(x, y, 0, 0xffae00));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80));
 
 		JUMPSPEED = properties.getJumpSpeed();
 

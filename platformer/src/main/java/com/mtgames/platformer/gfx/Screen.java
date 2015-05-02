@@ -1,6 +1,7 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
+import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
 import javax.imageio.ImageIO;
@@ -141,20 +142,19 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public  void renderLight(int x, int y, int lightID) {
+	public  void renderLight(int x, int y, Vec3f colour, int radius) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
 		y *= scale;
 
 		int numSubdivisions = 32;
-		int radius = 80 * scale;
-		float intensity = 0f;
+		float intensity = 0.5f;
 
 		glBegin(GL_TRIANGLE_FAN);
-			glColor4f(0f, 0f, 0f, intensity);
+			glColor4f(colour.x, colour.y, colour.z, intensity);
 			glVertex2f(x, y);
-			glColor4f(0f, 0f, 0f, 0.9f);
+			glColor4f(0f, 0f, 0f, 1f);
 
 			for (float angle = 0; angle<=Math.PI*2; angle+=((Math.PI*2)/numSubdivisions)) {
 				glVertex2f(radius * (float) Math.cos(angle) + x, radius * (float) Math.sin(angle) + y);

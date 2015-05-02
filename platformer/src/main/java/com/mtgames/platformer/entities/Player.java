@@ -3,11 +3,14 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.Glowstick;
+import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.sun.javafx.geom.Vec3f;
+import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -43,7 +46,7 @@ public class Player extends Mob {
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		level.addLightSource(lightSource = new LightSource(x, y, 0, 0xffae00));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80));
 
 		JUMPWAIT = properties.getJumpWait();
 		JUMPSPEED = properties.getJumpSpeed();
@@ -101,10 +104,10 @@ public class Player extends Mob {
 			}
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
-				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
-//				Properties properties = new Properties("torch");
-//				properties.set(new JSONObject("{\"colour\":" + Math.random() * 0xffffff +"}"));
-//				level.addParticle(new Torch(x, y, properties));
+//				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
+				Properties properties = new Properties("torch");
+				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
+				level.addParticle(new Torch(x, y, properties));
 				input.set(GLFW_KEY_Q, false);
 			}
 
@@ -144,7 +147,7 @@ public class Player extends Mob {
 				level.addParticle(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
 			}
 		}
-		lightSource.move(x, y);
+//		lightSource.move(x, y);
 	}
 
 	public void render(Screen screen) {

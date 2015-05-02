@@ -4,6 +4,7 @@ import com.mtgames.platformer.entities.Particle;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.sun.javafx.geom.Vec3f;
 
 public class DashParticle extends Particle {
 
@@ -12,7 +13,7 @@ public class DashParticle extends Particle {
 
 	public DashParticle(int x, int y, int particleOffset, Properties properties) {
 		super((int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), (int) (Math.random() * 15), properties);
-		lightSource = new LightSource(x, y, 1, 0x68afaf + (int) (Math.random() * 0x50));
+		lightSource = new LightSource(x, y, new Vec3f(0.41f, 0.69f, 0.69f), 2);
 		level.addLightSource(lightSource);
 	}
 

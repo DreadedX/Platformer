@@ -2,21 +2,21 @@ package com.mtgames.platformer.gfx.lighting;
 
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.sun.javafx.geom.Vec3f;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class LightSource {
 	private int modifier = 0;
 	private int life     = modifier;
-	private final int type;
-	private final int colour;
+	private final Vec3f colour;
+	private int radius;
 	private       int x;
 	private       int y;
-	private static int lightID = TextureLoader.loadTexture("/assets/graphics/lights/torch.png");
 
-	public LightSource(int x, int y, int type, int colour) {
-		this.type = type;
+	public LightSource(int x, int y, Vec3f colour, int radius) {
 		this.colour = colour;
+		this.radius = radius;
 		this.x = x;
 		this.y = y;
 	}
@@ -36,7 +36,7 @@ public class LightSource {
 	}
 
 	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, lightID);
+		screen.renderLight(x, y, colour, radius);
 	}
 
 	public boolean isAlive() {

@@ -3,6 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
+import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
 
 public class Properties {
@@ -17,7 +18,7 @@ public class Properties {
 	private int xMax          = 0;
 	private int yMin          = 0;
 	private int yMax          = 0;
-	private int colour		  = 0;
+	private Vec3f colour		  = new Vec3f(1.0f, 1.0f, 1.0f);
 
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
@@ -54,7 +55,7 @@ public class Properties {
 				break;
 
 			case "torch":
-				colour = 0;
+				colour = new Vec3f(1.0f, 0.0f, 0.0f);
 		}
 	}
 
@@ -95,7 +96,15 @@ public class Properties {
 			yMax = obj.getInt("yMax");
 		}
 		if (obj.has("colour")) {
-			colour = obj.getInt("colour");
+			int hexColour = obj.getInt("colour");
+
+			int colourR = (hexColour >> 16);
+			int colourG = (hexColour >> 8) - (colourR << 8);
+			int colourB = (hexColour) - (colourR << 16) - (colourG << 8);
+
+			colour = new Vec3f((float) colourR/0xff, (float) colourG/0xff, (float) colourB/0xff);
+
+			Debug.log(colour.x + " " + colour.y + " " + colour.z, Debug.DEBUG);
 		}
 	}
 
@@ -143,7 +152,7 @@ public class Properties {
 		return yMax;
 	}
 
-	public int getColour() {
+	public Vec3f getColour() {
 		return colour;
 	}
 
