@@ -147,21 +147,23 @@ public class Screen {
 		x *= scale;
 		y *= scale;
 
-		glColor4f(1.0f, 0.0f, 0.0f, 0.855f);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, lightID);
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(x - 80, y - 80);
-			glTexCoord2f(1, 0);
-			glVertex2f(x + 80, y - 80);
-			glTexCoord2f(1, 1);
-			glVertex2f(x + 80, y + 80);
-			glTexCoord2f(0, 1);
-			glVertex2f(x - 80, y + 80);
+		int numSubdivisions = 32;
+		int radius = 80 * scale;
+		float intensity = 0f;
+
+		glBegin(GL_TRIANGLE_FAN);
+			glColor4f(0f, 0f, 0f, intensity);
+			glVertex2f(x, y);
+			glColor4f(0f, 0f, 0f, 0.9f);
+
+			for (float angle = 0; angle<=Math.PI*2; angle+=((Math.PI*2)/numSubdivisions)) {
+				glVertex2f(radius * (float) Math.cos(angle) + x, radius * (float) Math.sin(angle) + y);
+			}
+
+			glVertex2f(radius + x, y);
 		glEnd();
-		glDisable(GL_TEXTURE_2D);
-		glColor3f(1.0f, 1.0f, 1.0f);
+
+		glColor3f(1f, 1f, 1f);
 	}
 
 	public void drawRectangle(int x1, int y1, int x2, int y2, Vec4f colour) {

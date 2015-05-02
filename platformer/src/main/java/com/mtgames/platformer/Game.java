@@ -277,21 +277,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glClearColor(0.0f, 0.0f, 0.0f, 0.9f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//		glBegin(GL_QUADS);
-//			glTexCoord2f(0, 1);
-//			glVertex2f(0, 0);
-//
-//			glTexCoord2f(1, 1);
-//			glVertex2f(WIDTH * scale, 0);
-//
-//			glTexCoord2f(1, 0);
-//			glVertex2f(WIDTH * scale, HEIGHT * scale);
-//
-//			glTexCoord2f(0, 0);
-//			glVertex2f(0, HEIGHT * scale);
-//		glEnd();
-//		glColor3f(1.0f, 1.0f, 1.0f);
-
 //		glBlendFunc(GL_ONE, GL_ONE);
 		glBlendEquation(GL_FUNC_SUBTRACT);
 		level.renderLights(screen);
