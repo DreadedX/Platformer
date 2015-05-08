@@ -6,6 +6,7 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
+import com.sun.javafx.geom.Vec3f;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -80,8 +81,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		//		Initialize command system
 		Command.set(level, screen);
 		//		Load debug level
-//		Command.exec("load debug_level");
-		Command.exec("load white");
+		Command.exec("load debug_level");
+//		Command.exec("load white");
+		Command.exec("kill 1");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
@@ -100,9 +102,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		glfwSetKeyCallback(window, keyCallback = new InputHandler());
 
-		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		ByteBuffer videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - WIDTH) / 2, (GLFWvidmode.height(vidmode) - HEIGHT) / 2);
+		glfwSetWindowPos(window, (GLFWvidmode.width(videoMode) - WIDTH) / 2, (GLFWvidmode.height(videoMode) - HEIGHT) / 2);
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(0);
 //		glfwSwapInterval(1);
@@ -274,11 +276,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 //		RENDER LIGHT FBO
 
+		Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
+
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glBlendFunc(GL_ONE, GL_ONE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		level.renderLights(screen);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

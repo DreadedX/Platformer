@@ -147,6 +147,7 @@ public class Player extends Mob {
 				level.addParticle(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
 			}
 		}
+//		TODO: Enable this again
 //		lightSource.move(x, y);
 	}
 

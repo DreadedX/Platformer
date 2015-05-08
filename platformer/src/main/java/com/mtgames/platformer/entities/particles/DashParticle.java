@@ -13,7 +13,7 @@ public class DashParticle extends Particle {
 
 	public DashParticle(int x, int y, int particleOffset, Properties properties) {
 		super((int) (x + particleOffset + Math.random() * 30), (int) (y - 16 + Math.random() * 32), (int) (Math.random() * 15), properties);
-		lightSource = new LightSource(x, y, new Vec3f(0.41f, 0.69f, 0.69f), 2);
+		lightSource = new LightSource(x, y, new Vec3f(0.4f, 0.4f, 1f), 2);
 		level.addLightSource(lightSource);
 	}
 

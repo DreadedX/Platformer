@@ -1,5 +1,6 @@
 package com.mtgames.platformer.gfx.lighting;
 
+import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.sun.javafx.geom.Vec3f;
@@ -36,7 +37,7 @@ public class LightSource {
 	}
 
 	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, colour, radius);
+		screen.renderLight(x, y, colour, radius, new Properties("renderLight"));
 	}
 
 	public boolean isAlive() {

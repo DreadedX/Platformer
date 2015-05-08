@@ -1,6 +1,9 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
+import com.mtgames.platformer.entities.Properties;
+import com.mtgames.platformer.level.Level;
+import com.sun.javafx.geom.Vec2f;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
@@ -119,7 +122,7 @@ public class Screen {
 		int xOffsetSpeed = xOffset / speed;
 		levelWidth = levelWidth << 4;
 		float repeat = (float) levelWidth / width;
-
+//
 		glEnable(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
@@ -142,19 +145,24 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public  void renderLight(int x, int y, Vec3f colour, int radius) {
+	public  void renderLight(int x, int y, Vec3f colour, int radius, Properties properties) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
 		y *= scale;
 
+		Level level = properties.getLevel();
+
 		int numSubdivisions = 32;
-		float intensity = 0.5f;
+//		TODO: This needs to be set/modified by the owner entity
+		float intensity = 1.0f;
+
+		radius = radius * scale;
 
 		glBegin(GL_TRIANGLE_FAN);
-			glColor4f(colour.x, colour.y, colour.z, intensity);
+			glColor3f(colour.x * intensity, colour.y * intensity, colour.z * intensity);
 			glVertex2f(x, y);
-			glColor4f(0f, 0f, 0f, 1f);
+			glColor3f(0f, 0f, 0f);
 
 			for (float angle = 0; angle<=Math.PI*2; angle+=((Math.PI*2)/numSubdivisions)) {
 				glVertex2f(radius * (float) Math.cos(angle) + x, radius * (float) Math.sin(angle) + y);
@@ -162,6 +170,27 @@ public class Screen {
 
 			glVertex2f(radius + x, y);
 		glEnd();
+
+//		glColor3f(1f, 1f, 1f);
+
+//		TODO: Cast shadow's
+
+		glColor3f(0.1f, 0.1f, 0.1f);
+
+		int scaleFactor = 16 * scale;
+
+		for (int xTile = (x-radius+xOffset)/scaleFactor; xTile < (x+radius+xOffset)/scaleFactor; xTile++) {
+			for (int yTile = (y-radius+yOffset)/scaleFactor; yTile < (y+radius+yOffset)/scaleFactor; yTile++) {
+				if (level.getTile(xTile, yTile).isSolid()) {
+					glBegin(GL_TRIANGLE_FAN);
+						glVertex2f(x, y);
+						glVertex2f(xTile * scaleFactor - xOffset * scale, yTile * scaleFactor - yOffset * scale);
+						glVertex2f((xTile + 1) * scaleFactor - xOffset * scale, yTile * scaleFactor - yOffset * scale);
+					glEnd();
+				}
+			}
+		}
+
 
 		glColor3f(1f, 1f, 1f);
 	}

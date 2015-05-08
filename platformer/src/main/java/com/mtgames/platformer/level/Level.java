@@ -21,8 +21,8 @@ public class Level {
 	private final List<LightSource> lightSources = new ArrayList<>();
 
 	private byte[] tiles;
-	private int    width;
-	private int    height;
+	public int    width;
+	public int    height;
 
 	public String  path;
 	public boolean reload;
