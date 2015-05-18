@@ -19,7 +19,6 @@ import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings({ "serial" }) public class Game implements Runnable {
@@ -44,17 +43,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private int xOffset;
 	private int yOffset;
 
+	private int lightTextureID;
+
 	public static boolean paused = false;
 
 	private GLFWErrorCallback errorCallback;
 	private GLFWKeyCallback   keyCallback;
 	private long              window;
-
-	private int lightShader;
-
-	private int lightBuffferID;
-	private int lightTextureID;
-	private int lightDepthBufferID;
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -83,7 +78,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		//		Load debug level
 		Command.exec("load debug_level");
 //		Command.exec("load white");
-		Command.exec("kill 1");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
@@ -155,28 +149,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glShadeModel(GL_SMOOTH);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-//		lightShader = ShaderLoader.initialize("shaders/light.frag");
-
-//		SETUP LIGHT FBO
-
-		lightBuffferID = glGenFramebuffersEXT();
-		lightTextureID = glGenTextures();
-		lightDepthBufferID = glGenRenderbuffersEXT();
-
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
-
-		glBindTexture(GL_TEXTURE_2D, lightTextureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, WIDTH * scale, HEIGHT * scale, 0, GL_RGBA, GL_INT, (ByteBuffer) null);
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, lightTextureID, 0);
-
-		glBindFramebufferEXT(GL_RENDERBUFFER_EXT, lightDepthBufferID);
-		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, WIDTH * scale, HEIGHT * scale);
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, lightDepthBufferID);
-
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
-//		END SETUP LIGHT FBO
+		lightTextureID = screen.initLight();
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -274,42 +247,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		level.renderParticles(screen);
 		level.renderEntities(screen);
 
-//		RENDER LIGHT FBO
-
-		Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
-
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
-		glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		level.renderLights(screen);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
-		glBlendFunc(GL_DST_COLOR, GL_ZERO);
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, lightTextureID);
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 1);
-			glVertex2f(0, 0);
-
-			glTexCoord2f(1, 1);
-			glVertex2f(WIDTH * scale, 0);
-
-			glTexCoord2f(1, 0);
-			glVertex2f(WIDTH * scale, HEIGHT * scale);
-
-			glTexCoord2f(0, 0);
-			glVertex2f(0, HEIGHT * scale);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-//		END LIGHT FBO
+		screen.renderLightFBO(screen, level);
 
 		if (showDebug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);

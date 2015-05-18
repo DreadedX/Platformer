@@ -18,7 +18,7 @@ public class Glowstick extends Particle {
 	public Glowstick(int x, int y, int movingDir, Properties properties) {
 		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000, properties);
 
-		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(0.15f, 0.63f, 0.0f), 100));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(0.15f, 0.63f, 0.0f), 100, 1.0f));
 
 		if (movingDir == 0) {
 			xa = -5 - (int) (Math.random() * 2);

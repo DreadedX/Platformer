@@ -11,7 +11,7 @@ public class Torch extends Particle {
 
 	public Torch(int x, int y, Properties properties) {
 		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), -10, properties);
-		lightSource = new LightSource(x, y, properties.getColour(), 150);
+		lightSource = new LightSource(x, y, properties.getColour(), 150, 1.0f);
 		level.addLightSource(lightSource);
 	}
 

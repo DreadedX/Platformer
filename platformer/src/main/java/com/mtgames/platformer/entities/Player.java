@@ -2,7 +2,6 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
-import com.mtgames.platformer.entities.particles.Glowstick;
 import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
@@ -46,7 +45,7 @@ public class Player extends Mob {
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80, 1.0f));
 
 		JUMPWAIT = properties.getJumpWait();
 		JUMPSPEED = properties.getJumpSpeed();

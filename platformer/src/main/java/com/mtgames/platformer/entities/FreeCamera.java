@@ -16,7 +16,7 @@ public class FreeCamera extends Mob {
 	public FreeCamera(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80));
+		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80, 1.0f));
 
 		movingDir = 1;
 		speed = 4;

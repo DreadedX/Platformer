@@ -1,23 +1,21 @@
 package com.mtgames.platformer.gfx.lighting;
 
-import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.sun.javafx.geom.Vec3f;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class LightSource {
 	private int modifier = 0;
 	private int life     = modifier;
 	private final Vec3f colour;
 	private int radius;
+	private float intensity;
 	private       int x;
 	private       int y;
 
-	public LightSource(int x, int y, Vec3f colour, int radius) {
+	public LightSource(int x, int y, Vec3f colour, int radius, float intensity) {
 		this.colour = colour;
 		this.radius = radius;
+		this.intensity = intensity;
 		this.x = x;
 		this.y = y;
 	}
@@ -37,7 +35,7 @@ public class LightSource {
 	}
 
 	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, colour, radius, new Properties("renderLight"));
+		screen.renderLight(x, y, colour, radius, intensity);
 	}
 
 	public boolean isAlive() {
