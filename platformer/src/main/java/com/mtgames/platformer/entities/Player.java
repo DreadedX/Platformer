@@ -2,6 +2,7 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
+import com.mtgames.platformer.entities.particles.GlowStick;
 import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
@@ -40,12 +41,8 @@ public class Player extends Mob {
 	private boolean isStaggered = false;
 	private boolean isDashing   = false;
 
-	private final LightSource lightSource;
-
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
-
-		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80, 1.0f));
 
 		JUMPWAIT = properties.getJumpWait();
 		JUMPSPEED = properties.getJumpSpeed();
@@ -103,10 +100,10 @@ public class Player extends Mob {
 			}
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
-//				level.addParticle(new Glowstick(x, y, movingDir, new Properties("glowstick")));
-				Properties properties = new Properties("torch");
-				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
-				level.addParticle(new Torch(x, y, properties));
+				level.addParticle(new GlowStick(x, y, movingDir, new Properties("glowStick")));
+//				Properties properties = new Properties("torch");
+//				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
+//				level.addParticle(new Torch(x, y, properties));
 				input.set(GLFW_KEY_Q, false);
 			}
 

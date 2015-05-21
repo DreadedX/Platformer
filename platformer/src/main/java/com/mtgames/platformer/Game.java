@@ -37,8 +37,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	public static InputHandler input;
 	public static Level        level;
 
-	private static boolean debug     = false;
-	private static boolean showDebug = false;
+	private static boolean debug      = false;
+	private static boolean showDebug  = false;
+	public static  boolean lightDebug = false;
 
 	private int xOffset;
 	private int yOffset;
@@ -77,7 +78,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		Command.set(level, screen);
 		//		Load debug level
 		Command.exec("load debug_level");
-//		Command.exec("load white");
+		//		Command.exec("load white");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 

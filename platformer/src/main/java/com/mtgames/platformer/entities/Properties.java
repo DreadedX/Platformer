@@ -18,6 +18,8 @@ public class Properties {
 	private int xMax          = 0;
 	private int yMin          = 0;
 	private int yMax          = 0;
+	private int radius		  = 80;
+	private float intensity	  = 1.0f;
 	private Vec3f colour		  = new Vec3f(1.0f, 1.0f, 1.0f);
 
 	private final Level        level = com.mtgames.platformer.Game.level;
@@ -29,7 +31,13 @@ public class Properties {
 				speed = 2;
 				break;
 
+			case "freeCamera":
+//				Light
+				colour = new Vec3f(1.0f, 0.68f, 0.0f);
+				break;
+
 			case "player":
+//				General
 				jumpWait = 2;
 				jumpSpeed = 9;
 				dashSpeed = 5;
@@ -38,6 +46,7 @@ public class Properties {
 				maxHealth = 100;
 				speed = 6;
 
+//				Hitbox
 				xMin = -10;
 				xMax = 8;
 				yMin = -16;
@@ -45,17 +54,34 @@ public class Properties {
 				break;
 
 			case "baseEnemy":
+//				General
 				jumpSpeed = 4;
 				speed = 2;
 
+//				Hitbox
 				xMin = -8;
 				xMax = 5;
 				yMin = -13;
 				yMax = 15;
+
+//				Light
+				colour = new Vec3f(1.0f, 0.68f, 0.0f);
+				break;
+
+			case "dashParticle":
+				colour = new Vec3f(0.2f, 0.3f, 1f);
+				radius = 2;
+				intensity = 0.7f;
+				break;
+
+			case "glowStick":
+				colour = new Vec3f(0.0f, 0.68f, 0.0f);
+				radius = 100;
 				break;
 
 			case "torch":
-				colour = new Vec3f(1.0f, 0.0f, 0.0f);
+				colour = new Vec3f(1.0f, 1.0f, 1.0f);
+				radius = 150;
 		}
 	}
 
@@ -94,6 +120,12 @@ public class Properties {
 		}
 		if (obj.has("yMax")) {
 			yMax = obj.getInt("yMax");
+		}
+		if (obj.has("radius")) {
+			radius = obj.getInt("radius");
+		}
+		if (obj.has("intensity")) {
+			radius = obj.getInt("intensity");
 		}
 		if (obj.has("colour")) {
 			int hexColour = obj.getInt("colour");
@@ -150,6 +182,14 @@ public class Properties {
 
 	public int getYMax() {
 		return yMax;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public float getIntensity() {
+		return intensity;
 	}
 
 	public Vec3f getColour() {

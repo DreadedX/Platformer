@@ -149,6 +149,9 @@ public class Command {
 				}
 				break;
 
+			case "debugl":
+				Game.lightDebug = !Game.lightDebug;
+
 			case "pause":
 				Game.paused = !Game.paused;
 				break;

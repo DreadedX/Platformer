@@ -226,7 +226,9 @@ public class Screen {
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
-		glBlendFunc(GL_DST_COLOR, GL_ZERO);
+		if (!Game.lightDebug) {
+			glBlendFunc(GL_DST_COLOR, GL_ZERO);
+		}
 
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, lightTextureID);

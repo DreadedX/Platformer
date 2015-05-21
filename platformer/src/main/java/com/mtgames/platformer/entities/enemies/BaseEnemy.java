@@ -20,7 +20,7 @@ public class BaseEnemy extends Mob {
 	public BaseEnemy(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		level.addLightSource(lightSource = new LightSource(x, y, new Vec3f(1.0f, 0.68f, 0.0f), 80, 1.0f));
+		level.addLightSource(lightSource = new LightSource(x, y, properties));
 
 		JUMPSPEED = properties.getJumpSpeed();
 
