@@ -1,0 +1,5 @@
+#!/bin/bash
+tar -cvf properties.tar *.json
+gzip properties.tar
+mv properties.tar.gz properties.jsp
+cp properties.jsp ../src/main/resources/assets/properties.jsp
