@@ -34,8 +34,6 @@ public class Properties {
 	}
 
 	public void set(JSONObject obj) {
-		Debug.log("Setting properties: " + String.valueOf(obj), Debug.DEBUG);
-
 		if (obj.has("jumpWait")) {
 			jumpWait = obj.getInt("jumpWait");
 		}
