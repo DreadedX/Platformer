@@ -23,7 +23,7 @@ public class Screen {
 	private int lightTextureID;
 	private int lightBuffferID;
 
-	public int initLight() {
+	public void initLight() {
 		lightBuffferID = glGenFramebuffersEXT();
 		lightTextureID = glGenTextures();
 		int lightDepthBufferID = glGenRenderbuffersEXT();
@@ -40,8 +40,6 @@ public class Screen {
 		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, lightDepthBufferID);
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
-		return lightTextureID;
 	}
 
 	public void renderTile(int x, int y, int textureID) {

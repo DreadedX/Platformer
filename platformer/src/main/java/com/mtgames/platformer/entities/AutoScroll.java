@@ -1,6 +1,8 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.utils.Debug;
+import jdk.nashorn.internal.runtime.logging.DebugLogger;
 
 public class AutoScroll extends Mob {
 
@@ -8,13 +10,14 @@ public class AutoScroll extends Mob {
 		super(properties, x, y);
 		movingDir = 1;
 		speed = properties.getSpeed();
+		Debug.log(String.valueOf(properties.getSpeed()), Debug.DEBUG);
 	}
 
 	public void tick() {
 		int xa = 0;
 		int ya = 0;
 
-		xa++;
+		xa += speed;
 
 		move(xa, ya);
 

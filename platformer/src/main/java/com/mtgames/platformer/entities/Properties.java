@@ -73,7 +73,7 @@ public class Properties {
 			radius = obj.getInt("radius");
 		}
 		if (obj.has("intensity")) {
-			intensity = obj.getInt("intensity")/1000;
+			intensity = obj.getInt("intensity")/1000f;
 		}
 		if (obj.has("colour")) {
 			int hexColour = obj.getInt("colour");

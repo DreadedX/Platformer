@@ -44,8 +44,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private int xOffset;
 	private int yOffset;
 
-	private int lightTextureID;
-
 	public static boolean paused = false;
 
 	private GLFWErrorCallback errorCallback;
@@ -150,7 +148,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glShadeModel(GL_SMOOTH);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-		lightTextureID = screen.initLight();
+		screen.initLight();
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
