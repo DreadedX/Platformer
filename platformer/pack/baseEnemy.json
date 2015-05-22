@@ -1,0 +1,9 @@
+{
+  "jumpSpeed": 4,
+  "speed": 2,
+  "xMin": -8,
+  "xMax": 5,
+  "yMin": -16,
+  "yMax": 15,
+  "colour": 16755968
+}

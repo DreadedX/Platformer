@@ -4,6 +4,7 @@ import com.mtgames.platformer.entities.Particle;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 
 public class DashParticle extends Particle {

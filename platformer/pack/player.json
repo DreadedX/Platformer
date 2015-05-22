@@ -1,0 +1,13 @@
+{
+  "jumpWait": 2,
+  "jumpSpeed": 9,
+  "dashSpeed": 5,
+  "dashWait": 72,
+  "staggerLength": 20,
+  "maxHealth": 100,
+  "speed": 6,
+  "xMin": -10,
+  "xMax": 8,
+  "yMin": -16,
+  "yMax": 15
+}

@@ -3,6 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
+import com.mtgames.utils.JSP;
 import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
 
@@ -25,64 +26,11 @@ public class Properties {
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
 
+	private static JSP jsp = new JSP("assets/properties.jsp", false);
+
 	public Properties(String type) {
-		switch (type) {
-			case "autoScroll":
-				speed = 2;
-				break;
-
-			case "freeCamera":
-//				Light
-				colour = new Vec3f(1.0f, 0.68f, 0.0f);
-				break;
-
-			case "player":
-//				General
-				jumpWait = 2;
-				jumpSpeed = 9;
-				dashSpeed = 5;
-				dashWait = 72;
-				staggerLength = 20;
-				maxHealth = 100;
-				speed = 6;
-
-//				Hitbox
-				xMin = -10;
-				xMax = 8;
-				yMin = -16;
-				yMax = 15;
-				break;
-
-			case "baseEnemy":
-//				General
-				jumpSpeed = 4;
-				speed = 2;
-
-//				Hitbox
-				xMin = -8;
-				xMax = 5;
-				yMin = -13;
-				yMax = 15;
-
-//				Light
-				colour = new Vec3f(1.0f, 0.68f, 0.0f);
-				break;
-
-			case "dashParticle":
-				colour = new Vec3f(0.2f, 0.3f, 1f);
-				radius = 2;
-				intensity = 0.7f;
-				break;
-
-			case "glowStick":
-				colour = new Vec3f(0.0f, 0.68f, 0.0f);
-				radius = 100;
-				break;
-
-			case "torch":
-				colour = new Vec3f(1.0f, 1.0f, 1.0f);
-				radius = 150;
-		}
+		Debug.log(type + ":", Debug.DEBUG);
+		set(jsp.get(type));
 	}
 
 	public void set(JSONObject obj) {
@@ -125,7 +73,7 @@ public class Properties {
 			radius = obj.getInt("radius");
 		}
 		if (obj.has("intensity")) {
-			radius = obj.getInt("intensity");
+			intensity = obj.getInt("intensity")/1000;
 		}
 		if (obj.has("colour")) {
 			int hexColour = obj.getInt("colour");
@@ -135,8 +83,6 @@ public class Properties {
 			int colourB = (hexColour) - (colourR << 16) - (colourG << 8);
 
 			colour = new Vec3f((float) colourR/0xff, (float) colourG/0xff, (float) colourB/0xff);
-
-			Debug.log(colour.x + " " + colour.y + " " + colour.z, Debug.DEBUG);
 		}
 	}
 

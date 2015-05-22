@@ -75,7 +75,6 @@ public class TextureLoader {
 	}
 
 	private static BufferedImage loadImage(String loc) throws IOException {
-		Debug.log("Loading texture: " + loc, Debug.DEBUG);
 		return ImageIO.read(Game.class.getResource(loc));
 	}
 }

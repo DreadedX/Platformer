@@ -1,4 +1,5 @@
 #!/bin/bash
+rm properties.jsp
 tar -cvf properties.tar *.json
 gzip properties.tar
 mv properties.tar.gz properties.jsp
