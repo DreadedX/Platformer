@@ -1,7 +1,6 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
-import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.level.Level;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
@@ -13,22 +12,22 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Screen {
 
-	public final int     width    = Game.WIDTH;
-	public final int     height   = Game.HEIGHT;
-	public final int scale = Game.scale;
-	public       int     xOffset  = 0;
-	public       int     yOffset  = 0;
-	public       boolean lighting = true;
+	public final  int     width    = Game.WIDTH;
+	public final  int     height   = Game.HEIGHT;
+	private final int     scale    = Game.scale;
+	public        int     xOffset  = 0;
+	public        int     yOffset  = 0;
+	public        boolean lighting = true;
 
 	private int lightTextureID;
-	private int lightBuffferID;
+	private int lightBufferID;
 
 	public void initLight() {
-		lightBuffferID = glGenFramebuffersEXT();
+		lightBufferID = glGenFramebuffersEXT();
 		lightTextureID = glGenTextures();
 		int lightDepthBufferID = glGenRenderbuffersEXT();
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
 
 		glBindTexture(GL_TEXTURE_2D, lightTextureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -214,7 +213,7 @@ public class Screen {
 	public void renderLightFBO(Screen screen, Level level) {
 		Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBuffferID);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
 		glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

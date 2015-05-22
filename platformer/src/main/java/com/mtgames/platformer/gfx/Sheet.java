@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class Sheet {
 
-	public int width;
+	private int width;
 
-	public int[] pixels;
+	private int[] pixels;
 
 	public Sheet(String path) {
 		BufferedImage image = null;

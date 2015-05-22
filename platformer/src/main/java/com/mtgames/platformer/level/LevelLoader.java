@@ -1,15 +1,9 @@
 package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Command;
-import com.mtgames.utils.Debug;
 import com.mtgames.platformer.gfx.Background;
 import com.mtgames.utils.JSP;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.json.*;
-
-import java.io.*;
-import java.util.zip.GZIPInputStream;
 
 class LevelLoader {
 
@@ -17,7 +11,7 @@ class LevelLoader {
 	private static int    height;
 	private static byte[] tiles;
 
-	public LevelLoader(Level level, String path, boolean external) throws Exception {
+	public LevelLoader(Level level, String path, boolean external) {
 
 		JSP levelJSP = new JSP(path, external);
 

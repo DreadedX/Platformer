@@ -7,7 +7,6 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import com.mtgames.platformer.Game;
-import com.mtgames.utils.Debug;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL12;
 

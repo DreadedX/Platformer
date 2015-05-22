@@ -5,14 +5,13 @@ import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
-import com.sun.javafx.geom.Vec3f;
 
 public class GlowStick extends Particle {
 
 	private int xa;
-	private int    ya        = -10 - (int) (Math.random());
-	private static int[]    textureID = TextureLoader.loadTextureArray("/assets/graphics/items/glowStick", 2);
-	private double modifier  = 0;
+	private              int    ya        = -10 - (int) (Math.random());
+	private static final int[]  textureID = TextureLoader.loadTextureArray("/assets/graphics/items/glowStick", 2);
+	private              double modifier  = 0;
 	private final LightSource lightSource;
 
 	public GlowStick(int x, int y, int movingDir, Properties properties) {

@@ -5,9 +5,8 @@ import com.mtgames.platformer.debug.Command;
 import com.mtgames.utils.LauncherBase;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
-import org.lwjgl.Sys;
 
-public class Launcher extends LauncherBase {
+class Launcher extends LauncherBase {
 
 	static private ComboBox<Integer> scale;
 

@@ -9,8 +9,8 @@ import java.io.IOException;
 public class Background {
 
 	private final int speed;
-	public        int width;
-	public int textureID;
+	private       int width;
+	private       int textureID;
 
 	public Background(String path, int speed) {
 		BufferedImage image = null;

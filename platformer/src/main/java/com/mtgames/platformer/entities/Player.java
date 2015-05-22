@@ -3,14 +3,10 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.GlowStick;
-import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
-import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
-import com.sun.javafx.geom.Vec3f;
-import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
 

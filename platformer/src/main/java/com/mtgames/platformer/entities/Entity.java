@@ -7,8 +7,8 @@ public abstract class Entity {
 
 	public          int        x;
 	public          int        y;
-	public int xa;
-	public int ya;
+	int xa;
+	int ya;
 	protected final Level      level;
 	private final   Properties properties;
 	int gravityWait = 0;
@@ -22,7 +22,7 @@ public abstract class Entity {
 
 	public abstract void render(Screen screen);
 
-	public abstract boolean hasCollided(int xa, int ya);
+	protected abstract boolean hasCollided(int xa, int ya);
 
 	protected int gravity(int ya) {
 		if (hasCollided(0, 1) && ya > 0) {

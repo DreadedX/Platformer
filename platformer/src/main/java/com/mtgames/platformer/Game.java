@@ -6,7 +6,6 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
-import com.sun.javafx.geom.Vec3f;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -30,7 +29,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	private static final String  NAME      = "Platformer";
 
 	public static int scale;
-	private boolean running = false;
 	private int     fps     = 0;
 	private Screen screen;
 
@@ -105,14 +103,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	}
 
 	private synchronized void start() {
-		running = true;
 		Thread main = new Thread(this);
 		main.setName(NAME + " - Main");
 		main.start();
 	}
 
 	public void run() {
-		Debug.log("LWGJL verion: " + Sys.getVersion(), Debug.DEBUG);
+		Debug.log("LWGJL version: " + Sys.getVersion(), Debug.DEBUG);
 
 		try {
 			init();

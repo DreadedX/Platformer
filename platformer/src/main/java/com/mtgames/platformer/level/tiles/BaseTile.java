@@ -10,7 +10,7 @@ class BaseTile extends Tile {
 	private final int size;
 	private final int loc;
 
-	public BaseTile(int id, String name, int size, int part, boolean visible) {
+	BaseTile(int id, String name, int size, int part, boolean visible) {
 		super(id, false);
 		this.visible = visible;
 		this.size = size;
@@ -20,7 +20,7 @@ class BaseTile extends Tile {
 		}
 	}
 
-	public BaseTile(int id, String name, int size, int part) {
+	BaseTile(int id, String name, int size, int part) {
 		super(id, false);
 		this.visible = true;
 		this.size = size;
@@ -38,7 +38,7 @@ class BaseTile extends Tile {
 		}
 	}
 
-	public BaseTile(int id, String name) {
+	BaseTile(int id, String name) {
 		super(id, false);
 		this.visible = true;
 		this.size = 16;

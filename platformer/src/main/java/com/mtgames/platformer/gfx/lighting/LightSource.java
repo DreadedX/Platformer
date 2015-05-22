@@ -5,12 +5,12 @@ import com.mtgames.platformer.gfx.Screen;
 import com.sun.javafx.geom.Vec3f;
 
 public class LightSource {
-	private int life     = 0;
+	private int life = 0;
 	private final Vec3f colour;
-	private int radius;
-	private float intensity;
-	private       int x;
-	private       int y;
+	private final int   radius;
+	private final float intensity;
+	private       int   x;
+	private       int   y;
 
 	public LightSource(int x, int y, Properties properties) {
 		this.colour = properties.getColour();

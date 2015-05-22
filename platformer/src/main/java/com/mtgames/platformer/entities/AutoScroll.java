@@ -2,7 +2,6 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.utils.Debug;
-import jdk.nashorn.internal.runtime.logging.DebugLogger;
 
 public class AutoScroll extends Mob {
 

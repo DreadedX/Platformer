@@ -8,25 +8,25 @@ import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
 
 public class Properties {
-	private int jumpWait      = 0;
-	private int jumpSpeed     = 0;
-	private int dashSpeed     = 0;
-	private int dashWait      = 0;
-	private int staggerLength = 0;
-	private int maxHealth     = 0;
-	private int speed         = 0;
-	private int xMin          = 0;
-	private int xMax          = 0;
-	private int yMin          = 0;
-	private int yMax          = 0;
-	private int radius		  = 80;
-	private float intensity	  = 1.0f;
-	private Vec3f colour		  = new Vec3f(1.0f, 1.0f, 1.0f);
+	private int   jumpWait      = 0;
+	private int   jumpSpeed     = 0;
+	private int   dashSpeed     = 0;
+	private int   dashWait      = 0;
+	private int   staggerLength = 0;
+	private int   maxHealth     = 0;
+	private int   speed         = 0;
+	private int   xMin          = 0;
+	private int   xMax          = 0;
+	private int   yMin          = 0;
+	private int   yMax          = 0;
+	private int   radius        = 80;
+	private float intensity     = 1.0f;
+	private Vec3f colour        = new Vec3f(1.0f, 1.0f, 1.0f);
 
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
 
-	private static JSP jsp = new JSP("assets/properties.jsp", false);
+	private static final JSP jsp = new JSP("assets/properties.jsp", false);
 
 	public Properties(String type) {
 		Debug.log(type + ":", Debug.DEBUG);

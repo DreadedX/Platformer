@@ -3,7 +3,6 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
-import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
 import static org.lwjgl.glfw.GLFW.*;
