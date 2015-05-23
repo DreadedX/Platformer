@@ -211,40 +211,42 @@ public class Screen {
 	}
 
 	public void renderLightFBO(Screen screen, Level level) {
-		Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
+		if (screen.lighting) {
+			Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
-		glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
+			glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		level.renderLights(screen);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			level.renderLights(screen);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
-		if (!Game.lightDebug) {
-			glBlendFunc(GL_DST_COLOR, GL_ZERO);
+			if (!Game.lightDebug) {
+				glBlendFunc(GL_DST_COLOR, GL_ZERO);
+			}
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, lightTextureID);
+			glBegin(GL_QUADS);
+			glTexCoord2f(0, 1);
+			glVertex2f(0, 0);
+
+			glTexCoord2f(1, 1);
+			glVertex2f(width * scale, 0);
+
+			glTexCoord2f(1, 0);
+			glVertex2f(width * scale, height * scale);
+
+			glTexCoord2f(0, 0);
+			glVertex2f(0, height * scale);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glColor3f(1.0f, 1.0f, 1.0f);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, lightTextureID);
-		glBegin(GL_QUADS);
-		glTexCoord2f(0, 1);
-		glVertex2f(0, 0);
-
-		glTexCoord2f(1, 1);
-		glVertex2f(width * scale, 0);
-
-		glTexCoord2f(1, 0);
-		glVertex2f(width * scale, height * scale);
-
-		glTexCoord2f(0, 0);
-		glVertex2f(0, height * scale);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	public void drawRectangle(int x1, int y1, int x2, int y2, Vec4f colour) {

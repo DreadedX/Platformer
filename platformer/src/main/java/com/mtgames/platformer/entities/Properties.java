@@ -7,6 +7,8 @@ import com.mtgames.utils.JSP;
 import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class Properties {
 	private int   jumpWait      = 0;
 	private int   jumpSpeed     = 0;
@@ -29,6 +31,10 @@ public class Properties {
 	private static final JSP jsp = new JSP("assets/properties.jsp", false);
 
 	public Properties(String type) {
+		if(type.equals("")) {
+			return;
+		}
+
 		set(jsp.get(type));
 	}
 
