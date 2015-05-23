@@ -1,12 +1,12 @@
 package com.mtgames.platformer.entities.particles;
 
-import com.mtgames.platformer.entities.Particle;
+import com.mtgames.platformer.entities.BasicEntity;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
-public class GlowStick extends Particle {
+public class GlowStick extends BasicEntity {
 
 	private int xa;
 	private              int    ya        = -10 - (int) (Math.random());
@@ -15,7 +15,7 @@ public class GlowStick extends Particle {
 	private final LightSource lightSource;
 
 	public GlowStick(int x, int y, int movingDir, Properties properties) {
-		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), 60000, properties);
+		super(properties, (int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32));
 
 		level.addLightSource(lightSource = new LightSource(x, y, properties));
 
@@ -27,7 +27,6 @@ public class GlowStick extends Particle {
 	}
 
 	public void tick() {
-		super.tick();
 		move(xa, ya);
 		ya = gravity(ya);
 

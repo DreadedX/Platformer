@@ -1,22 +1,21 @@
 package com.mtgames.platformer.entities.particles;
 
-import com.mtgames.platformer.entities.Particle;
+import com.mtgames.platformer.entities.BasicEntity;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 
-public class Torch extends Particle {
+public class Torch extends BasicEntity {
 
 	private final LightSource lightSource;
 
 	public Torch(int x, int y, Properties properties) {
-		super((int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32), -10, properties);
+		super(properties, (int) (x + Math.random() * 30), (int) (y - 16 + Math.random() * 32));
 		lightSource = new LightSource(x, y, properties);
 		level.addLightSource(lightSource);
 	}
 
 	public void tick() {
-		super.tick();
 		lightSource.move(x, y);
 	}
 

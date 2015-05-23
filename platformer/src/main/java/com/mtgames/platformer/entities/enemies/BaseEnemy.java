@@ -1,12 +1,12 @@
 package com.mtgames.platformer.entities.enemies;
 
-import com.mtgames.platformer.entities.Mob;
+import com.mtgames.platformer.entities.AdvancedEntity;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.lighting.LightSource;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
-public class BaseEnemy extends Mob {
+public class BaseEnemy extends AdvancedEntity {
 
 	private final int JUMPSPEED;
 

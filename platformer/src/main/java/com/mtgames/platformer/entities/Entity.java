@@ -2,6 +2,7 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.level.tiles.Tile;
 
 public abstract class Entity {
 
@@ -12,6 +13,7 @@ public abstract class Entity {
 	protected final Level      level;
 	private final   Properties properties;
 	int gravityWait = 0;
+	protected int life = -10;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
@@ -54,5 +56,20 @@ public abstract class Entity {
 
 	public Properties getProperties() {
 		return properties;
+	}
+
+	public boolean isAlive() {
+		return life > 0 || life == -10;
+	}
+
+	protected boolean isSolidTile(int xa, int ya, int x, int y) {
+		if (level == null)
+			return false;
+
+		Tile lastTile = level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
+		Tile newTile = level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
+
+		return !lastTile.equals(newTile) && newTile.isSolid();
+
 	}
 }

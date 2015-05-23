@@ -10,7 +10,7 @@ import com.mtgames.platformer.gfx.opengl.TextureLoader;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Player extends Mob {
+public class Player extends AdvancedEntity {
 
 	private final int JUMPWAIT;
 	private final int JUMPSPEED;
@@ -30,8 +30,6 @@ public class Player extends Mob {
 	private int dashTime    = 0;
 	private int staggerTime = 0;
 
-	private int health;
-
 	private boolean canJump     = false;
 	private boolean canDash     = true;
 	private boolean isStaggered = false;
@@ -46,7 +44,7 @@ public class Player extends Mob {
 		DASHWAIT = properties.getDashWait();
 		STAGGERLENGTH = properties.getStaggerLength();
 
-		health = MAXHEALTH = properties.getMaxHealth();
+		life = MAXHEALTH = properties.getMaxHealth();
 
 		speed = properties.getSpeed();
 		xMin = properties.getXMin();
@@ -96,7 +94,7 @@ public class Player extends Mob {
 			}
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
-				level.addParticle(new GlowStick(x, y, movingDir, new Properties("glowStick")));
+				level.addEntity(new GlowStick(x, y, movingDir, new Properties("glowStick")));
 //				Properties properties = new Properties("torch");
 //				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
 //				level.addParticle(new Torch(x, y, properties));
@@ -136,7 +134,7 @@ public class Player extends Mob {
 			}
 
 			for (int i = 0; i < 40; i++) {
-				level.addParticle(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
+				level.addEntity(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
 			}
 		}
 //		TODO: Enable this again
@@ -176,7 +174,7 @@ public class Player extends Mob {
 
 		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
 		Hud.setDash(dashRatio);
-		double healthRatio = ((health * 10d) / (MAXHEALTH * 10d));
+		double healthRatio = ((life * 10d) / (MAXHEALTH * 10d));
 		Hud.setHealth(healthRatio);
 
 		//		TEMP DEATH CODE
@@ -202,7 +200,7 @@ public class Player extends Mob {
 		if (hasCollided(-1, 0) || hasCollided(1, 0)) {
 			staggerTime = STAGGERLENGTH;
 			xaDash = 0;
-			health -= 10;
+			life -= 10;
 		}
 
 		ya = 0;
@@ -221,9 +219,4 @@ public class Player extends Mob {
 
 		dashTime++;
 	}
-
-	private boolean isAlive() {
-		return health > 0;
-	}
-
 }

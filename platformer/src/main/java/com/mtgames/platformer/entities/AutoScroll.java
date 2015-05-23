@@ -3,7 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.utils.Debug;
 
-public class AutoScroll extends Mob {
+public class AutoScroll extends AdvancedEntity {
 
 	public AutoScroll(int x, int y, Properties properties) {
 		super(properties, x, y);

@@ -1,8 +1,6 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.level.tiles.Tile;
-
-public abstract class Mob extends Entity {
+public abstract class AdvancedEntity extends Entity {
 
 	protected int     speed          = 1;
 	protected int     movingDir      = 1;
@@ -14,7 +12,7 @@ public abstract class Mob extends Entity {
 	protected boolean isJumping      = false;
 	private int walkingAnimationFrame = 0;
 
-	protected Mob(Properties properties, int x, int y) {
+	protected AdvancedEntity(Properties properties, int x, int y) {
 		super(properties);
 		this.x = x;
 		this.y = y;
@@ -99,17 +97,6 @@ public abstract class Mob extends Entity {
 		}
 
 		return false;
-	}
-
-	private boolean isSolidTile(int xa, int ya, int x, int y) {
-		if (level == null)
-			return false;
-
-		Tile lastTile = level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
-		Tile newTile = level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
-
-		return !lastTile.equals(newTile) && newTile.isSolid();
-
 	}
 
 	private void walkingAnimation() {

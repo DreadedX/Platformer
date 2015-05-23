@@ -7,7 +7,7 @@ import com.sun.javafx.geom.Vec4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class FreeCamera extends Mob {
+public class FreeCamera extends AdvancedEntity {
 
 	private final InputHandler input;
 	private final LightSource  lightSource;

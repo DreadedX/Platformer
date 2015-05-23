@@ -240,7 +240,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		level.renderBackground(screen);
 		level.renderTiles(screen, xOffset, yOffset);
-		level.renderParticles(screen);
 		level.renderEntities(screen);
 
 		screen.renderLightFBO(screen, level);

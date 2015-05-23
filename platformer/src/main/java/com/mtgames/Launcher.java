@@ -6,7 +6,7 @@ import com.mtgames.utils.LauncherBase;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 
-class Launcher extends LauncherBase {
+public class Launcher extends LauncherBase {
 
 	static private ComboBox<Integer> scale;
 

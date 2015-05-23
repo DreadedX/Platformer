@@ -29,7 +29,6 @@ public class Properties {
 	private static final JSP jsp = new JSP("assets/properties.jsp", false);
 
 	public Properties(String type) {
-		Debug.log(type + ":", Debug.DEBUG);
 		set(jsp.get(type));
 	}
 
