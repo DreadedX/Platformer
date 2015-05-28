@@ -44,7 +44,20 @@ class LevelLoader {
 			}
 
 			Command.exec("spawn " + type + " " + x + " " + y + " " + properties);
+		}
 
+		JSONObject objLights = levelJSP.get("light");
+		for (int i = 0; i < objEntities.length(); i++) {
+			String type = objEntities.getJSONObject(String.valueOf(i)).getString("type");
+			int x = objEntities.getJSONObject(String.valueOf(i)).getInt("x");
+			int y = objEntities.getJSONObject(String.valueOf(i)).getInt("y");
+
+			String properties = "";
+			if(objEntities.getJSONObject(String.valueOf(i)).has("properties")) {
+				properties = String.valueOf(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
+			}
+
+			Command.exec("spawn " + type + " " + x + " " + y + " " + properties);
 		}
 	}
 

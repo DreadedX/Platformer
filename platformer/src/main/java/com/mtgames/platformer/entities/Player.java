@@ -3,10 +3,12 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.GlowStick;
+import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -94,10 +96,10 @@ public class Player extends AdvancedEntity {
 			}
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
-				level.addEntity(new GlowStick(x, y, movingDir, new Properties("glowStick")));
-//				Properties properties = new Properties("torch");
-//				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
-//				level.addParticle(new Torch(x, y, properties));
+//				level.addEntity(new GlowStick(x, y, movingDir, new Properties("glowStick")));
+				Properties properties = new Properties("torch");
+				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
+				level.addEntity(new Torch(x, y, properties));
 				input.set(GLFW_KEY_Q, false);
 			}
 
