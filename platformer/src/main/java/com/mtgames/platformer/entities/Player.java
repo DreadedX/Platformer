@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
+import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.GlowStick;
 import com.mtgames.platformer.entities.particles.Torch;
@@ -97,9 +98,12 @@ public class Player extends AdvancedEntity {
 
 			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
 //				level.addEntity(new GlowStick(x, y, movingDir, new Properties("glowStick")));
-				Properties properties = new Properties("torch");
-				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
-				level.addEntity(new Torch(x, y, properties));
+//				Properties properties = new Properties("torch");
+//				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
+//				level.addEntity(new Torch(x, y, properties));
+
+				Command.exec("light torch " + x + " " + y + " {\"colour\":" + (int) (Math.random() * 0xffffff) + "}");
+
 				input.set(GLFW_KEY_Q, false);
 			}
 
@@ -127,16 +131,8 @@ public class Player extends AdvancedEntity {
 		ya = gravity(ya);
 
 		if (isDashing) {
-			int particleOffset;
-
-			if (movingDir == 1) {
-				particleOffset = -19;
-			} else {
-				particleOffset = 4;
-			}
-
 			for (int i = 0; i < 40; i++) {
-				level.addEntity(new DashParticle(x, y, particleOffset, new Properties("dashParticle")));
+				Command.exec("light dashParticle " + x + " " + y);
 			}
 		}
 //		TODO: Enable this again

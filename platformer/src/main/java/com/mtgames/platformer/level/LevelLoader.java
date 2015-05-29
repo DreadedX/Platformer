@@ -2,6 +2,7 @@ package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Background;
+import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import org.json.*;
 
@@ -46,18 +47,18 @@ class LevelLoader {
 			Command.exec("spawn " + type + " " + x + " " + y + " " + properties);
 		}
 
-		JSONObject objLights = levelJSP.get("light");
-		for (int i = 0; i < objEntities.length(); i++) {
-			String type = objEntities.getJSONObject(String.valueOf(i)).getString("type");
-			int x = objEntities.getJSONObject(String.valueOf(i)).getInt("x");
-			int y = objEntities.getJSONObject(String.valueOf(i)).getInt("y");
+		JSONObject objLights = levelJSP.get("lights");
+		for (int i = 0; i < objLights.length(); i++) {
+			String type = objLights.getJSONObject(String.valueOf(i)).getString("type");
+			int x = objLights.getJSONObject(String.valueOf(i)).getInt("x");
+			int y = objLights.getJSONObject(String.valueOf(i)).getInt("y");
 
 			String properties = "";
-			if(objEntities.getJSONObject(String.valueOf(i)).has("properties")) {
-				properties = String.valueOf(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
+			if(objLights.getJSONObject(String.valueOf(i)).has("properties")) {
+				properties = String.valueOf(objLights.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
 			}
 
-			Command.exec("spawn " + type + " " + x + " " + y + " " + properties);
+			Command.exec("light " + type + " " + x + " " + y + " " + properties);
 		}
 	}
 

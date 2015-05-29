@@ -1,0 +1,18 @@
+{
+  "0": {
+    "type": "torch",
+    "x": 67,
+    "y": 528,
+    "properties": {
+      "colour": 16733440
+    }
+  },
+  "1": {
+    "type": "torch",
+    "x": 430,
+    "y": 736,
+    "properties": {
+      "colour": 5570815
+    }
+  }
+}

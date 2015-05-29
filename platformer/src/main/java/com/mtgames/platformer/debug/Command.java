@@ -5,6 +5,8 @@ import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
+import com.mtgames.platformer.entities.particles.DashParticle;
+import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
@@ -81,7 +83,7 @@ public class Command {
 
 					switch (commands[1]) {
 						default:
-							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
+							Debug.log("'" + commands[1] + "' is not a valid entity type", Debug.WARNING);
 							break;
 
 						case "player":
@@ -110,6 +112,46 @@ public class Command {
 					}
 				} else {
 					Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
+				}
+				break;
+
+			case "light":
+				if (commands.length == 4 || commands.length == 5) {
+
+					if (commands[2].equals("*")) {
+						commands[2] = String.valueOf(level.entities.get(0).x);
+					}
+
+					if (commands[3].equals("*")) {
+						commands[3] = String.valueOf(level.entities.get(0).y);
+					}
+
+					Properties properties;
+					JSONObject obj = new JSONObject("{}");
+					if (commands.length == 5) {
+						obj = new JSONObject(commands[4]);
+					}
+
+					switch (commands[1]) {
+						default:
+							Debug.log("'" + commands[1] + "' is not a valid light type", Debug.WARNING);
+							break;
+
+						case "torch":
+							properties = new Properties("torch");
+							properties.set(obj);
+							level.addEntity(new Torch(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
+							break;
+
+						case "dashParticle":
+							properties = new Properties("dashParticle");
+							properties.set(obj);
+							level.addEntity(new DashParticle(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
+							break;
+
+					}
+				} else {
+					Debug.log("Invalid arguments, usage: light <name> <x> <y>", Debug.WARNING);
 				}
 				break;
 
