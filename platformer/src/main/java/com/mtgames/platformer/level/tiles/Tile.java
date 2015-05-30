@@ -9,20 +9,20 @@ import com.mtgames.platformer.gfx.Screen;
 
 	public static final Tile[] tiles = new Tile[256];
 	public static final Tile   VOID  = new BaseSolidTile(0, "void", false);
-	public static final Tile   AIR   = new BaseTile(1, "air", false);
+	public static final Tile   AIR   = new BaseTile(1, "grid", false);
 
-	public static final Tile BLOCK1 = new BaseSolidTile(2, "block1");
-	public static final Tile BLOCK2 = new BaseSolidTile(3, "block2");
+	public static final Tile BLOCK1 = new BaseTile(2, "brick");
+	public static final Tile BLOCK2 = new BaseSolidTile(3, "brick_solid");
 
-	public static final Tile BIGBLOCK1TL = new BaseSolidTile(32, "bigBlock1", BIG, 0);
-	public static final Tile BIGBLOCK1TR = new BaseSolidTile(33, "bigBlock1", BIG, 1);
-	public static final Tile BIGBLOCK1BL = new BaseSolidTile(64, "bigBlock1", BIG, 2);
-	public static final Tile BIGBLOCK1BR = new BaseSolidTile(65, "bigBlock1", BIG, 3);
-
-	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, "bigBlock2", BIG, 0);
-	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, "bigBlock2", BIG, 1);
-	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, "bigBlock2", BIG, 2);
-	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, "bigBlock2", BIG, 3);
+//	public static final Tile BIGBLOCK1TL = new BaseTile(32, "brick", BIG, 0);
+//	public static final Tile BIGBLOCK1TR = new BaseTile(33, "brick", BIG, 1);
+//	public static final Tile BIGBLOCK1BL = new BaseTile(64, "brick", BIG, 2);
+//	public static final Tile BIGBLOCK1BR = new BaseTile(65, "brick", BIG, 3);
+//
+//	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, "brick_solid", BIG, 0);
+//	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, "brick_solid", BIG, 1);
+//	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, "brick_solid", BIG, 2);
+//	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, "brick_solid", BIG, 3);
 
 	private final byte id;
 	boolean solid;

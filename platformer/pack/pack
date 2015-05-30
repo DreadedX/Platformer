@@ -1,6 +1,2 @@
 #!/bin/bash
-rm properties.jsp
-tar -cvf properties.tar *.json
-gzip properties.tar
-mv properties.tar.gz properties.jsp
-cp properties.jsp ../src/main/resources/assets/properties.jsp
+java -jar ../../../JSPr/build/libs/jspr.jar $(pwd)
