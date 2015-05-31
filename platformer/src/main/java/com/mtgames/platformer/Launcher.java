@@ -1,6 +1,5 @@
 package com.mtgames.platformer;
 
-import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.utils.LauncherBase;
 import javafx.collections.FXCollections;
