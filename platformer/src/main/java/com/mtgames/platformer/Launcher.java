@@ -1,4 +1,4 @@
-package com.mtgames;
+package com.mtgames.platformer;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Command;

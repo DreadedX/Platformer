@@ -1,28 +1,55 @@
 package com.mtgames.platformer.level.tiles;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.utils.Debug;
 
 @SuppressWarnings("UnusedDeclaration") public abstract class Tile {
 
-	private static final        int SMALL  = 8;
-	private static final        int BIG    = 32;
+	private static final int SMALL = 8;
+	private static final int BIG   = 32;
 
-	public static final Tile[] tiles = new Tile[256];
+	public static final Tile[] tiles = new Tile[1024];
 	public static final Tile   VOID  = new BaseSolidTile(0, "void", false);
-	public static final Tile   AIR   = new BaseTile(1, "grid", false);
+	public static final Tile   GRID  = new BaseTile(1, "grid", false);
 
-	public static final Tile BLOCK1 = new BaseTile(2, "brick");
-	public static final Tile BLOCK2 = new BaseSolidTile(3, "brick_solid");
+//	BRICKS
+	public static final Tile BRICK       = new BaseTile(2, "brick");
+	public static final Tile BRICK_S = new BaseSolidTile(3, "brick_solid");
+//	public static final Tile BRICK       = new BaseTile(1002, "brick");
+//	public static final Tile BRICK_S = new BaseSolidTile(1003, "brick_solid");
 
-//	public static final Tile BIGBLOCK1TL = new BaseTile(32, "brick", BIG, 0);
-//	public static final Tile BIGBLOCK1TR = new BaseTile(33, "brick", BIG, 1);
-//	public static final Tile BIGBLOCK1BL = new BaseTile(64, "brick", BIG, 2);
-//	public static final Tile BIGBLOCK1BR = new BaseTile(65, "brick", BIG, 3);
-//
-//	public static final Tile BIGBLOCK2TL = new BaseSolidTile(34, "brick_solid", BIG, 0);
-//	public static final Tile BIGBLOCK2TR = new BaseSolidTile(35, "brick_solid", BIG, 1);
-//	public static final Tile BIGBLOCK2BL = new BaseSolidTile(66, "brick_solid", BIG, 2);
-//	public static final Tile BIGBLOCK2BR = new BaseSolidTile(67, "brick_solid", BIG, 3);
+//	WINDOW
+	public static final Tile WINDOW_TTLL = new BaseTile(4, "window", 4*16, 0);
+	public static final Tile WINDOW_TTL = new BaseTile(5, "window", 4*16, 1);
+	public static final Tile WINDOW_TTR = new BaseTile(6, "window", 4*16, 2);
+	public static final Tile WINDOW_TTRR = new BaseTile(7, "window", 4*16, 3);
+
+	public static final Tile WINDOW_TML = new BaseTile(8, "window", 4*16, 4);
+	public static final Tile WINDOW_BL = new BaseTile(9, "window", 4*16, 5);
+	public static final Tile WINDOW_BR = new BaseTile(10, "window", 4*16, 6);
+	public static final Tile WINDOW_TMR = new BaseTile(11, "window", 4*16, 7);
+
+	public static final Tile WINDOW_ML = new BaseTile(12, "window", 4*16, 8);
+	public static final Tile WINDOW_BC = new BaseTile(13, "window", 4*16, 9);
+	public static final Tile WINDOW_TC = new BaseTile(14, "window", 4*16, 10);
+	public static final Tile WINDOW_MR = new BaseTile(15, "window", 4*16, 11);
+
+//	FLAG
+	public static final Tile FLAG_TL = new BaseTile(16, "flag", 4*16, 0);
+	public static final Tile FLAG_TC = new BaseTile(17, "flag", 4*16, 1);
+	public static final Tile FLAG_TR = new BaseTile(18, "flag", 4*16, 2);
+
+	public static final Tile FLAG_ML = new BaseTile(19, "flag", 4*16, 4);
+	public static final Tile FLAG_C = new BaseTile(20, "flag", 4*16, 5);
+	public static final Tile FLAG_MR = new BaseTile(21, "flag", 4*16, 6);
+
+	public static final Tile FLAG_BLT = new BaseTile(22, "flag", 4*16, 8);
+	public static final Tile FLAG_BSL = new BaseTile(23, "flag", 4*16, 9);
+	public static final Tile FLAG_BRT = new BaseTile(24, "flag", 4*16, 10);
+
+	public static final Tile FLAG_BLB = new BaseTile(25, "flag", 4*16, 12);
+	public static final Tile FLAG_BSR = new BaseTile(26, "flag", 4*16, 13);
+	public static final Tile FLAG_BRB = new BaseTile(27, "flag", 4*16, 14);
 
 	private final byte id;
 	boolean solid;

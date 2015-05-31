@@ -19,8 +19,8 @@ public class Level {
 	private final List<Background>  backgrounds  = new ArrayList<>();
 	private final List<LightSource> lightSources = new ArrayList<>();
 
-	private byte[] tiles;
-	private int    width;
+	public  byte[] tiles;
+	public  int    width;
 	private int    height;
 
 	public String  path;
@@ -34,7 +34,7 @@ public class Level {
 
 		lightSources.forEach(LightSource::tick);
 
-		for (int i = 0; i < entities.size(); i++){
+		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 
 			e.tick();

@@ -10,6 +10,7 @@ import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import com.mtgames.platformer.entities.FreeCamera;
@@ -205,6 +206,15 @@ public class Command {
 				}
 				System.exit(0);
 				break;
+
+			case "tile":
+				if (commands.length == 2) {
+					level.tiles[(level.entities.get(0).x >> 4) + (level.entities.get(0).y >> 4) * level.width] = Byte.parseByte((commands[1]));
+				}
+				break;
+
+			case "export":
+				Debug.log(Arrays.toString(level.tiles), Debug.INFO);
 
 		}
 	}
