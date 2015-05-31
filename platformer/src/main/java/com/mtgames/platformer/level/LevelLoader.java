@@ -6,7 +6,7 @@ import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import org.json.*;
 
-class LevelLoader {
+public class LevelLoader {
 
 	private static int    width;
 	private static int    height;

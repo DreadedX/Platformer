@@ -208,8 +208,8 @@ public class Command {
 				break;
 
 			case "tile":
-				if (commands.length == 2) {
-					level.tiles[(level.entities.get(0).x >> 4) + (level.entities.get(0).y >> 4) * level.width] = Byte.parseByte((commands[1]));
+				if (commands.length == 4) {
+					level.tiles[Integer.parseInt(commands[2]) + Integer.parseInt(commands[3]) * level.width] = Byte.parseByte((commands[1]));
 				}
 				break;
 

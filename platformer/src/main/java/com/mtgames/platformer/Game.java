@@ -22,21 +22,21 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings({ "serial" }) public class Game implements Runnable {
 
-	private static final boolean FPSUNLOCK = true;
-	private static final int     TPS       = 60;
+	protected static final boolean FPSUNLOCK = true;
+	protected static final int     TPS       = 60;
 	public static final  int     WIDTH     = 608;
 	public static final  int     HEIGHT    = WIDTH / 4 * 3;
-	private static final String  NAME      = "Platformer";
+	protected static final String  NAME      = "Platformer";
 
 	public static int scale;
-	private int     fps     = 0;
-	private Screen screen;
+	protected int     fps     = 0;
+	protected Screen screen;
 
 	public static InputHandler input;
 	public static Level        level;
 
-	private static boolean debug      = false;
-	private static boolean showDebug  = false;
+	protected static boolean debug      = false;
+	protected static boolean showDebug  = false;
 	public static  boolean lightDebug = false;
 
 	private int xOffset;
@@ -44,9 +44,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	public static boolean paused = false;
 
-	private GLFWErrorCallback errorCallback;
-	private GLFWKeyCallback   keyCallback;
-	private long              window;
+	protected GLFWErrorCallback errorCallback;
+	protected GLFWKeyCallback   keyCallback;
+	protected long              window;
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -62,7 +62,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		new Game().start();
 	}
 
-	private void init() {
+	protected void init() {
 		screen = new Screen();
 		input = new InputHandler();
 		level = new Level();
@@ -214,7 +214,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		level.tick();
 	}
 
-	private void render() {
+	protected void render() {
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 		glClearColor(0, 0, 0, 0);

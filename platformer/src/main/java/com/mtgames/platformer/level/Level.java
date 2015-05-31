@@ -16,12 +16,12 @@ import java.util.List;
 public class Level {
 
 	public final  List<Entity>      entities     = new ArrayList<>();
-	private final List<Background>  backgrounds  = new ArrayList<>();
-	private final List<LightSource> lightSources = new ArrayList<>();
+	protected final List<Background>  backgrounds  = new ArrayList<>();
+	protected final List<LightSource> lightSources = new ArrayList<>();
 
 	public  byte[] tiles;
 	public  int    width;
-	private int    height;
+	protected int    height;
 
 	public String  path;
 	public boolean reload;
