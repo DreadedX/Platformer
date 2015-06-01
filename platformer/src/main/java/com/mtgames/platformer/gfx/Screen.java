@@ -2,6 +2,7 @@ package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
@@ -137,10 +138,15 @@ public class Screen {
 //		glDeleteTextures(textureID);
 	}
 
-	public void renderBackground(int textureID, int speed, int levelWidth) {
-		int xOffsetSpeed = xOffset / speed;
+	public void renderBackground(int textureID, int speed, int levelWidth, int backgroundWidth, int backgroundHeight) {
+		int xOffsetSpeed = 0;
+		int yOffsetSpeed = 0;
+		if (speed != 0) {
+			xOffsetSpeed = xOffset * scale / speed;
+			yOffsetSpeed = yOffset * scale / speed - ((48 << 4) - height) * scale / speed;
+		}
 		levelWidth = levelWidth << 4;
-		float repeat = (float) levelWidth / width;
+		float repeat = (float) levelWidth / backgroundWidth / scale;
 //
 		glEnable(GL_TEXTURE_2D);
 
@@ -149,16 +155,16 @@ public class Screen {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
-			glVertex2f(-xOffsetSpeed, 0);
+			glVertex2f(-xOffsetSpeed, backgroundHeight * scale - yOffsetSpeed);
 
 			glTexCoord2f(repeat, 0);
-			glVertex2f(levelWidth * scale - xOffsetSpeed, 0);
+			glVertex2f(levelWidth * scale - xOffsetSpeed, backgroundHeight * scale - yOffsetSpeed);
 
 			glTexCoord2f(repeat, 1);
-			glVertex2f(levelWidth * scale - xOffsetSpeed, height * scale);
+			glVertex2f(levelWidth * scale - xOffsetSpeed, height * scale - yOffsetSpeed);
 
 			glTexCoord2f(0, 1);
-			glVertex2f(-xOffsetSpeed, height * scale);
+			glVertex2f(-xOffsetSpeed, height * scale - yOffsetSpeed);
 		glEnd();
 
 		glDisable(GL_TEXTURE_2D);

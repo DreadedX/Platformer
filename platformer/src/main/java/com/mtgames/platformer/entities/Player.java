@@ -9,6 +9,7 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.Hud;
 import com.mtgames.platformer.gfx.gui.Text;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.mtgames.utils.Debug;
 import org.json.JSONObject;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -114,10 +115,13 @@ public class Player extends AdvancedEntity {
 
 		isDashing = xaDash != 0;
 
-		if (xa > 0) {
-			xa -= 1;
-		} else if (xa < 0) {
-			xa += 1;
+		if (xa > 1) {
+			xa -= 2;
+		} else if (xa < -1) {
+			xa += 2;
+		} else if (xa == 1 || xa == -1) {
+			xa = 0;
+			Debug.log("TEST", Debug.DEBUG);
 		}
 
 		if (xa > speed && !isDashing) {
@@ -166,7 +170,7 @@ public class Player extends AdvancedEntity {
 			xTile += 3;
 		}
 
-		screen.renderEntity(x, y, textureID[xTile], 32, flipX);
+		screen.renderEntity(x, y, textureID[xTile], 16, flipX);
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 

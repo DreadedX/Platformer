@@ -3,6 +3,7 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
+import com.mtgames.utils.Debug;
 
 public abstract class Entity {
 
@@ -36,12 +37,9 @@ public abstract class Entity {
 			return ya;
 		}
 
-		if (hasCollided(0, 1) && ya > 0) {
+		if (hasCollided(0, -1) && ya < 0) {
 			ya = 0;
 		}
-
-		if (hasCollided(0, -1))
-			ya = 0;
 
 		if (gravityWait > 1) {
 			int gravity = 1;

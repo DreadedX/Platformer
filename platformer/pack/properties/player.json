@@ -6,8 +6,8 @@
   "staggerLength": 20,
   "maxHealth": 100,
   "speed": 6,
-  "xMin": -10,
-  "xMax": 8,
-  "yMin": -16,
-  "yMax": 15
+  "xMin": -5,
+  "xMax": 4,
+  "yMin": -7,
+  "yMax": 7
 }

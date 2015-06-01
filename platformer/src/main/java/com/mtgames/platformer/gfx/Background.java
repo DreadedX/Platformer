@@ -10,6 +10,7 @@ public class Background {
 
 	private final int speed;
 	private       int width;
+	private       int height;
 	private       int textureID;
 
 	public Background(String path, int speed) {
@@ -27,12 +28,13 @@ public class Background {
 		}
 
 		this.width = image.getWidth();
+		this.height = image.getHeight();
 
 		textureID = TextureLoader.loadTexture(path);
 	}
 
 	public void render(Screen screen, int levelWidth) {
-		screen.renderBackground(textureID, speed, levelWidth);
+		screen.renderBackground(textureID, speed, levelWidth, width, height);
 	}
 
 	public int getSpeed() {
