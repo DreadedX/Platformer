@@ -1,4 +1,4 @@
-package com.mtgames.platformer.gfx.lighting;
+package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;

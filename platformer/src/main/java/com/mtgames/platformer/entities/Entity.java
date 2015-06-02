@@ -15,6 +15,7 @@ public abstract class Entity {
 	private final   Properties properties;
 	int gravityWait = 0;
 	protected int life = -10;
+	public boolean persistent = false;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();

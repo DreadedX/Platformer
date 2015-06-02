@@ -20,7 +20,7 @@ public class Font {
 		int location = 0;
 		for (int i = 0; i < msg.length(); i++) {
 
-			if (msg.charAt(i) == '|') {
+			if (msg.charAt(i) == '\n') {
 				line++;
 				location = 0;
 				continue;

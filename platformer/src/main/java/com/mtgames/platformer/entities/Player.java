@@ -2,15 +2,11 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Command;
-import com.mtgames.platformer.entities.particles.DashParticle;
-import com.mtgames.platformer.entities.particles.GlowStick;
-import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.gui.Hud;
-import com.mtgames.platformer.gfx.gui.Text;
+import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
 import com.mtgames.utils.Debug;
-import org.json.JSONObject;
+import com.sun.javafx.geom.Vec3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -57,6 +53,7 @@ public class Player extends AdvancedEntity {
 		yMax = properties.getYMax();
 
 		this.input = properties.getInput();
+		this.persistent = true;
 	}
 
 	public void tick() {
@@ -174,14 +171,14 @@ public class Player extends AdvancedEntity {
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 
-		double dashRatio = ((dashWait * 10d) / (DASHWAIT * 10d));
-		Hud.setDash(dashRatio);
-		double healthRatio = ((life * 10d) / (MAXHEALTH * 10d));
-		Hud.setHealth(healthRatio);
+		float healthRatio = ((life * 10f) / (MAXHEALTH * 10f));
+		GUI.add(() -> GUI.progressBar(80, 20, 150, healthRatio, new Vec3f(0.5f, 0.1f, 0.1f)));
+		float dashRatio = ((dashWait * 10f) / (DASHWAIT * 10f));
+		GUI.add(() -> GUI.progressBar(screen.width-80, 20, 150, dashRatio, new Vec3f(0.1f, 0.1f, 0.5f)));
 
 		//		TEMP DEATH CODE
 		if (!isAlive()) {
-			Text.textBox(screen, "YOU DIED!", "");
+			GUI.add(() -> GUI.textBox("YOU DIED!", ""));
 		}
 	}
 

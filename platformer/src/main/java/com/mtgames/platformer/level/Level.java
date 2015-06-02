@@ -1,11 +1,11 @@
 package com.mtgames.platformer.level;
 
+import com.mtgames.platformer.Game;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.Entity;
-import com.mtgames.platformer.entities.BasicEntity;
 import com.mtgames.platformer.gfx.Background;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.lighting.LightSource;
+import com.mtgames.platformer.entities.LightSource;
 import com.mtgames.platformer.level.tiles.Tile;
 
 import java.io.File;
@@ -15,16 +15,18 @@ import java.util.List;
 
 public class Level {
 
-	public final  List<Entity>      entities     = new ArrayList<>();
+	public final    List<Entity>      entities     = new ArrayList<>();
 	protected final List<Background>  backgrounds  = new ArrayList<>();
 	protected final List<LightSource> lightSources = new ArrayList<>();
 
-	public  byte[] tiles;
-	public  int    width;
+	public    byte[] tiles;
+	public    int    width;
 	protected int    height;
 
 	public String  path;
 	public boolean reload;
+
+	private Screen screen = Game.screen;
 
 	public void tick() {
 		if (reload) {
@@ -42,7 +44,8 @@ public class Level {
 
 		Iterator<Entity> iteratorParticles = entities.iterator();
 		while (iteratorParticles.hasNext()) {
-			if (!iteratorParticles.next().isAlive()) {
+			Entity current = iteratorParticles.next();
+			if (!current.isAlive() && !current.persistent) {
 				iteratorParticles.remove();
 			}
 		}
@@ -54,7 +57,7 @@ public class Level {
 		}
 	}
 
-	public void renderTiles(Screen screen, int xOffset, int yOffset) {
+	public void renderTiles(int xOffset, int yOffset) {
 		if (xOffset < 0) {
 			xOffset = 0;
 		}
@@ -80,19 +83,19 @@ public class Level {
 		}
 	}
 
-	public void renderBackground(Screen screen) {
+	public void renderBackground() {
 		for (Background b : backgrounds) {
 			b.render(screen, width, height);
 		}
 	}
 
-	public void renderEntities(Screen screen) {
+	public void renderEntities() {
 		for (Entity e : entities) {
 			e.render(screen);
 		}
 	}
 
-	public void renderLights(Screen screen) {
+	public void renderLights() {
 		for (LightSource l : lightSources) {
 			l.render(screen);
 		}

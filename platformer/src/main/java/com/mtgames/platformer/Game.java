@@ -3,7 +3,7 @@ package com.mtgames.platformer;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.gui.Text;
+import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
 import org.lwjgl.Sys;
@@ -24,20 +24,20 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	protected static final boolean FPSUNLOCK = true;
 	protected static final int     TPS       = 60;
-	public static final  int     WIDTH     = 608;
-	public static final  int     HEIGHT    = WIDTH / 4 * 3;
+	public static final    int     WIDTH     = 608;
+	public static final    int     HEIGHT    = WIDTH / 4 * 3;
 	protected static final String  NAME      = "Platformer";
 
 	public static int scale;
-	protected int     fps     = 0;
-	protected Screen screen;
+	protected int fps = 0;
+	public static Screen screen;
 
 	public static InputHandler input;
 	public static Level        level;
 
 	protected static boolean debug      = false;
 	protected static boolean showDebug  = false;
-	public static  boolean lightDebug = false;
+	public static    boolean lightDebug = false;
 
 	private int xOffset;
 	private int yOffset;
@@ -238,11 +238,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			}
 		}
 
-		level.renderBackground(screen);
-		level.renderTiles(screen, xOffset, yOffset);
-		level.renderEntities(screen);
+		level.renderBackground();
+		level.renderTiles(xOffset, yOffset);
+		level.renderEntities();
 
 		screen.renderLightFBO(screen, level);
+
+		GUI.render();
 
 		if (showDebug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
@@ -250,7 +252,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		}
 
 		if (input.isPressed(GLFW_KEY_M)) {
-			Text.textBox(screen, "Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ");
+			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] "));
 		}
 
 		glfwSwapBuffers(window);
