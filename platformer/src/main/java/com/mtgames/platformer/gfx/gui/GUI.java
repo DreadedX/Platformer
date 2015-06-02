@@ -27,9 +27,9 @@ public class GUI {
 	}
 
 	public static void progressBar(int x, int y, int length, float ratio, Vec3f colour) {
-		screen.drawRectangle(x-length/2, y-16, x+length/2, y+16, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
+		screen.drawRectangle(x-length/2, y-8, x+length/2, y+8, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
 		float lengthRatio = length * ratio - length/2;
-		screen.drawRectangle(x-length/2, y-16, (int) (x+lengthRatio), y+16, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
+		screen.drawRectangle(x-length/2, y-8, (int) (x+lengthRatio), y+8, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
 	}
 
 	public static void add(Runnable task) {

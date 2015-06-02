@@ -34,6 +34,7 @@ public class Player extends AdvancedEntity {
 	private boolean canDash     = true;
 	private boolean isStaggered = false;
 	private boolean isDashing   = false;
+	private boolean dashDeplete = false;
 
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
@@ -82,7 +83,8 @@ public class Player extends AdvancedEntity {
 			if (input.isPressed(GLFW_KEY_W) && canDash && isAlive()) {
 				xaDash = DASHSPEED;
 				canDash = false;
-				dashWait = 0;
+//				dashWait = 0;
+				dashDeplete = true;
 				animationFrame = 0;
 			}
 
@@ -132,7 +134,7 @@ public class Player extends AdvancedEntity {
 		ya = gravity(ya);
 
 		if (isDashing) {
-			for (int i = 0; i < 40; i++) {
+			for (int i = 0; i < 10; i++) {
 				Command.exec("light dashParticle " + x + " " + y);
 			}
 		}
@@ -172,9 +174,16 @@ public class Player extends AdvancedEntity {
 //		screen.addLighting(x, y, 0, 0xffae00);
 
 		float healthRatio = ((life * 10f) / (MAXHEALTH * 10f));
-		GUI.add(() -> GUI.progressBar(80, 20, 150, healthRatio, new Vec3f(0.5f, 0.1f, 0.1f)));
+		GUI.add(() -> GUI.progressBar(80, 13, 150, healthRatio, new Vec3f(0.4f, 0.1f, 0.1f)));
 		float dashRatio = ((dashWait * 10f) / (DASHWAIT * 10f));
-		GUI.add(() -> GUI.progressBar(screen.width-80, 20, 150, dashRatio, new Vec3f(0.1f, 0.1f, 0.5f)));
+		Vec3f colour;
+		if (dashRatio == 1.0f) {
+			colour = new Vec3f(0.1f, 0.1f, 0.5f);
+		} else {
+			colour = new Vec3f(0.1f, 0.1f, 0.4f);
+		}
+
+		GUI.add(() -> GUI.progressBar(screen.width-80, 13, 150, dashRatio, colour));
 
 		//		TEMP DEATH CODE
 		if (!isAlive()) {
@@ -191,6 +200,14 @@ public class Player extends AdvancedEntity {
 
 		canDash = dashWait == DASHWAIT && !hasCollided(0, 1);
 
+		if (dashDeplete) {
+			dashWait -= 5;
+		}
+
+		if (dashWait <= 0) {
+			dashDeplete = false;
+		}
+
 		if (xaDash == 0) {
 //			xa = 0;
 			return;
@@ -198,6 +215,7 @@ public class Player extends AdvancedEntity {
 
 		if (hasCollided(-1, 0) || hasCollided(1, 0)) {
 			staggerTime = STAGGERLENGTH;
+			dashDeplete = false;
 			xaDash = 0;
 			life -= 10;
 		}
