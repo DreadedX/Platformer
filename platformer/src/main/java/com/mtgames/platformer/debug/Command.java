@@ -215,6 +215,12 @@ public class Command {
 
 			case "export":
 				Debug.log(Arrays.toString(level.tiles), Debug.INFO);
+				break;
+
+			case "test":
+				exec("lighting");
+				exec("load test");
+				break;
 
 		}
 	}

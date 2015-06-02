@@ -1,6 +1,7 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.mtgames.utils.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -33,8 +34,8 @@ public class Background {
 		textureID = TextureLoader.loadTexture(path);
 	}
 
-	public void render(Screen screen, int levelWidth) {
-		screen.renderBackground(textureID, speed, levelWidth, width, height);
+	public void render(Screen screen, int levelWidth, int levelHeight) {
+		screen.renderBackground(textureID, speed, levelWidth, levelHeight, width, height);
 	}
 
 	public int getSpeed() {

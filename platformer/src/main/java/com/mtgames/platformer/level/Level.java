@@ -82,7 +82,7 @@ public class Level {
 
 	public void renderBackground(Screen screen) {
 		for (Background b : backgrounds) {
-			b.render(screen, width);
+			b.render(screen, width, height);
 		}
 	}
 

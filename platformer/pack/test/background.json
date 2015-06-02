@@ -1,22 +1,22 @@
 {
   "0": {
-    "name": "mountain/layer1",
+    "name": "mountain/0",
     "speed": 0
   },
   "1": {
-    "name": "mountain/layer2",
+    "name": "mountain/1",
     "speed": 50
   },
   "2": {
-    "name": "mountain/layer3",
+    "name": "mountain/2",
     "speed": 40
   },
   "3": {
-    "name": "mountain/layer4",
+    "name": "mountain/3",
     "speed": 10
   },
-  "4":{
-    "name": "mountain/layer5",
+  "4": {
+    "name": "mountain/4",
     "speed": 5
   }
 }

@@ -138,15 +138,15 @@ public class Screen {
 //		glDeleteTextures(textureID);
 	}
 
-	public void renderBackground(int textureID, int speed, int levelWidth, int backgroundWidth, int backgroundHeight) {
+	public void renderBackground(int textureID, int speed, int levelWidth, int levelHeight, int backgroundWidth, int backgroundHeight) {
 		int xOffsetSpeed = 0;
 		int yOffsetSpeed = 0;
 		if (speed != 0) {
-			xOffsetSpeed = xOffset * scale / speed;
-			yOffsetSpeed = yOffset * scale / speed - ((48 << 4) - height) * scale / speed;
+			xOffsetSpeed = xOffset / speed;
+			yOffsetSpeed = yOffset / speed - ((levelHeight << 4) - height) / speed;
 		}
 		levelWidth = levelWidth << 4;
-		float repeat = (float) levelWidth / backgroundWidth / scale;
+		float repeat = (float) levelWidth / backgroundWidth;
 //
 		glEnable(GL_TEXTURE_2D);
 
@@ -155,16 +155,16 @@ public class Screen {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
-			glVertex2f(-xOffsetSpeed, backgroundHeight * scale - yOffsetSpeed);
+			glVertex2f((-xOffsetSpeed) * scale, (height - backgroundHeight - yOffsetSpeed) * scale);
 
 			glTexCoord2f(repeat, 0);
-			glVertex2f(levelWidth * scale - xOffsetSpeed, backgroundHeight * scale - yOffsetSpeed);
+			glVertex2f((levelWidth - xOffsetSpeed) * scale, (height - backgroundHeight - yOffsetSpeed) * scale);
 
 			glTexCoord2f(repeat, 1);
-			glVertex2f(levelWidth * scale - xOffsetSpeed, height * scale - yOffsetSpeed);
+			glVertex2f((levelWidth - xOffsetSpeed) * scale, (height - yOffsetSpeed) * scale);
 
 			glTexCoord2f(0, 1);
-			glVertex2f(-xOffsetSpeed, height * scale - yOffsetSpeed);
+			glVertex2f((-xOffsetSpeed) * scale, (height - yOffsetSpeed) * scale);
 		glEnd();
 
 		glDisable(GL_TEXTURE_2D);
