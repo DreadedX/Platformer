@@ -251,6 +251,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
 		}
 
+		if (paused) {
+			Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1);
+		}
+
 		if (input.isPressed(GLFW_KEY_M)) {
 			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] "));
 		}
