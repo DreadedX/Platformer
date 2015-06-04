@@ -6,6 +6,8 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
+import com.sun.javafx.geom.Vec3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -13,6 +15,7 @@ import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
 import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
@@ -41,6 +44,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	private int xOffset;
 	private int yOffset;
+
+	public static int mx;
+	public static int my;
 
 	public static boolean paused = false;
 
@@ -201,6 +207,19 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				fps = (int) ((frames) / ((System.currentTimeMillis() - lastTimer) / 1000d) + 0.5d);
 			}
 
+			DoubleBuffer mxRaw = BufferUtils.createDoubleBuffer(1);
+			DoubleBuffer myRaw = BufferUtils.createDoubleBuffer(1);
+			glfwGetCursorPos(window, mxRaw, myRaw);
+
+			mxRaw.rewind();
+			myRaw.rewind();
+
+			mx = (int) mxRaw.get();
+			my = (int) myRaw.get();
+
+			mx = mx / scale + screen.xOffset;
+			my = my / scale + screen.xOffset;
+
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
 				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
@@ -244,11 +263,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		screen.renderLightFBO(screen, level);
 
+		GUI.add(() -> GUI.button(116, 300, "Button", new Vec3f(0.1f, 0.5f, 0.1f)));
+		GUI.add(() -> GUI.button(383-screen.xOffset, 701-screen.yOffset, "Button", new Vec3f(0.1f, 0.5f, 0.1f)));
+		Font.render("Test", screen, 419, 671);
+
 		GUI.render();
 
 		if (showDebug) {
 			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
+			Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 18);
 		}
 
 		if (paused) {

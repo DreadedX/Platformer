@@ -174,7 +174,7 @@ public class Player extends AdvancedEntity {
 //		screen.addLighting(x, y, 0, 0xffae00);
 
 		float healthRatio = ((life * 10f) / (MAXHEALTH * 10f));
-		GUI.add(() -> GUI.progressBar(80, 13, 150, healthRatio, new Vec3f(0.4f, 0.1f, 0.1f)));
+		GUI.add(() -> GUI.progressBar(80, 13, 16, 150, healthRatio, new Vec3f(0.4f, 0.1f, 0.1f)));
 		float dashRatio = ((dashWait * 10f) / (DASHWAIT * 10f));
 		Vec3f colour;
 		if (dashRatio == 1.0f) {
@@ -183,7 +183,7 @@ public class Player extends AdvancedEntity {
 			colour = new Vec3f(0.1f, 0.1f, 0.4f);
 		}
 
-		GUI.add(() -> GUI.progressBar(screen.width-80, 13, 150, dashRatio, colour));
+		GUI.add(() -> GUI.progressBar(screen.width-80, 13, 16, 150, dashRatio, colour));
 
 		//		TEMP DEATH CODE
 		if (!isAlive()) {
