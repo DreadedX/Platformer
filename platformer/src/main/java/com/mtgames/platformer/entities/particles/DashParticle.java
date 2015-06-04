@@ -11,7 +11,7 @@ public class DashParticle extends BasicEntity {
 	private int ya = 0;
 
 	public DashParticle(int x, int y, Properties properties) {
-		super(properties, (int) (x - 15 + Math.random() * 30), (int) (y - 6 + Math.random() * 12));
+		super(properties, (int) (x - 8 + Math.random() * 16), (int) (y - 6 + Math.random() * 12));
 		lightSource = new LightSource(x, y, properties);
 		level.addLightSource(lightSource);
 		life = (int) (Math.random() * 20);
