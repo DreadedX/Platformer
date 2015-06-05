@@ -35,7 +35,7 @@ public class GUI {
 		screen.drawRectangle(x-length/2, y-height/2, (int) (x+lengthRatio), y+height/2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
 	}
 
-	public static void button(int x, int y, String msg, Vec3f colour) {
+	public static void button(int x, int y, String msg, Vec3f colour, Runnable task) {
 		int x1 = x-(msg.length()*8)/2-2;
 		int x2 = x+(msg.length()*8)/2+2;
 		int y1 = y-6;
@@ -55,7 +55,7 @@ public class GUI {
 		if (hover) {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x + 0.1f, colour.y + 0.1f, colour.z + 0.1f, 1.0f));
 			if (Game.input.isPressed(GLFW_KEY_T)) {
-				Debug.log("Button pressed", Debug.DEBUG);
+				task.run();
 			}
 		} else {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));

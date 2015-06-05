@@ -217,8 +217,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			mx = (int) mxRaw.get();
 			my = (int) myRaw.get();
 
-			mx = mx / scale + screen.xOffset;
-			my = my / scale + screen.xOffset;
+			mx = mx / scale;
+			my = my / scale;
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
@@ -263,9 +263,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		screen.renderLightFBO(screen, level);
 
-		GUI.add(() -> GUI.button(116, 300, "Button", new Vec3f(0.1f, 0.5f, 0.1f)));
-		GUI.add(() -> GUI.button(383-screen.xOffset, 701-screen.yOffset, "Button", new Vec3f(0.1f, 0.5f, 0.1f)));
-		Font.render("Test", screen, 419, 671);
+		GUI.add(() -> GUI.button(116, 300, "Button", new Vec3f(0.1f, 0.5f, 0.1f), () -> Debug.log("The button has been pressed", Debug.DEBUG)));
 
 		GUI.render();
 
