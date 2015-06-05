@@ -22,6 +22,7 @@ public class Launcher extends LauncherBase {
 
 	@Override protected void run() {
 		System.setProperty("com.mtgames.scale", String.valueOf(scale.getValue()));
+		System.setProperty("org.lwjgl.librarypath", "native");
 
 		Game.main(new String[] { "" });
 	}
