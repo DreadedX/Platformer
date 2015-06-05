@@ -19,12 +19,13 @@ public class GUI {
 	private static List<Runnable> list   = new ArrayList<>();
 
 	public static void textBox(String title, String msg) {
-		msg = Text.wrap(msg, (screen.width >> 3) - 4);
+//		msg = Text.wrap(msg, (screen.width >> 3) - 4);
+		msg = Text.wrap(msg, 72);
 
 		int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
-		int height = msg.length() - msg.replace("\n", "").length();
+		int height = msg.length() - msg.replace("|", "").length() + 1;
 
-		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 8 * height, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
+		screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 10 * height, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
 		Font.render(title.toUpperCase(), screen, xTitle, screen.yOffset + screen.height / 2 - 40);
 		Font.render(msg, screen, screen.xOffset + 16, screen.yOffset + screen.height / 2 - 24);
 	}
@@ -39,7 +40,7 @@ public class GUI {
 		int x1 = x-(msg.length()*8)/2-2;
 		int x2 = x+(msg.length()*8)/2+2;
 		int y1 = y-6;
-		int y2 = y+6;
+		int y2 = y+7;
 
 		boolean hover = false;
 
@@ -54,8 +55,9 @@ public class GUI {
 
 		if (hover) {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x + 0.1f, colour.y + 0.1f, colour.z + 0.1f, 1.0f));
-			if (Game.input.isPressed(GLFW_KEY_T)) {
+			if (Game.input.isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 				task.run();
+				Game.input.set(GLFW_MOUSE_BUTTON_LEFT, false);
 			}
 		} else {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));

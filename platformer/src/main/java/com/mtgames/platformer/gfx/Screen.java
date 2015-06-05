@@ -76,7 +76,6 @@ public class Screen {
 		}
 
 		glEnable(GL_TEXTURE_2D);
-
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glBegin(GL_QUADS);
 			glTexCoord2f(partX1, partY1); // top left
@@ -92,6 +91,35 @@ public class Screen {
 			glVertex2f(x, y + modifier);
 		glEnd();
 
+		glDisable(GL_TEXTURE_2D);
+	}
+
+	public void renderFont(int x, int y, int textureID, int charCount, int index) {
+		x -= xOffset;
+		y -= yOffset;
+		x *= scale;
+		y *= scale;
+
+		float partSize = 1.0f / (charCount-1);
+
+		float partX1 = partSize * index;
+		float partX2 = partSize * (index+1);
+
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glBegin(GL_QUADS);
+			glTexCoord2f(partX1, 0.0f); // top left
+			glVertex2f(x, y);
+
+			glTexCoord2f(partX2, 0.0f); // top right
+			glVertex2f(x + 8*scale, y);
+
+			glTexCoord2f(partX2, 1.0f); // bottom right
+			glVertex2f(x + 8*scale, y + 10*scale);
+
+			glTexCoord2f(partX1, 1.0f); // bottom left
+			glVertex2f(x, y + 10*scale);
+		glEnd();
 		glDisable(GL_TEXTURE_2D);
 	}
 

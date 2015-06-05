@@ -7,10 +7,12 @@ import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
+import com.sun.javafx.geom.Vec4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
@@ -42,17 +44,18 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	protected static boolean showDebug  = false;
 	public static    boolean lightDebug = false;
 
-	private int xOffset;
-	private int yOffset;
+	protected int xOffset;
+	protected int yOffset;
 
 	public static int mx;
 	public static int my;
 
 	public static boolean paused = false;
 
-	protected GLFWErrorCallback errorCallback;
-	protected GLFWKeyCallback   keyCallback;
-	protected long              window;
+	protected        GLFWErrorCallback       errorCallback;
+	protected        GLFWKeyCallback         keyCallback;
+	protected        GLFWMouseButtonCallback mouseButtonCallback;
+	protected static long                    window;
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -97,7 +100,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
 
-		glfwSetKeyCallback(window, keyCallback = new InputHandler());
+		glfwSetKeyCallback(window, keyCallback = input.keyCallback);
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = input.mouseButtonCallback);
 
 		ByteBuffer videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
@@ -123,6 +127,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 			glfwDestroyWindow(window);
 			keyCallback.release();
+			mouseButtonCallback.release();
 		} finally {
 			glfwTerminate();
 			errorCallback.release();
@@ -172,9 +177,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			boolean shouldRender = FPSUNLOCK;
 
 			while (delta >= 1) {
-				if (!paused) {
-					tick();
-				}
+				tick();
 				ticks++;
 				delta -= 1;
 				shouldRender = true;
@@ -191,9 +194,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				render();
 			}
 
-			if (input.isPressed(GLFW_KEY_P)) {
+			if (input.isPressed(GLFW_KEY_ESCAPE)) {
 				Command.exec("pause");
-				input.set(GLFW_KEY_P, false);
+				input.set(GLFW_KEY_ESCAPE, false);
 			}
 
 			if (input.isPressed(GLFW_KEY_F3) && debug) {
@@ -220,6 +223,19 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			mx = mx / scale;
 			my = my / scale;
 
+			if (mx < 0) {
+				mx = 0;
+			}
+			if (my < 0) {
+				my = 0;
+			}
+			if (mx > WIDTH) {
+				mx = WIDTH;
+			}
+			if (my > HEIGHT) {
+				my = HEIGHT;
+			}
+
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
 				Debug.log(frames + " Frames, " + ticks + " Ticks", Debug.INFO);
@@ -230,7 +246,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	}
 
 	private void tick() {
-		level.tick();
+		if (!paused) {
+			level.tick();
+		}
 	}
 
 	protected void render() {
@@ -263,23 +281,29 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		screen.renderLightFBO(screen, level);
 
-		GUI.add(() -> GUI.button(116, 300, "Button", new Vec3f(0.1f, 0.5f, 0.1f), () -> Debug.log("The button has been pressed", Debug.DEBUG)));
+		if (input.isPressed(GLFW_KEY_M)) {
+//			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[]"));
+//			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789| .,:;'\"!?$%()-=+/*[]"));
+//			GUI.add(() -> GUI.textBox("Lorem Impsum", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui."));
+			GUI.add(() -> GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog."));
+		}
 
 		GUI.render();
 
-		if (showDebug) {
-			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
-			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 9);
-			Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 18);
-		}
-
 		if (paused) {
-			Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1);
+			GUI.add(() -> Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1));
+			GUI.add(() -> GUI.button(WIDTH/2, 214, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.exec("pause")));
+			GUI.add(() -> GUI.button(WIDTH/2, 229, "Quit", new Vec3f(0.6f, 0.4f, 0.1f), () -> Command.exec("exit")));
+			screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 		}
 
-		if (input.isPressed(GLFW_KEY_M)) {
-			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+~*[] "));
+		if (showDebug) {
+			GUI.add(() -> Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1));
+			GUI.add(() -> Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 11));
+			GUI.add(() -> Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 21));
 		}
+
+		GUI.render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
