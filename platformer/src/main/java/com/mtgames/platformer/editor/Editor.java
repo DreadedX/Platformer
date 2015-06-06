@@ -4,7 +4,6 @@ import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.tiles.Tile;
-import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
@@ -60,18 +59,19 @@ public class Editor extends Game {
 			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset, (myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
 		}
 
-		if (input.isPressed(GLFW_KEY_SPACE)) {
+		if (!paused	&& input.isPressed(GLFW_KEY_SPACE)) {
 			for (int i = 2; i < Tile.tiles.length; i++) {
 				if (Tile.tiles[i] == null) {
 					return;
 				}
 				final int finalI = i;
-				GUI.add(() -> GUI.buttonCustom(8+16*(finalI-2), 8, 16, 16, () -> Tile.tiles[finalI].render(screen, 16 * (finalI-2) + screen.xOffset, screen.yOffset), () -> tile=finalI));
+				GUI.add(() -> GUI.button(8 + 16 * (finalI - 2), 8, 16, 16,
+						() -> Tile.tiles[finalI].render(screen, 16 * (finalI - 2) + screen.xOffset, screen.yOffset), () -> tile = finalI));
 			}
 		}
 
 		if (paused) {
-			GUI.add(() -> GUI.button(WIDTH/2, 184, "Save", new Vec3f(0.2f, 0.2f, 0.7f), () -> Command.exec("export")));
+			GUI.add(() -> GUI.buttonText(WIDTH / 2, 184, "Save", new Vec3f(0.2f, 0.2f, 0.7f), () -> Command.exec("export")));
 		}
 
 		GUI.render();
