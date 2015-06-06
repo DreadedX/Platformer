@@ -154,4 +154,22 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
+
+	public void create(int width, int height) {
+		this.width = width;
+		this.height = height;
+		tiles = new byte[width*height];
+
+		if (this.entities.size() > 0) {
+			this.entities.clear();
+		}
+
+		if (this.backgrounds.size() > 0) {
+			this.backgrounds.clear();
+		}
+
+		if (this.lightSources.size() > 0) {
+			this.lightSources.clear();
+		}
+	}
 }

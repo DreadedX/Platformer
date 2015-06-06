@@ -10,6 +10,8 @@ import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -214,7 +216,21 @@ public class Command {
 				break;
 
 			case "export":
-				Debug.log(Arrays.toString(level.tiles), Debug.INFO);
+				String export = "{\"width\": 64, \"height\": 48, \"tiles\": " + Arrays.toString(level.tiles) + "}";
+				Debug.log(export, Debug.INFO);
+				try {
+					PrintWriter out = new PrintWriter("pack/export/tiles.json");
+					out.println(export);
+					out.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				break;
+
+			case "new":
+				if (commands.length == 3) {
+					level.create(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]));
+				}
 				break;
 
 			case "test":

@@ -25,7 +25,7 @@ public class Properties {
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
 
-	private static final JSP jsp = new JSP("assets/properties.jsp", false);
+	private static final JSP jsp = new JSP("assets/game.jsp", false);
 
 	public Properties(String type) {
 		if(type.equals("")) {

@@ -64,6 +64,36 @@ public class GUI {
 		Font.render(msg, screen, screen.xOffset+x1+2, screen.yOffset+y-4);
 	}
 
+	public static void buttonCustom(int x, int y, int width, int height, Runnable render, Runnable task) {
+		int x1 = x-width/2;
+		int x2 = x+width/2;
+		int y1 = y-height/2;
+		int y2 = y+height/2;
+
+		boolean hover = false;
+
+		for(int ix = x1; ix < x2; ix++) {
+			for (int iy = y1; iy < y2; iy++) {
+				if (Game.mx == ix && Game.my == iy) {
+					hover = true;
+					break;
+				}
+			}
+		}
+
+		render.run();
+
+		if (hover) {
+			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
+			if (Game.input.isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+				task.run();
+				Game.input.unset(GLFW_MOUSE_BUTTON_LEFT);
+			}
+		} else {
+			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f , 1.0f, 1.0f, 0.0f));
+		}
+	}
+
 //	GUI Framework
 	public static void add(Runnable task) {
 		list.add(task);

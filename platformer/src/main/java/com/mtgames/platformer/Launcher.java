@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 
-class Launcher extends LauncherBase {
+public class Launcher extends LauncherBase {
 
 	static private ComboBox<Integer> scale;
 	static private CheckBox editor;

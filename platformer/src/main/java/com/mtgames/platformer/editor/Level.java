@@ -53,4 +53,9 @@ public class Level extends com.mtgames.platformer.level.Level{
 			e.printStackTrace();
 		}
 	}
+
+	public void create(int width, int height) {
+		super.create(width, height);
+		Command.exec("spawn freeCamera 0 0");
+	}
 }
