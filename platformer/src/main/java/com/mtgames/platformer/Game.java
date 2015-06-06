@@ -112,7 +112,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwShowWindow(window);
 	}
 
-	private synchronized void start() {
+	public synchronized void start() {
 		Thread main = new Thread(this);
 		main.setName(NAME + " - Main");
 		main.start();
@@ -192,6 +192,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			if (shouldRender) {
 				frames++;
 				render();
+
+				glfwSwapBuffers(window);
+				glfwPollEvents();
+				glFlush();
 			}
 
 			if (input.isPressed(GLFW_KEY_ESCAPE)) {
@@ -245,7 +249,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		}
 	}
 
-	private void tick() {
+	protected void tick() {
 		if (!paused) {
 			level.tick();
 		}
@@ -305,9 +309,5 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		}
 
 		GUI.render();
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-		glFlush();
 	}
 }
