@@ -292,8 +292,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		if (paused) {
 			GUI.add(() -> Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1));
-			GUI.add(() -> GUI.button(WIDTH/2, 214, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.exec("pause")));
-			GUI.add(() -> GUI.button(WIDTH/2, 229, "Quit", new Vec3f(0.6f, 0.4f, 0.1f), () -> Command.exec("exit")));
+			GUI.add(() -> GUI.button(WIDTH/2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.exec("pause")));
+			GUI.add(() -> GUI.button(WIDTH / 2, 214, "Restart", new Vec3f(0.1f, 0.5f, 0.5f), () -> {Command.exec("reload"); Command.exec("pause");}));
+			GUI.add(() -> GUI.button(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.exec("exit")));
 			screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 		}
 

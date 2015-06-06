@@ -1,4 +1,4 @@
-package com.mtgames.platformer.gfx.opengl;
+package com.mtgames.platformer.gfx.shaders;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

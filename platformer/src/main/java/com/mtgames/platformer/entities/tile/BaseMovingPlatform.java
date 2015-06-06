@@ -3,7 +3,7 @@ package com.mtgames.platformer.entities.tile;
 import com.mtgames.platformer.entities.BasicEntity;
 import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.opengl.TextureLoader;
+import com.mtgames.platformer.gfx.shaders.TextureLoader;
 
 public class BaseMovingPlatform extends BasicEntity {
 	private static final int TextureID = TextureLoader.loadTexture("/assets/graphics/tiles/bigBlock2.png");

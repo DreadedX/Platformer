@@ -1,7 +1,6 @@
 package com.mtgames.platformer.gfx;
 
-import com.mtgames.platformer.gfx.opengl.TextureLoader;
-import com.mtgames.utils.Debug;
+import com.mtgames.platformer.gfx.shaders.TextureLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
