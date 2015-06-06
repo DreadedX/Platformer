@@ -104,7 +104,7 @@ public class Player extends AdvancedEntity {
 
 				Command.exec("light torch " + x + " " + y + " {\"colour\":" + (int) (Math.random() * 0xffffff) + "}");
 
-				input.set(GLFW_KEY_Q, false);
+				input.unset(GLFW_KEY_Q);
 			}
 
 		} else {

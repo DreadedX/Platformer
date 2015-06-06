@@ -44,7 +44,7 @@ public abstract class BasicEntity extends Entity {
 		}
 	}
 
-	public boolean hasCollided(int xa, int ya) {
+	protected boolean hasCollided(int xa, int ya) {
 		return isSolidTile(xa, ya, x, y);
 	}
 }

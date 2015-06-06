@@ -36,7 +36,7 @@ public class InputHandler {
 		return keys[key];
 	}
 
-	public void set(int key, boolean state) {
-		keys[key] = state;
+	public void unset(int key) {
+		keys[key] = false;
 	}
 }

@@ -2,7 +2,6 @@ package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Background;
-import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import org.json.*;
 

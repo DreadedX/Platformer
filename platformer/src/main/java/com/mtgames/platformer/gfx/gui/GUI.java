@@ -3,7 +3,6 @@ package com.mtgames.platformer.gfx.gui;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.utils.Debug;
 import com.mtgames.utils.Text;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
@@ -15,11 +14,11 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class GUI {
 
-	private static Screen    screen = Game.screen;
-	private static List<Runnable> list   = new ArrayList<>();
+	private static final Screen         screen = Game.screen;
+	private static final List<Runnable> list   = new ArrayList<>();
 
 	public static void textBox(String title, String msg) {
-//		msg = Text.wrap(msg, (screen.width >> 3) - 4);
+		//		msg = Text.wrap(msg, (screen.width >> 3) - 4);
 		msg = Text.wrap(msg, 72);
 
 		int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
@@ -57,7 +56,7 @@ public class GUI {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x + 0.1f, colour.y + 0.1f, colour.z + 0.1f, 1.0f));
 			if (Game.input.isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 				task.run();
-				Game.input.set(GLFW_MOUSE_BUTTON_LEFT, false);
+				Game.input.unset(GLFW_MOUSE_BUTTON_LEFT);
 			}
 		} else {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));

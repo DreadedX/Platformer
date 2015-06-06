@@ -45,10 +45,6 @@ public class Screen {
 		renderTile(x, y, textureID, 16, 0);
 	}
 
-	public void renderTile(int x, int y, int textureID, int size) {
-		renderTile(x, y, textureID, size, 0);
-	}
-
 	public void renderTile(int x, int y, int textureID, int size, int part) {
 		x -= xOffset;
 		y -= yOffset;

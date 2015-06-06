@@ -27,35 +27,35 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings({ "serial" }) public class Game implements Runnable {
 
-	protected static final boolean FPSUNLOCK = true;
-	protected static final int     TPS       = 60;
-	public static final    int     WIDTH     = 608;
-	public static final    int     HEIGHT    = WIDTH / 4 * 3;
-	protected static final String  NAME      = "Platformer";
+	private static final boolean FPSUNLOCK = true;
+	private static final int     TPS       = 60;
+	public static final  int     WIDTH     = 608;
+	public static final  int     HEIGHT    = WIDTH / 4 * 3;
+	private static final String  NAME      = "Platformer";
 
 	public static int scale;
-	protected int fps = 0;
+	private int fps = 0;
 	public static Screen screen;
 
 	public static InputHandler input;
 	public static Level        level;
 
 	protected static boolean debug      = false;
-	protected static boolean showDebug  = false;
+	private static   boolean showDebug  = false;
 	public static    boolean lightDebug = false;
 
-	protected int xOffset;
-	protected int yOffset;
+	private int xOffset;
+	private int yOffset;
 
 	public static int mx;
 	public static int my;
 
 	public static boolean paused = false;
 
-	protected        GLFWErrorCallback       errorCallback;
-	protected        GLFWKeyCallback         keyCallback;
-	protected        GLFWMouseButtonCallback mouseButtonCallback;
-	protected static long                    window;
+	private        GLFWErrorCallback       errorCallback;
+	private        GLFWKeyCallback         keyCallback;
+	private        GLFWMouseButtonCallback mouseButtonCallback;
+	private static long                    window;
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
@@ -112,7 +112,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwShowWindow(window);
 	}
 
-	public synchronized void start() {
+	protected synchronized void start() {
 		Thread main = new Thread(this);
 		main.setName(NAME + " - Main");
 		main.start();
@@ -200,12 +200,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 			if (input.isPressed(GLFW_KEY_ESCAPE)) {
 				Command.exec("pause");
-				input.set(GLFW_KEY_ESCAPE, false);
+				input.unset(GLFW_KEY_ESCAPE);
 			}
 
 			if (input.isPressed(GLFW_KEY_F3) && debug) {
 				showDebug = !showDebug;
-				input.set(GLFW_KEY_F3, false);
+				input.unset(GLFW_KEY_F3);
 			}
 
 			/* Determine current fps */

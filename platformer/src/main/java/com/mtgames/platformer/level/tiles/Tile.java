@@ -1,7 +1,6 @@
 package com.mtgames.platformer.level.tiles;
 
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.utils.Debug;
 
 @SuppressWarnings("UnusedDeclaration") public abstract class Tile {
 

@@ -18,7 +18,7 @@ public class Background {
 		this.speed = speed;
 
 		try {
-			image = ImageIO.read(Sheet.class.getResourceAsStream(path));
+			image = ImageIO.read(Background.class.getResourceAsStream(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -35,9 +35,5 @@ public class Background {
 
 	public void render(Screen screen, int levelWidth, int levelHeight) {
 		screen.renderBackground(textureID, speed, levelWidth, levelHeight, width, height);
-	}
-
-	public int getSpeed() {
-		return speed;
 	}
 }

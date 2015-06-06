@@ -1,14 +1,13 @@
 package com.mtgames.platformer.gfx.shaders;
 
 import com.mtgames.utils.Debug;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderLoader {
+class ShaderLoader {
 	public static int loadShader(String loc) {
 		int shaderProgram = glCreateProgram();
 		int vertexShader = glCreateShader(GL_VERTEX_SHADER);

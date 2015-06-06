@@ -3,7 +3,6 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
-import com.mtgames.utils.Debug;
 
 public abstract class Entity {
 
@@ -61,7 +60,7 @@ public abstract class Entity {
 		return life > 0 || life == -10;
 	}
 
-	protected boolean isSolidTile(int xa, int ya, int x, int y) {
+	boolean isSolidTile(int xa, int ya, int x, int y) {
 		if (level == null)
 			return false;
 

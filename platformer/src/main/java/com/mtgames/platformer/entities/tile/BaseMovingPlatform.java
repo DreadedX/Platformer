@@ -37,7 +37,7 @@ public class BaseMovingPlatform extends BasicEntity {
 		screen.renderEntity(x, y, TextureID, 32, false);
 	}
 
-	public boolean betterHasCollided() {
+	private boolean betterHasCollided() {
 		for (int i = 0; i < 32; i++) {
 			if(hasCollided(-16, i)) {
 				return true;

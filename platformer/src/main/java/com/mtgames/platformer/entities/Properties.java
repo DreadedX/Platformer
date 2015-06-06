@@ -2,12 +2,9 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.level.Level;
-import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
-
-import java.util.Objects;
 
 public class Properties {
 	private int   jumpWait      = 0;

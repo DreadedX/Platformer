@@ -68,7 +68,7 @@ public abstract class AdvancedEntity extends Entity {
 		}
 	}
 
-	public boolean hasCollided(int xa, int ya) {
+	protected boolean hasCollided(int xa, int ya) {
 		this.xa = xa;
 		this.ya = ya;
 

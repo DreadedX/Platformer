@@ -26,7 +26,7 @@ public class Level {
 	public String  path;
 	public boolean reload;
 
-	private Screen screen = Game.screen;
+	private final Screen screen = Game.screen;
 
 	public void tick() {
 		if (reload) {
