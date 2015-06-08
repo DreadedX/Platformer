@@ -53,6 +53,9 @@ import com.mtgames.platformer.gfx.Screen;
 	//	PILLAR
 	public static final Tile PILLAR = new BaseTile(28, "pillar");
 
+	//	BLOCK
+	public static final Tile BLOCK = new BaseSolidTile(29, "block");
+
 	private final byte id;
 	boolean solid;
 

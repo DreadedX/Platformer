@@ -2,6 +2,7 @@ package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Background;
+import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import org.json.*;
 
@@ -10,6 +11,7 @@ public class LevelLoader {
 	private static int    width;
 	private static int    height;
 	private static byte[] tiles;
+	private static byte[] tiles0;
 
 	public LevelLoader(Level level, String path, boolean external) {
 
@@ -30,6 +32,17 @@ public class LevelLoader {
 		tiles = new byte[width*height];
 		for (int i = 0; i < tilesJSON.length(); i++) {
 			tiles[i] = (byte) tilesJSON.optInt(i);
+		}
+
+		tiles0 = new byte[width * height];
+		if (objTiles.has("tiles0")) {
+			JSONArray tiles0JSON = objTiles.getJSONArray("tiles0");
+
+			for (int i = 0; i < tiles0JSON.length(); i++) {
+				tiles0[i] = (byte) tiles0JSON.optInt(i);
+			}
+		} else {
+			Debug.log(path + " has no tiles0", Debug.DEBUG);
 		}
 
 		JSONObject objEntities = levelJSP.get("entities");
@@ -64,6 +77,10 @@ public class LevelLoader {
 
 	public byte[] getTiles() {
 		return tiles;
+	}
+
+	public byte[] getTiles0() {
+		return tiles0;
 	}
 
 	public int getWidth() {
