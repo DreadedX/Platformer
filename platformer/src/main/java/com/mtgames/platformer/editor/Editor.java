@@ -8,7 +8,7 @@ import com.mtgames.platformer.level.tiles.Tile;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static com.mtgames.platformer.KeyBindings.*;
 
 public class Editor extends Game {
 
@@ -40,8 +40,8 @@ public class Editor extends Game {
 	protected void tick() {
 		super.tick();
 
-		if (!input.isPressed(GLFW_KEY_SPACE) && !paused) {
-			if (input.isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+		if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
+			if (input.isPressed(KEY_PLACE_TILE)) {
 				if (layer == 0) {
 					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
 				}
@@ -49,7 +49,7 @@ public class Editor extends Game {
 					level.tiles[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
 				}
 			}
-			if (input.isPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
+			if (input.isPressed(KEY_REMOVE_TILE)) {
 				if (layer == 0) {
 					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = 1;
 				}
@@ -59,10 +59,10 @@ public class Editor extends Game {
 			}
 		}
 
-		if (input.isPressed(GLFW_KEY_1)) {
+		if (input.isPressed(KEY_LAYER0)) {
 			layer = 0;
 		}
-		if (input.isPressed(GLFW_KEY_2)) {
+		if (input.isPressed(KEY_LAYER1)) {
 			layer = 1;
 		}
 	}
@@ -73,13 +73,13 @@ public class Editor extends Game {
 		int mxBox = (mx + screen.xOffset) >> 4;
 		int myBox = (my + screen.yOffset) >> 4;
 
-		if (!paused && !input.isPressed(GLFW_KEY_SPACE)) {
+		if (!paused && !input.isPressed(KEY_TILE_SELECT)) {
 			Tile.tiles[tile].render(screen, mxBox << 4, myBox << 4);
 			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset, (myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
 			GUI.add(() -> Font.render("Layer " + layer, screen, screen.width-56+screen.xOffset, screen.yOffset + 1));
 		}
 
-		if (!paused	&& input.isPressed(GLFW_KEY_SPACE)) {
+		if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
 			for (int i = 2; i < Tile.tiles.length; i++) {
 				if (Tile.tiles[i] == null) {
 					return;

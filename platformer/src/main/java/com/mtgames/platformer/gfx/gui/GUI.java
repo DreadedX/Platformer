@@ -3,7 +3,6 @@ package com.mtgames.platformer.gfx.gui;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.utils.Debug;
 import com.mtgames.utils.Text;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
@@ -11,7 +10,7 @@ import com.sun.javafx.geom.Vec4f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static com.mtgames.platformer.KeyBindings.*;
 
 public class GUI {
 
@@ -70,7 +69,7 @@ public class GUI {
 
 		render.run();
 
-		if (hover && Game.input.isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+		if (hover && Game.input.isPressed(KEY_SELECT)) {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(0.0f, 0.0f, 0.0f, 0.1f));
 			pressed = true;
 		} else if (hover) {
@@ -79,7 +78,7 @@ public class GUI {
 			screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f , 1.0f, 1.0f, 0.0f));
 		}
 
-		if (hover && !Game.input.isPressed(GLFW_MOUSE_BUTTON_LEFT) && pressed) {
+		if (hover && !Game.input.isPressed(KEY_SELECT) && pressed) {
 			pressed = false;
 			task.run();
 		}

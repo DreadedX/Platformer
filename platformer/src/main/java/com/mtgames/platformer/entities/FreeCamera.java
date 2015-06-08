@@ -4,7 +4,7 @@ import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.gfx.Screen;
 import com.sun.javafx.geom.Vec4f;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static com.mtgames.platformer.KeyBindings.*;
 
 public class FreeCamera extends AdvancedEntity {
 
@@ -26,25 +26,25 @@ public class FreeCamera extends AdvancedEntity {
 		int xa = 0;
 		int ya = 0;
 
-		if (input.isPressed(GLFW_KEY_LEFT_SHIFT)) {
+		if (input.isPressed(KEY_MOD)) {
 			speed = 8;
 		} else {
 			speed = 3;
 		}
 
-		if (input.isPressed(GLFW_KEY_A)) {
+		if (input.isPressed(KEY_LEFT)) {
 			xa -= speed;
 		}
 
-		if (input.isPressed(GLFW_KEY_D)) {
+		if (input.isPressed(KEY_RIGHT)) {
 			xa += speed;
 		}
 
-		if (input.isPressed(GLFW_KEY_W)) {
+		if (input.isPressed(KEY_UP)) {
 			ya -= speed;
 		}
 
-		if (input.isPressed(GLFW_KEY_S)) {
+		if (input.isPressed(KEY_DOWN)) {
 			ya += speed;
 		}
 

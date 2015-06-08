@@ -19,6 +19,8 @@ import org.lwjgl.opengl.GLContext;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 
+import static com.mtgames.platformer.KeyBindings.*;
+
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.EXTFramebufferObject.*;
@@ -198,14 +200,14 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				glFlush();
 			}
 
-			if (input.isPressed(GLFW_KEY_ESCAPE)) {
+			if (input.isPressed(KEY_PAUSE)) {
 				Command.exec("pause");
-				input.unset(GLFW_KEY_ESCAPE);
+				input.unset(KEY_PAUSE);
 			}
 
-			if (input.isPressed(GLFW_KEY_F3) && debug) {
+			if (input.isPressed(KEY_DEBUG) && debug) {
 				showDebug = !showDebug;
-				input.unset(GLFW_KEY_F3);
+				input.unset(KEY_DEBUG);
 			}
 
 			/* Determine current fps */
@@ -285,7 +287,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		screen.renderLightFBO(screen, level);
 
-		if (input.isPressed(GLFW_KEY_M)) {
+		if (input.isPressed(KEY_MESSAGE)) {
 //			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[]"));
 //			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789| .,:;'\"!?$%()-=+/*[]"));
 //			GUI.add(() -> GUI.textBox("Lorem Impsum", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui."));

@@ -8,7 +8,7 @@ import com.mtgames.platformer.gfx.shaders.TextureLoader;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static com.mtgames.platformer.KeyBindings.*;
 
 public class Player extends AdvancedEntity {
 
@@ -74,13 +74,13 @@ public class Player extends AdvancedEntity {
 				canJump = false;
 			}
 
-			if (input.isPressed(GLFW_KEY_SPACE) && canJump && isAlive()) {
+			if (input.isPressed(KEY_JUMP) && canJump && isAlive()) {
 				ya = -JUMPSPEED;
 				canJump = false;
 				animationFrame = 0;
 			}
 
-			if (input.isPressed(GLFW_KEY_W) && canDash && isAlive()) {
+			if (input.isPressed(KEY_DASH) && canDash && isAlive()) {
 				xaDash = DASHSPEED;
 				canDash = false;
 //				dashWait = 0;
@@ -88,15 +88,15 @@ public class Player extends AdvancedEntity {
 				animationFrame = 0;
 			}
 
-			if (input.isPressed(GLFW_KEY_A) && isAlive() && !isDashing) {
+			if (input.isPressed(KEY_LEFT) && isAlive() && !isDashing) {
 				xa -= speed;
 			}
 
-			if (input.isPressed(GLFW_KEY_D) && isAlive() && !isDashing) {
+			if (input.isPressed(KEY_RIGHT) && isAlive() && !isDashing) {
 				xa += speed;
 			}
 
-			if (input.isPressed(GLFW_KEY_Q) && isAlive()) {
+			if (input.isPressed(KEY_TORCH) && isAlive()) {
 //				level.addEntity(new GlowStick(x, y, movingDir, new Properties("glowStick")));
 //				Properties properties = new Properties("torch");
 //				properties.set(new JSONObject("{\"colour\":" + (int) (Math.random() * 0xffffff) + "}"));
@@ -104,7 +104,7 @@ public class Player extends AdvancedEntity {
 
 				Command.exec("light torch " + x + " " + y + " {\"colour\":" + (int) (Math.random() * 0xffffff) + "}");
 
-				input.unset(GLFW_KEY_Q);
+				input.unset(KEY_TORCH);
 			}
 
 		} else {
