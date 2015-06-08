@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.entities.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.sun.javafx.geom.Vec3f;
 
@@ -31,11 +30,11 @@ public class LightSource {
 	}
 
 	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, colour, radius, intensity);
+		screen.renderLight(x, y, colour, radius-life, intensity);
 	}
 
 	public boolean isAlive() {
-		return life < 0xff;
+		return life < radius;
 	}
 }
 
