@@ -171,7 +171,6 @@ public class Command {
 				break;
 
 			case "freecam":
-//				TODO: This needs to be fixed
 				if (commands.length == 1) {
 					Properties properties = level.entities.get(0).getProperties();
 					if (level.entities.get(0) instanceof Player) {
@@ -194,6 +193,8 @@ public class Command {
 				}
 				break;
 
+//			TODO: These commands are not finished
+
 			case "debugl":
 				Game.lightDebug = !Game.lightDebug;
 
@@ -202,7 +203,6 @@ public class Command {
 				break;
 
 			case "exit":
-//				TODO: Add check to make sure the command is valid
 				if (commands.length == 2) {
 					System.exit(Integer.parseInt(commands[1]));
 				}
@@ -216,7 +216,7 @@ public class Command {
 				break;
 
 			case "export":
-				String export = "{\"width\": 64, \"height\": 48, \"tiles\": " + Arrays.toString(level.tiles) + "}";
+				String export = "{\"width\": 64, \"height\": 48, \"tiles\": " + Arrays.toString(level.tiles) + ", \"tiles0\":" + Arrays.toString(level.tiles0) + "}";
 				Debug.log(export, Debug.INFO);
 				try {
 					PrintWriter out = new PrintWriter("pack/export/tiles.json");
@@ -231,11 +231,6 @@ public class Command {
 				if (commands.length == 3) {
 					level.create(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]));
 				}
-				break;
-
-			case "test":
-				exec("lighting");
-				exec("load test");
 				break;
 
 		}
