@@ -10,7 +10,7 @@ import com.sun.javafx.geom.Vec4f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mtgames.platformer.KeyBindings.*;
+import static com.mtgames.platformer.settings.KeyBindings.*;
 
 public class GUI {
 

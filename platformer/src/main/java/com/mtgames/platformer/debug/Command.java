@@ -3,7 +3,7 @@ package com.mtgames.platformer.debug;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.entities.AutoScroll;
 import com.mtgames.platformer.entities.Player;
-import com.mtgames.platformer.entities.Properties;
+import com.mtgames.platformer.settings.Properties;
 import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.Torch;

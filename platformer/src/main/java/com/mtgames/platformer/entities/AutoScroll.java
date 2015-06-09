@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
 
 public class AutoScroll extends AdvancedEntity {

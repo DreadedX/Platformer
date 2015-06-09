@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GLContext;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 
-import static com.mtgames.platformer.KeyBindings.*;
+import static com.mtgames.platformer.settings.KeyBindings.*;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;

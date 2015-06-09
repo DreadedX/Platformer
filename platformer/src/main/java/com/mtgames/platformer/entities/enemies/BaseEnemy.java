@@ -1,7 +1,7 @@
 package com.mtgames.platformer.entities.enemies;
 
 import com.mtgames.platformer.entities.AdvancedEntity;
-import com.mtgames.platformer.entities.Properties;
+import com.mtgames.platformer.settings.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.entities.LightSource;
 import com.mtgames.platformer.gfx.shaders.TextureLoader;

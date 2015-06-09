@@ -1,4 +1,4 @@
-package com.mtgames.platformer;
+package com.mtgames.platformer.settings;
 
 import static org.lwjgl.glfw.GLFW.*;
 

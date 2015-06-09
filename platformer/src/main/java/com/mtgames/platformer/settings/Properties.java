@@ -1,4 +1,4 @@
-package com.mtgames.platformer.entities;
+package com.mtgames.platformer.settings;
 
 import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.level.Level;

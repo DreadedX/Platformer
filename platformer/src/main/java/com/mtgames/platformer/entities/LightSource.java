@@ -1,6 +1,7 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.settings.Properties;
 import com.sun.javafx.geom.Vec3f;
 
 public class LightSource {

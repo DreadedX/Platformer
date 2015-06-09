@@ -3,18 +3,19 @@ package com.mtgames.platformer.entities;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
+import com.mtgames.platformer.settings.Properties;
 
 public abstract class Entity {
 
-	public          int        x;
-	public          int        y;
+	public int x;
+	public int y;
 	int xa;
 	int ya;
 	protected final Level      level;
 	private final   Properties properties;
 	int gravityWait = 0;
-	protected int life = -10;
-	public boolean persistent = false;
+	protected int     life       = -10;
+	public    boolean persistent = false;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();

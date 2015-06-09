@@ -8,7 +8,7 @@ import com.mtgames.platformer.level.tiles.Tile;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
-import static com.mtgames.platformer.KeyBindings.*;
+import static com.mtgames.platformer.settings.KeyBindings.*;
 
 public class Editor extends Game {
 

@@ -1,5 +1,7 @@
 package com.mtgames.platformer.entities;
 
+import com.mtgames.platformer.settings.Properties;
+
 public abstract class BasicEntity extends Entity {
 	protected int x;
 	protected int y;
