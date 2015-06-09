@@ -27,6 +27,10 @@ public class Level {
 	public String  path;
 	public boolean reload;
 
+	public String name = "";
+	public String description = "";
+	public String author = "";
+
 	private final Screen screen = Game.screen;
 
 	public void tick() {
@@ -159,6 +163,10 @@ public class Level {
 
 			tiles = loader.getTiles();
 			tiles0 = loader.getTiles0();
+
+			name = loader.getName();
+			description = loader.getDescription();
+			author = loader.getAuthor();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

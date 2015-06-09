@@ -13,9 +13,32 @@ public class LevelLoader {
 	private static byte[] tiles;
 	private static byte[] tiles0;
 
+	private static String name = "";
+	private static String description = "";
+	private static String author = "";
+
 	public LevelLoader(Level level, String path, boolean external) {
 
 		JSP levelJSP = new JSP(path, external);
+
+		JSONObject objInfo = levelJSP.get("info");
+		if (!objInfo.has("version")) {
+			Debug.log(path + " is not a valid level file, not loading", Debug.WARNING);
+			return;
+		} else if (!objInfo.getString("version").equals("2.1")) {
+			Debug.log(path + " is an outdated level file, not loading", Debug.WARNING);
+			return;
+		}
+
+		if (objInfo.has("name")) {
+			name = objInfo.getString("name");
+		}
+		if (objInfo.has("description")) {
+			description = objInfo.getString("description");
+		}
+		if (objInfo.has("author")) {
+			author = objInfo.getString("author");
+		}
 
 		JSONObject objBackground = levelJSP.get("background");
 		for (int i = 0; i < objBackground.length(); i++) {
@@ -74,6 +97,17 @@ public class LevelLoader {
 		}
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
 
 	public byte[] getTiles() {
 		return tiles;
