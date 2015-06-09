@@ -5,7 +5,7 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.settings.Properties;
 import com.sun.javafx.geom.Vec4f;
 
-import static com.mtgames.platformer.settings.KeyBindings.*;
+import static com.mtgames.platformer.settings.Settings.*;
 
 public class FreeCamera extends AdvancedEntity {
 

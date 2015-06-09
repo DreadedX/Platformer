@@ -5,6 +5,7 @@ import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.settings.Settings;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
@@ -19,7 +20,7 @@ import org.lwjgl.opengl.GLContext;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 
-import static com.mtgames.platformer.settings.KeyBindings.*;
+import static com.mtgames.platformer.settings.Settings.*;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
@@ -77,6 +78,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		screen = new Screen();
 		input = new InputHandler();
 		level = new Level();
+
+		new Settings();
 
 		xOffset = screen.width / 2;
 		yOffset = screen.height / 2;

@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "keyBindings": {
+    "debug": 292,
+    "mod": 340,
+    "select": 0,
+    "jump": 32,
+    "up": 87,
+    "left": 65,
+    "down": 83,
+    "right": 68,
+    "message": 77,
+    "dash": 87,
+    "torch": 81,
+    "pause": 256,
+    "tileSelect": 32,
+    "layer0": 49,
+    "layer1": 50,
+    "tilePlace": 0,
+    "tileRemove": 1
+  }
+}

@@ -9,7 +9,7 @@ import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 
-import static com.mtgames.platformer.settings.KeyBindings.*;
+import static com.mtgames.platformer.settings.Settings.*;
 
 public class Player extends AdvancedEntity {
 

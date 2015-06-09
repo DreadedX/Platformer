@@ -8,7 +8,7 @@ import com.mtgames.platformer.level.tiles.Tile;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
-import static com.mtgames.platformer.settings.KeyBindings.*;
+import static com.mtgames.platformer.settings.Settings.*;
 
 public class Editor extends Game {
 
@@ -41,7 +41,7 @@ public class Editor extends Game {
 		super.tick();
 
 		if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
-			if (input.isPressed(KEY_PLACE_TILE)) {
+			if (input.isPressed(KEY_TILE_PLACE)) {
 				if (layer == 0) {
 					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
 				}
@@ -49,7 +49,7 @@ public class Editor extends Game {
 					level.tiles[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
 				}
 			}
-			if (input.isPressed(KEY_REMOVE_TILE)) {
+			if (input.isPressed(KEY_TILE_REMOVE)) {
 				if (layer == 0) {
 					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = 1;
 				}
