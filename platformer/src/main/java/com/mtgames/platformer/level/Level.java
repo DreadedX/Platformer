@@ -27,6 +27,9 @@ public class Level {
 	public String  path;
 	public boolean reload;
 
+	public boolean renderLayer0 = true;
+	public boolean renderLayer = true;
+
 	public String name = "";
 	public String description = "";
 	public String author = "";
@@ -83,8 +86,12 @@ public class Level {
 
 		for (int y = (yOffset >> 4); y <= (yOffset + screen.height >> 4); y++) {
 			for (int x = (xOffset >> 4); x <= (xOffset + screen.width >> 4); x++) {
-				getTile0(x, y).render(screen, x << 4, y << 4);
-				getTile(x, y).render(screen, x << 4, y << 4);
+				if (renderLayer0) {
+					getTile0(x, y).render(screen, x << 4, y << 4);
+				}
+				if (renderLayer) {
+					getTile(x, y).render(screen, x << 4, y << 4);
+				}
 			}
 		}
 	}

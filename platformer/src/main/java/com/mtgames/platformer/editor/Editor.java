@@ -61,9 +61,15 @@ public class Editor extends Game {
 
 		if (input.isPressed(KEY_LAYER0)) {
 			layer = 0;
-		}
-		if (input.isPressed(KEY_LAYER1)) {
+			level.renderLayer0 = true;
+			level.renderLayer = false;
+		} else if (input.isPressed(KEY_LAYER1)) {
 			layer = 1;
+			level.renderLayer0 = false;
+			level.renderLayer = true;
+		} else {
+			level.renderLayer0 = true;
+			level.renderLayer = true;
 		}
 	}
 
