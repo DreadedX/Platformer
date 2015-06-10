@@ -109,4 +109,19 @@ public abstract class AdvancedEntity extends Entity {
 			walkingAnimationFrame++;
 		}
 	}
+
+	public boolean hasCollidedEntity(String name) {
+		for (int i = 0; i < level.entities.size(); i++) {
+			Entity e = level.entities.get(i);
+			if (!e.collide) {
+				continue;
+			}
+			if (e.getClass().getSimpleName().equals(name)) {
+				if (x >= (e.xMin + e.x) && x <= (e.xMax + e.x) && y >= (e.yMin + e.y) && y <= (e.yMax + e.y)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
