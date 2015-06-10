@@ -139,6 +139,12 @@ public class Player extends AdvancedEntity {
 				Command.exec("light dashParticle " + x + " " + y);
 			}
 		}
+
+		if (hasCollidedEntity("BaseEnemy")) {
+			life--;
+			Debug.log("Collide", Debug.DEBUG);
+			staggerTime = STAGGERLENGTH;
+		}
 //		TODO: Enable this again
 //		lightSource.move(x, y);
 	}
@@ -236,5 +242,20 @@ public class Player extends AdvancedEntity {
 		}
 
 		dashTime++;
+	}
+
+	public boolean hasCollidedEntity(String name) {
+		for (int i = 1; i < level.entities.size(); i++) {
+			Entity e = level.entities.get(i);
+			if (!e.collide) {
+				continue;
+			}
+			if (e.getClass().getSimpleName().equals(name)) {
+				if (x >= (e.xMin + e.x) && x <= (e.xMax + e.x) && y >= (e.yMin + e.y) && y <= (e.yMax + e.y)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

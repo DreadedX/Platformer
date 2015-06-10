@@ -30,6 +30,8 @@ public class BaseEnemy extends AdvancedEntity {
 		yMax = properties.getYMax();
 
 		movingDir = (int) (Math.random() + .5);
+
+		collide = true;
 	}
 
 	public void tick() {

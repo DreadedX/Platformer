@@ -16,6 +16,12 @@ public abstract class Entity {
 	int gravityWait = 0;
 	protected int     life       = -10;
 	public    boolean persistent = false;
+	public boolean collide = false;
+
+	public int     xMin           = -1;
+	public int     xMax           = 1;
+	public int     yMin           = -1;
+	public int     yMax           = 1;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
