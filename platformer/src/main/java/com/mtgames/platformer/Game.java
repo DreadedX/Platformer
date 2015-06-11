@@ -6,6 +6,7 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.scripting.JythonFactory;
+import com.mtgames.platformer.scripting.interfaces.InitInterface;
 import com.mtgames.platformer.settings.Settings;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
@@ -116,6 +117,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwSwapInterval(0);
 //		glfwSwapInterval(1);
 		glfwShowWindow(window);
+
+		Debug.log("Initializing jython", Debug.INFO);
+		InitInterface ii = (InitInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.InitInterface", "src/main/python/Init.py");
+		if (!ii.init()) {
+			Debug.log("Failed to initialize jython", Debug.ERROR);
+		}
 	}
 
 	protected synchronized void start() {

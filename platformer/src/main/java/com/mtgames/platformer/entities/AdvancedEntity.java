@@ -5,7 +5,7 @@ import com.mtgames.platformer.settings.Properties;
 public abstract class AdvancedEntity extends Entity {
 
 	protected int     speed          = 1;
-	protected int     movingDir      = 1;
+	public int     movingDir      = 1;
 	protected int     animationFrame = 0;
 	protected boolean isJumping      = false;
 	private int walkingAnimationFrame = 0;

@@ -31,7 +31,7 @@ public class Player extends AdvancedEntity {
 	private int jumpWait    = 0;
 	private int dashWait    = 0;
 	private int dashTime    = 0;
-	private int staggerTime = 0;
+	public int staggerTime = 0;
 
 	private boolean canJump     = false;
 	private boolean canDash     = true;
@@ -186,6 +186,7 @@ public class Player extends AdvancedEntity {
 		}
 
 		screen.renderEntity(x, y, textureID[xTile], 16, flipX);
+		pi.render(this, screen);
 
 //		screen.addLighting(x, y, 0, 0xffae00);
 

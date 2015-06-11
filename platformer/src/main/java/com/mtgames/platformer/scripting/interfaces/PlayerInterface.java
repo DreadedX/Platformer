@@ -1,9 +1,10 @@
 package com.mtgames.platformer.scripting.interfaces;
 
 import com.mtgames.platformer.entities.Player;
+import com.mtgames.platformer.gfx.Screen;
 
 public interface PlayerInterface {
-
-	public void init(Player player);
-	public void tick(Player player);
+	void init(Player player);
+	void tick(Player player);
+	void render(Player player, Screen screen);
 }

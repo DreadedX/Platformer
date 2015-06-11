@@ -3,17 +3,6 @@ package com.mtgames.platformer.scripting;
 import org.python.util.PythonInterpreter;
 
 public class JythonFactory {
-	private static JythonFactory instance = null;
-
-	public synchronized static JythonFactory getInstance(){
-		if(instance == null){
-			instance = new JythonFactory();
-		}
-
-		return instance;
-
-	}
-
 	public static Object getJythonObject(String interfaceName,
 			String pathToJythonModule){
 
