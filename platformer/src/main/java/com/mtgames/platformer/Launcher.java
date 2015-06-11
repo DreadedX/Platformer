@@ -12,6 +12,7 @@ public class Launcher extends LauncherBase {
 
 	static private ComboBox<Integer> scale;
 	static private CheckBox editor;
+	static private CheckBox jython;
 
 	public static void main(String[] args) {
 		consoleEnabled = true;
@@ -24,14 +25,21 @@ public class Launcher extends LauncherBase {
 			editor.setSelected(true);
 		}
 
+		jython = new CheckBox();
+		if(Boolean.getBoolean("com.mtgames.jython")) {
+			jython.setSelected(true);
+		}
+
 		addOption("Scale", scale);
 		addOption("Editor", editor);
+		addOption("Use external python scripts", jython);
 
 		launch(args);
 	}
 
 	@Override protected void run() {
 		System.setProperty("com.mtgames.scale", String.valueOf(scale.getValue()));
+		System.setProperty("com.mtgames.jython", String.valueOf(jython.isSelected()));
 		System.setProperty("org.lwjgl.librarypath", "native");
 
 		if (editor.isSelected()) {

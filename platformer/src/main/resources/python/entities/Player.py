@@ -1,7 +1,7 @@
 from com.mtgames.platformer.scripting.interfaces import PlayerInterface
 from com.mtgames.platformer.gfx.shaders import TextureLoader
 
-from com.mtgames.utils import Debug
+# from com.mtgames.utils import Debug
 
 class Player(PlayerInterface):
     def __init__(self):
@@ -10,7 +10,7 @@ class Player(PlayerInterface):
         self.armor = TextureLoader.loadTexture("/assets/graphics/entities/player/armor.png")
 
     def init(self, player):
-        Debug.log("Player speed: {}".format(player.getProperties().getSpeed()), Debug.DEBUG)
+        # Debug.log("Player speed: {}".format(player.getProperties().getSpeed()), Debug.DEBUG)
         self.input = player.getProperties().getInput()
         self.maxHealth = player.getProperties().getMaxHealth()
 

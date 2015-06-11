@@ -1,5 +1,6 @@
 package com.mtgames.platformer.scripting;
 
+import com.mtgames.platformer.Game;
 import org.python.util.PythonInterpreter;
 
 public class JythonFactory {
@@ -8,7 +9,12 @@ public class JythonFactory {
 
 		Object javaInt = null;
 		PythonInterpreter interpreter = new PythonInterpreter();
-		interpreter.execfile(pathToJythonModule);
+		if (Boolean.getBoolean("com.mtgames.jython")) {
+			pathToJythonModule = "src/main/resources/" + pathToJythonModule;
+			interpreter.execfile(pathToJythonModule);
+		} else {
+			interpreter.execfile(ClassLoader.getSystemResourceAsStream(pathToJythonModule));
+		}
 		String tempName = pathToJythonModule.substring(pathToJythonModule.lastIndexOf("/")+1);
 		tempName = tempName.substring(0, tempName.indexOf("."));
 //		System.out.println(tempName);

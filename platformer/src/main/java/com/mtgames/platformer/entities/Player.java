@@ -62,7 +62,7 @@ public class Player extends AdvancedEntity {
 		persistent = true;
 
 		collide = true;
-		pi = (PlayerInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.PlayerInterface", "src/main/python/entities/Player.py");
+		pi = (PlayerInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.PlayerInterface", "python/entities/Player.py");
 		pi.init(this);
 	}
 
