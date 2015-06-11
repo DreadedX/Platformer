@@ -5,6 +5,8 @@ import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.gfx.shaders.TextureLoader;
+import com.mtgames.platformer.scripting.JythonFactory;
+import com.mtgames.platformer.scripting.interfaces.PlayerInterface;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
@@ -37,6 +39,8 @@ public class Player extends AdvancedEntity {
 	private boolean isDashing   = false;
 	private boolean dashDeplete = false;
 
+	private PlayerInterface pi;
+
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
 
@@ -58,9 +62,13 @@ public class Player extends AdvancedEntity {
 		persistent = true;
 
 		collide = true;
+		pi = (PlayerInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.PlayerInterface", "src/main/python/entities/Player.py");
+		pi.init(this);
 	}
 
 	public void tick() {
+		pi.tick(this);
+
 		isStaggered = staggerTime != 0;
 
 		if (!isStaggered) {
@@ -144,7 +152,6 @@ public class Player extends AdvancedEntity {
 
 		if (hasCollidedEntity("BaseEnemy")) {
 			life--;
-			Debug.log("Collide", Debug.DEBUG);
 			staggerTime = STAGGERLENGTH;
 		}
 //		TODO: Enable this again

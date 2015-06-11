@@ -5,6 +5,7 @@ import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.settings.Settings;
 import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;

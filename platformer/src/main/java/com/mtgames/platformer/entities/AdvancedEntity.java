@@ -66,7 +66,7 @@ public abstract class AdvancedEntity extends Entity {
 		}
 	}
 
-	protected boolean hasCollided(int xa, int ya) {
+	public boolean hasCollided(int xa, int ya) {
 		this.xa = xa;
 		this.ya = ya;
 
@@ -110,6 +110,7 @@ public abstract class AdvancedEntity extends Entity {
 		}
 	}
 
+//	TODO: This code is not completly correct
 	public boolean hasCollidedEntity(String name) {
 		for (int i = 0; i < level.entities.size(); i++) {
 			Entity e = level.entities.get(i);

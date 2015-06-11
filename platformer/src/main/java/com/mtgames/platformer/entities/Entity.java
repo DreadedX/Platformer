@@ -14,7 +14,7 @@ public abstract class Entity {
 	protected final Level      level;
 	private final   Properties properties;
 	int gravityWait = 0;
-	protected int     life       = -10;
+	public int     life       = -10;
 	public    boolean persistent = false;
 	public boolean collide = false;
 
