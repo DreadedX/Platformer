@@ -24,10 +24,6 @@ public class BaseEnemy extends AdvancedEntity {
 		JUMPSPEED = properties.getJumpSpeed();
 
 		speed = properties.getSpeed();
-		xMin = properties.getXMin();
-		xMax = properties.getXMax();
-		yMin = properties.getYMin();
-		yMax = properties.getYMax();
 
 		movingDir = (int) (Math.random() + .5);
 

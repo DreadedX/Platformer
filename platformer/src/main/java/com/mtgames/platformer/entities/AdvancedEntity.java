@@ -6,17 +6,22 @@ public abstract class AdvancedEntity extends Entity {
 
 	protected int     speed          = 1;
 	public int     movingDir      = 1;
-	protected int     animationFrame = 0;
-	protected boolean isJumping      = false;
+	public int     animationFrame = 0;
+	public boolean isJumping      = false;
 	private int walkingAnimationFrame = 0;
 
 	protected AdvancedEntity(Properties properties, int x, int y) {
 		super(properties);
 		this.x = x;
 		this.y = y;
+
+		xMin = properties.getXMin();
+		xMax = properties.getXMax();
+		yMin = properties.getYMin();
+		yMax = properties.getYMax();
 	}
 
-	protected void move(int xa, int ya) {
+	public void move(int xa, int ya) {
 		if (ya < 0) {
 			for (int i = 0; i > ya; i--) {
 				if (!hasCollided(0, -1)) {

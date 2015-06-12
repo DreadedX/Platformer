@@ -23,7 +23,7 @@ public class Command {
 	private static Level        level = null;
 	private static Screen screen = null;
 
-	public static void exec(String command) {
+	public static void execute(String command) {
 		String[] commands = command.split(" ");
 
 		switch (commands[0].toLowerCase()) {

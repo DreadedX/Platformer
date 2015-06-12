@@ -13,15 +13,15 @@ public abstract class Entity {
 	int ya;
 	protected final Level      level;
 	private final   Properties properties;
-	int gravityWait = 0;
+	public int gravityWait = 0;
 	public int     life       = -10;
 	public    boolean persistent = false;
 	public boolean collide = false;
 
-	public int     xMin           = -1;
-	public int     xMax           = 1;
-	public int     yMin           = -1;
-	public int     yMax           = 1;
+	public int     xMin           = 0;
+	public int     xMax           = 0;
+	public int     yMin           = 0;
+	public int     yMax           = 0;
 
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
@@ -34,7 +34,7 @@ public abstract class Entity {
 
 	protected abstract boolean hasCollided(int xa, int ya);
 
-	protected int gravity(int ya) {
+	public int gravity(int ya) {
 		if (hasCollided(0, 1) && ya > 0) {
 			ya = 0;
 		}

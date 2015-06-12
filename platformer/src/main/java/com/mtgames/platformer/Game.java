@@ -89,7 +89,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		//		Initialize command system
 		Command.set(level, screen);
 		//		Load debug level
-		Command.exec("load debug_level");
+		Command.execute("load debug_level");
 		//		Command.exec("load white");
 
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
@@ -212,7 +212,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			}
 
 			if (input.isPressed(KEY_PAUSE)) {
-				Command.exec("pause");
+				Command.execute("pause");
 				input.unset(KEY_PAUSE);
 			}
 
@@ -310,12 +310,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		if (paused) {
 			GUI.add(() -> Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1));
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.exec("pause")));
+			GUI.add(() -> GUI.buttonText(WIDTH / 2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.execute("pause")));
 			GUI.add(() -> GUI.buttonText(WIDTH / 2, 214, "Restart", new Vec3f(0.1f, 0.5f, 0.5f), () -> {
-				Command.exec("reload");
-				Command.exec("pause");
+				Command.execute("reload");
+				Command.execute("pause");
 			}));
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.exec("exit")));
+			GUI.add(() -> GUI.buttonText(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.execute("exit")));
 			screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 		}
 

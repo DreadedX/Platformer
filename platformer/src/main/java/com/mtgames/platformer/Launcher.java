@@ -51,7 +51,7 @@ public class Launcher extends LauncherBase {
 	}
 
 	@Override protected void consoleCommand(String s) {
-		Command.exec(s);
+		Command.execute(s);
 	}
 }
 

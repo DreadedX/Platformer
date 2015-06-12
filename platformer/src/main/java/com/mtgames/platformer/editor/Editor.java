@@ -33,8 +33,8 @@ public class Editor extends Game {
 		super.init();
 		level = new Level();
 		Command.set(level, screen);
-		Command.exec("load debug_level");
-		Command.exec("lighting");
+		Command.execute("load debug_level");
+		Command.execute("lighting");
 	}
 
 	protected void tick() {
@@ -97,7 +97,7 @@ public class Editor extends Game {
 		}
 
 		if (paused) {
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 184, "Save", new Vec3f(0.2f, 0.2f, 0.7f), () -> Command.exec("export")));
+			GUI.add(() -> GUI.buttonText(WIDTH / 2, 184, "Save", new Vec3f(0.2f, 0.2f, 0.7f), () -> Command.execute("export")));
 		}
 
 		GUI.render();
