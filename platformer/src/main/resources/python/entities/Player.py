@@ -1,5 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import PlayerInterface
-from com.mtgames.platformer.gfx.shaders import TextureLoader
+from com.mtgames.platformer.gfx.lwjgl import TextureLoader
 
 # from com.mtgames.utils import Debug
 

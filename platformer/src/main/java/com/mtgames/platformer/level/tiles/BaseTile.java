@@ -1,7 +1,7 @@
 package com.mtgames.platformer.level.tiles;
 
 import com.mtgames.platformer.gfx.Screen;
-import com.mtgames.platformer.gfx.shaders.TextureLoader;
+import com.mtgames.platformer.gfx.lwjgl.TextureLoader;
 
 class BaseTile extends Tile {
 

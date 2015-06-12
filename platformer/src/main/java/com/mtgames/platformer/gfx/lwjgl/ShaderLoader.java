@@ -1,4 +1,4 @@
-package com.mtgames.platformer.gfx.shaders;
+package com.mtgames.platformer.gfx.lwjgl;
 
 import com.mtgames.utils.Debug;
 

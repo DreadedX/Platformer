@@ -4,7 +4,7 @@ import com.mtgames.platformer.InputHandler;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
-import com.mtgames.platformer.gfx.shaders.TextureLoader;
+import com.mtgames.platformer.gfx.lwjgl.TextureLoader;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.PlayerInterface;
 import com.mtgames.platformer.settings.Properties;
