@@ -1,4 +1,4 @@
-from com.mtgames.platformer.scripting.interfaces import PlayerInterface
+from com.mtgames.platformer.scripting.interfaces import EntityInterface
 from com.mtgames.platformer.gfx.lwjgl import TextureLoader
 from com.mtgames.platformer.settings import Settings
 from com.mtgames.platformer.debug import Command
@@ -7,7 +7,7 @@ from com.mtgames.platformer.gfx.gui import GUI
 from java.lang import Math
 from com.sun.javafx.geom import Vec3f
 
-class Player(PlayerInterface):
+class Player(EntityInterface):
     def __init__(self):
         self.input = 0
         self.speed = 0

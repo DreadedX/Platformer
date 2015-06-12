@@ -2,12 +2,12 @@ package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.scripting.JythonFactory;
-import com.mtgames.platformer.scripting.interfaces.PlayerInterface;
+import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
 
 public class Player extends AdvancedEntity {
 
-	private PlayerInterface pi;
+	private EntityInterface entityInterface;
 
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
@@ -15,15 +15,16 @@ public class Player extends AdvancedEntity {
 		persistent = true;
 
 		collide = true;
-		pi = (PlayerInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.PlayerInterface", "python/entities/Player.py");
-		pi.init(this);
+		entityInterface = (EntityInterface) JythonFactory
+				.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "python/entities/Player.py");
+		entityInterface.init(this);
 	}
 
 	public void tick() {
-		pi.tick(this);
+		entityInterface.tick(this);
 	}
 
 	public void render(Screen screen) {
-		pi.render(this, screen);
+		entityInterface.render(this, screen);
 	}
 }
