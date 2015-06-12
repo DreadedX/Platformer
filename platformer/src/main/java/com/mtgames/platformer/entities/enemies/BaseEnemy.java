@@ -4,7 +4,7 @@ import com.mtgames.platformer.entities.AdvancedEntity;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.entities.LightSource;
-import com.mtgames.platformer.gfx.shaders.TextureLoader;
+import com.mtgames.platformer.gfx.lwjgl.TextureLoader;
 
 public class BaseEnemy extends AdvancedEntity {
 

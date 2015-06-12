@@ -1,6 +1,6 @@
 package com.mtgames.platformer.gfx;
 
-import com.mtgames.platformer.gfx.shaders.TextureLoader;
+import com.mtgames.platformer.gfx.lwjgl.TextureLoader;
 
 public class Font {
 	private static final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,:;'\"!?$%()-=+/*[] ";
