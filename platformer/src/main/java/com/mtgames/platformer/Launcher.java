@@ -41,6 +41,7 @@ public class Launcher extends LauncherBase {
 		System.setProperty("com.mtgames.scale", String.valueOf(scale.getValue()));
 		System.setProperty("com.mtgames.jython", String.valueOf(jython.isSelected()));
 		System.setProperty("org.lwjgl.librarypath", "native");
+		System.setProperty("python.security.respectJavaAccessibility", "false");
 
 		if (editor.isSelected()) {
 			Debug.log("Launching editor", Debug.INFO);

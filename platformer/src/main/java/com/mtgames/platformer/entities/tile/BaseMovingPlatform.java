@@ -9,16 +9,16 @@ public class BaseMovingPlatform extends BasicEntity {
 	private static final int TextureID = TextureLoader.loadTexture("/assets/graphics/tiles/bigBlock2.png");
 
 	//PLACEHOLDER NAME
-	private int speed = 2;
-	private int move = 300;
-	private int moveMin;
-	private int moveMax;
+	private final int speed = 2;
+	private final int move  = 300;
+	private final int moveMin;
+	private final int moveMax;
 	private boolean direction = false;
 
 	public BaseMovingPlatform(Properties properties, int x, int y) {
 		super(properties, x, y);
-		moveMin = x - move/2;
-		moveMax = x + move/2;
+		moveMin = x - move / 2;
+		moveMax = x + move / 2;
 	}
 
 	@Override public void tick() {

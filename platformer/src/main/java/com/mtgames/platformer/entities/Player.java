@@ -7,7 +7,7 @@ import com.mtgames.platformer.settings.Properties;
 
 public class Player extends AdvancedEntity {
 
-	private EntityInterface entityInterface;
+	private final EntityInterface entityInterface;
 
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);

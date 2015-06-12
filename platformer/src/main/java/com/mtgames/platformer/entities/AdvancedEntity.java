@@ -4,11 +4,11 @@ import com.mtgames.platformer.settings.Properties;
 
 public abstract class AdvancedEntity extends Entity {
 
-	protected int     speed          = 1;
-	public int     movingDir      = 1;
-	public int     animationFrame = 0;
-	public boolean isJumping      = false;
-	private int walkingAnimationFrame = 0;
+	protected int     speed                 = 1;
+	protected int     movingDir             = 1;
+	protected int     animationFrame        = 0;
+	protected boolean isJumping             = false;
+	private   int     walkingAnimationFrame = 0;
 
 	protected AdvancedEntity(Properties properties, int x, int y) {
 		super(properties);
@@ -21,7 +21,7 @@ public abstract class AdvancedEntity extends Entity {
 		yMax = properties.getYMax();
 	}
 
-	public void move(int xa, int ya) {
+	protected void move(int xa, int ya) {
 		if (ya < 0) {
 			for (int i = 0; i > ya; i--) {
 				if (!hasCollided(0, -1)) {
@@ -71,7 +71,7 @@ public abstract class AdvancedEntity extends Entity {
 		}
 	}
 
-	public boolean hasCollided(int xa, int ya) {
+	protected boolean hasCollided(int xa, int ya) {
 		this.xa = xa;
 		this.ya = ya;
 

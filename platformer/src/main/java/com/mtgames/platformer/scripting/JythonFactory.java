@@ -1,6 +1,5 @@
 package com.mtgames.platformer.scripting;
 
-import com.mtgames.platformer.Game;
 import org.python.util.PythonInterpreter;
 
 public class JythonFactory {

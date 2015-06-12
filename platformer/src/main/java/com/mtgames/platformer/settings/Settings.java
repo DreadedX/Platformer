@@ -15,16 +15,16 @@ public class Settings {
 	public static int KEY_MOD    = GLFW_KEY_LEFT_SHIFT;                    //340
 	public static int KEY_SELECT = GLFW_MOUSE_BUTTON_LEFT;                //  0
 
-	public static int KEY_JUMP = GLFW_KEY_SPACE;                        // 32
+	private static int KEY_JUMP = GLFW_KEY_SPACE;                        // 32
 
 	public static int KEY_UP    = GLFW_KEY_W;                                // 87
 	public static int KEY_LEFT  = GLFW_KEY_A;                            // 65
 	public static int KEY_DOWN  = GLFW_KEY_S;                            // 83
 	public static int KEY_RIGHT = GLFW_KEY_D;                            // 68
 
-	public static int KEY_MESSAGE = GLFW_KEY_M;                            // 77
-	public static int KEY_DASH    = GLFW_KEY_W;                            // 87
-	public static int KEY_TORCH   = GLFW_KEY_Q;                            // 81
+	public static  int KEY_MESSAGE = GLFW_KEY_M;                            // 77
+	private static int KEY_DASH    = GLFW_KEY_W;                            // 87
+	private static int KEY_TORCH   = GLFW_KEY_Q;                            // 81
 
 	public static int KEY_PAUSE = GLFW_KEY_ESCAPE;                        //256
 
