@@ -4,6 +4,9 @@ import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
+import com.mtgames.utils.Debug;
+
+import java.util.Objects;
 
 public class AdvancedEntity extends Entity {
 
@@ -27,6 +30,8 @@ public class AdvancedEntity extends Entity {
 
 		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", path);
 		entityInterface.init(this);
+
+		Debug.log(name, Debug.DEBUG);
 	}
 
 	public void tick() {
@@ -139,7 +144,7 @@ public class AdvancedEntity extends Entity {
 			if (!e.collide) {
 				continue;
 			}
-			if (e.getClass().getSimpleName().equals(name)) {
+			if (Objects.equals(e.getProperties().getName(), name)) {
 				if (x >= (e.xMin + e.x) && x <= (e.xMax + e.x) && y >= (e.yMin + e.y) && y <= (e.yMax + e.y)) {
 					return true;
 				}

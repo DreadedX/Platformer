@@ -112,9 +112,13 @@ class Player(EntityInterface):
             for _ in range(10):
                 Command.queue("light dashParticle %d %d" % (entity.x, entity.y))
 
-        if entity.hasCollidedEntity("baseEnemy"):
+        if entity.hasCollidedEntity("BaseEnemy"):
             entity.life -= 1
             self.staggerTime = self.staggerLength
+
+        # Godmode
+        entity.life = self.maxHealth
+        self.staggerLength = 0
 
 
     def render(self, entity, screen):

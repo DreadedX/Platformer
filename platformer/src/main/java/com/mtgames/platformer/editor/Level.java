@@ -41,7 +41,7 @@ public class Level extends com.mtgames.platformer.level.Level{
 			this.lightSources.clear();
 		}
 
-		Command.execute("spawn freeCamera 0 0");
+		Command.queue("spawn freeCamera 0 0");
 
 		try {
 			LevelLoader loader = new LevelLoader(this, path, external);
@@ -57,6 +57,6 @@ public class Level extends com.mtgames.platformer.level.Level{
 
 	public void create(int width, int height) {
 		super.create(width, height);
-		Command.execute("spawn freeCamera 0 0");
+		Command.queue("spawn freeCamera 0 0");
 	}
 }

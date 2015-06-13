@@ -52,7 +52,7 @@ public class Launcher extends LauncherBase {
 	}
 
 	@Override protected void consoleCommand(String s) {
-		Command.execute(s);
+		Command.queue(s);
 	}
 }
 

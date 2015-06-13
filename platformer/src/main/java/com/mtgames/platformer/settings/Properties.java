@@ -22,6 +22,8 @@ public class Properties {
 	private float intensity     = 1.0f;
 	private Vec3f colour        = new Vec3f(1.0f, 1.0f, 1.0f);
 
+	private String name = "";
+
 	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
 
@@ -33,6 +35,7 @@ public class Properties {
 		}
 
 		set(jsp.get(type));
+		name = type;
 	}
 
 	public void set(JSONObject obj) {
@@ -140,6 +143,10 @@ public class Properties {
 
 	public Vec3f getColour() {
 		return colour;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public Level getLevel() {

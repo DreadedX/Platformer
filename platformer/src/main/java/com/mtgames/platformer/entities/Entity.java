@@ -13,6 +13,7 @@ public abstract class Entity {
 	int ya;
 	protected final Level      level;
 	private final   Properties properties;
+	protected String name;
 	private   int     gravityWait = 0;
 	protected int     life        = -10;
 	public    boolean persistent  = false;
@@ -26,6 +27,7 @@ public abstract class Entity {
 	Entity(Properties properties) {
 		this.level = properties.getLevel();
 		this.properties = properties;
+		this.name = properties.getName();
 	}
 
 	public abstract void tick();

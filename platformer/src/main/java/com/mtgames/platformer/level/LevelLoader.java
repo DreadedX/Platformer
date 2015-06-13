@@ -79,7 +79,7 @@ public class LevelLoader {
 				properties = String.valueOf(objEntities.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
 			}
 
-			Command.execute("spawn " + type + " " + x + " " + y + " " + properties);
+			Command.queue("spawn " + type + " " + x + " " + y + " " + properties);
 		}
 
 		JSONObject objLights = levelJSP.get("lights");
@@ -93,7 +93,7 @@ public class LevelLoader {
 				properties = String.valueOf(objLights.getJSONObject(String.valueOf(i)).getJSONObject("properties"));
 			}
 
-			Command.execute("light " + type + " " + x + " " + y + " " + properties);
+			Command.queue("light " + type + " " + x + " " + y + " " + properties);
 		}
 	}
 
