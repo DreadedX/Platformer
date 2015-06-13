@@ -12,11 +12,7 @@ public class Player extends AdvancedEntity {
 	public Player(int x, int y, Properties properties) {
 		super(properties, x, y);
 
-		persistent = true;
-
-		collide = true;
-		entityInterface = (EntityInterface) JythonFactory
-				.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "python/entities/Player.py");
+		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "entities/Player.py");
 		entityInterface.init(this);
 	}
 

@@ -1,33 +1,27 @@
 package com.mtgames.platformer.entities;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.scripting.JythonFactory;
+import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
 
 public class AutoScroll extends AdvancedEntity {
 
+	private final EntityInterface entityInterface;
+
 	public AutoScroll(int x, int y, Properties properties) {
 		super(properties, x, y);
-		movingDir = 1;
-		speed = properties.getSpeed();
-		Debug.log(String.valueOf(properties.getSpeed()), Debug.DEBUG);
+
+		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "entities/AutoScroll.py");
+		entityInterface.init(this);
 	}
 
 	public void tick() {
-		int xa = 0;
-		int ya = 0;
-
-		xa += speed;
-
-		move(xa, ya);
-
-		y = level.entities.get(1).y;
+		entityInterface.tick(this);
 	}
 
 	public void render(Screen screen) {
-	}
-
-	@Override public boolean hasCollided(int xa, int ya) {
-		return false;
+		entityInterface.render(this, screen);
 	}
 }

@@ -35,52 +35,55 @@ class Player(EntityInterface):
         self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/player", 8)
 
 
-    def init(self, player):
-        self.input = player.getProperties().getInput()
-        self.speed = player.getProperties().getSpeed()
-        self.maxHealth = player.getProperties().getMaxHealth()
-        self.jumpWaitMax = player.getProperties().getJumpWait()
-        self.jumpSpeed = player.getProperties().getJumpSpeed()
-        self.dashSpeed = player.getProperties().getDashSpeed()
-        self.dashWaitMax = player.getProperties().getDashWait()
-        self.staggerLength = player.getProperties().getStaggerLength()
+    def init(self, entity):
+        entity.collide = True
+        entity.persistent = True
 
-        player.life = self.maxHealth
+        self.input = entity.getProperties().getInput()
+        self.speed = entity.getProperties().getSpeed()
+        self.maxHealth = entity.getProperties().getMaxHealth()
+        self.jumpWaitMax = entity.getProperties().getJumpWait()
+        self.jumpSpeed = entity.getProperties().getJumpSpeed()
+        self.dashSpeed = entity.getProperties().getDashSpeed()
+        self.dashWaitMax = entity.getProperties().getDashWait()
+        self.staggerLength = entity.getProperties().getStaggerLength()
+
+        entity.life = self.maxHealth
 
 
-    def tick(self, player):
+    def tick(self, entity):
         self.isStaggered = self.staggerTime != 0
 
         if not self.isStaggered:
-            if player.hasCollided(0, 1) and self.jumpWait > self.jumpWaitMax:
+            if entity.hasCollided(0, 1) and self.jumpWait > self.jumpWaitMax:
                 self.canJump = True
                 self.jumpWait = 0
 
-            if player.hasCollided(0, 1) and not self.canJump:
+            if entity.hasCollided(0, 1) and not self.canJump:
                 self.jumpWait += 1
 
-            if not player.hasCollided(0, 1):
+            if not entity.hasCollided(0, 1):
                 self.canJump = False
 
-            if self.input.isPressed(Settings.KEY_JUMP) and self.canJump and player.isAlive():
+            if self.input.isPressed(Settings.KEY_JUMP) and self.canJump and entity.isAlive():
                 self.ya = -self.jumpSpeed
                 self.canJump = False
-                player.animationFrame = 0
+                entity.animationFrame = 0
 
-            if self.input.isPressed(Settings.KEY_DASH) and self.canDash and player.isAlive():
+            if self.input.isPressed(Settings.KEY_DASH) and self.canDash and entity.isAlive():
                 self.xaDash = self.dashSpeed
                 self.canDash = False
                 self.dashDeplete = True
-                player.animationFrame = 0
+                entity.animationFrame = 0
 
-            if self.input.isPressed(Settings.KEY_LEFT) and player.isAlive() and not self.isDashing:
+            if self.input.isPressed(Settings.KEY_LEFT) and entity.isAlive() and not self.isDashing:
                 self.xa -= self.speed
 
-            if self.input.isPressed(Settings.KEY_RIGHT) and player.isAlive() and not self.isDashing:
+            if self.input.isPressed(Settings.KEY_RIGHT) and entity.isAlive() and not self.isDashing:
                 self.xa += self.speed
 
-            if self.input.isPressed(Settings.KEY_TORCH) and player.isAlive():
-                Command.execute("light torch %d %d {\"colour\":%d}" % (player.x, player.y, int((Math.random() * 0xffffff))))
+            if self.input.isPressed(Settings.KEY_TORCH) and entity.isAlive():
+                Command.execute("light torch %d %d {\"colour\":%d}" % (entity.x, entity.y, int((Math.random() * 0xffffff))))
                 self.input.unset(Settings.KEY_TORCH)
 
         else:
@@ -101,40 +104,40 @@ class Player(EntityInterface):
         elif self.xa < -self.speed and not self.isDashing:
             self.xa = -self.speed
 
-        player.move(self.xa, self.ya)
-        self.dash(player)
-        self.ya = player.gravity(self.ya)
+        entity.move(self.xa, self.ya)
+        self.dash(entity)
+        self.ya = entity.gravity(self.ya)
 
         if self.isDashing:
             for _ in range(10):
-                Command.execute("light dashParticle %d %d" % (player.x, player.y))
+                Command.execute("light dashParticle %d %d" % (entity.x, entity.y))
 
-        if player.hasCollidedEntity("BaseEnemy"):
-            player.life -= 1
+        if entity.hasCollidedEntity("BaseEnemy"):
+            entity.life -= 1
             self.staggerTime = self.staggerLength
 
 
-    def render(self, player, screen):
+    def render(self, entity, screen):
         xtile = 0
         flipx = False
 
-        if player.movingDir == 0:
+        if entity.movingDir == 0:
             flipx = True
 
-        if player.isJumping and not self.isDashing and not self.isStaggered:
+        if entity.isJumping and not self.isDashing and not self.isStaggered:
             xtile = 4
         elif self.isDashing:
             xtile = 6
-            player.animationFrame = 0
+            entity.animationFrame = 0
         elif self.isStaggered:
             xtile = 7
-            player.animationFrame = 0
+            entity.animationFrame = 0
 
-        xtile += player.animationFrame
+        xtile += entity.animationFrame
 
-        screen.renderEntity(player.x, player.y, self.textureID[xtile], 16, flipx)
+        screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 16, flipx)
 
-        GUI.add(lambda : GUI.progressBar(80, 13, 16, 150, float(player.life) / self.maxHealth, Vec3f(0.4, 0.1, 0.1)))
+        GUI.add(lambda : GUI.progressBar(80, 13, 16, 150, float(entity.life) / self.maxHealth, Vec3f(0.4, 0.1, 0.1)))
         dashratio = float(self.dashWait)/self.dashWaitMax
         if dashratio == 1:
             colour = Vec3f(0.1, 0.1, 0.5)
@@ -144,17 +147,17 @@ class Player(EntityInterface):
         GUI.add(lambda : GUI.progressBar(screen.width-80, 12, 16, 150, dashratio, colour))
 
         # TODO: Temp death code
-        if not player.isAlive():
+        if not entity.isAlive():
             GUI.add(lambda : GUI.textBox("You died!", ""))
 
 
-    def dash(self, player):
+    def dash(self, entity):
         if self.dashWait >= self.dashWaitMax:
             self.dashWait = self.dashWaitMax
         else:
             self.dashWait += 1
 
-        self.canDash = self.dashWait == self.dashWaitMax and not player.hasCollided(0, 1)
+        self.canDash = self.dashWait == self.dashWaitMax and not entity.hasCollided(0, 1)
 
         if self.dashDeplete:
             self.dashWait -= 5
@@ -165,16 +168,16 @@ class Player(EntityInterface):
         if self.xaDash == 0:
             return
 
-        if player.hasCollided(-1, 0) or player.hasCollided(1, 0):
+        if entity.hasCollided(-1, 0) or entity.hasCollided(1, 0):
             self.staggerTime = self.staggerLength
             self.dashDeplete = False
             self.xaDash = 0
-            player.life -= 10
+            entity.life -= 10
 
         self.ya = 0
-        player.gravityWait = 0
+        entity.gravityWait = 0
 
-        if player.movingDir == 0:
+        if entity.movingDir == 0:
             self.xa = -self.xaDash * self.speed
         else:
             self.xa = self.xaDash * self.speed

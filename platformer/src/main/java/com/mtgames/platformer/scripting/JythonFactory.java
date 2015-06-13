@@ -6,6 +6,8 @@ public class JythonFactory {
 	public static Object getJythonObject(String interfaceName,
 			String pathToJythonModule){
 
+		pathToJythonModule = "python/" + pathToJythonModule;
+
 		Object javaInt = null;
 		PythonInterpreter interpreter = new PythonInterpreter();
 		if (Boolean.getBoolean("com.mtgames.jython")) {
