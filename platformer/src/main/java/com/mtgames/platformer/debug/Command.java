@@ -1,10 +1,8 @@
 package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
-import com.mtgames.platformer.entities.AutoScroll;
-import com.mtgames.platformer.entities.Player;
+import com.mtgames.platformer.entities.AdvancedEntity;
 import com.mtgames.platformer.settings.Properties;
-import com.mtgames.platformer.entities.enemies.BaseEnemy;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.Torch;
 import com.mtgames.platformer.gfx.Screen;
@@ -15,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Objects;
 
-import com.mtgames.platformer.entities.FreeCamera;
 import com.mtgames.utils.Debug;
 import org.json.JSONObject;
 
@@ -84,35 +81,11 @@ public class Command {
 						obj = new JSONObject(commands[4]);
 					}
 
-					switch (commands[1]) {
-						default:
-							Debug.log("'" + commands[1] + "' is not a valid entity type", Debug.WARNING);
-							break;
-
-						case "player":
-							properties = new Properties("player");
-							properties.set(obj);
-							level.addEntity(new Player(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
-							break;
-
-						case "baseEnemy":
-							properties = new Properties("baseEnemy");
-							properties.set(obj);
-							level.addEntity(new BaseEnemy(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
-							break;
-
-						case "autoScroll":
-							properties = new Properties("autoScroll");
-							properties.set(obj);
-							level.addEntity(new AutoScroll(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
-							break;
-
-						case "freeCamera":
-							properties = new Properties("freeCamera");
-							properties.set(obj);
-							level.addEntity(new FreeCamera(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
-							break;
-					}
+//					TODO: Add check to see if the entity type is valid
+					String type = commands[1];
+					properties = new Properties(type);
+					properties.set(obj);
+					level.addEntity(new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), "entities/" + Character.toUpperCase(type.charAt(0)) + type.substring(1) + ".py"));
 				} else {
 					Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
 				}
@@ -170,20 +143,20 @@ public class Command {
 				}
 				break;
 
-			case "freecam":
-				if (commands.length == 1) {
-					Properties properties = level.entities.get(0).getProperties();
-					if (level.entities.get(0) instanceof Player) {
-						level.entities.set(0, new FreeCamera(level.entities.get(0).x, level.entities.get(0).y, properties));
-					} else if (level.entities.get(0) instanceof FreeCamera) {
-						level.entities.set(0, new Player(level.entities.get(0).x, level.entities.get(0).y, properties));
-					} else {
-						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
-					}
-				} else {
-					Debug.log("Invalid arguments, usage: freecam", Debug.WARNING);
-				}
-				break;
+//			case "freecam":
+//				if (commands.length == 1) {
+//					Properties properties = level.entities.get(0).getProperties();
+//					if (level.entities.get(0) instanceof Player) {
+//						level.entities.set(0, new FreeCamera(level.entities.get(0).x, level.entities.get(0).y, properties));
+//					} else if (level.entities.get(0) instanceof FreeCamera) {
+//						level.entities.set(0, new Player(level.entities.get(0).x, level.entities.get(0).y, properties));
+//					} else {
+//						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
+//					}
+//				} else {
+//					Debug.log("Invalid arguments, usage: freecam", Debug.WARNING);
+//				}
+//				break;
 
 			case "lighting":
 				if (commands.length == 1) {

@@ -1,8 +1,11 @@
 package com.mtgames.platformer.entities;
 
+import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.platformer.scripting.JythonFactory;
+import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
 
-public abstract class AdvancedEntity extends Entity {
+public class AdvancedEntity extends Entity {
 
 	protected int     speed                 = 1;
 	protected int     movingDir             = 1;
@@ -10,7 +13,9 @@ public abstract class AdvancedEntity extends Entity {
 	protected boolean isJumping             = false;
 	private   int     walkingAnimationFrame = 0;
 
-	protected AdvancedEntity(Properties properties, int x, int y) {
+	private final EntityInterface entityInterface;
+
+	public AdvancedEntity(Properties properties, int x, int y, String path) {
 		super(properties);
 		this.x = x;
 		this.y = y;
@@ -19,6 +24,18 @@ public abstract class AdvancedEntity extends Entity {
 		xMax = properties.getXMax();
 		yMin = properties.getYMin();
 		yMax = properties.getYMax();
+
+		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", path);
+		entityInterface.init(this);
+	}
+
+	public void tick() {
+		entityInterface.tick(this);
+	}
+
+	public void render(Screen screen) {
+		entityInterface.render(this, screen);
+
 	}
 
 	protected void move(int xa, int ya) {
