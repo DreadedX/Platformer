@@ -4,6 +4,8 @@ from com.mtgames.platformer.settings import Settings
 from com.mtgames.platformer.debug import Command
 from com.mtgames.platformer.gfx.gui import GUI
 
+from com.mtgames.platformer.entities import LightSource
+
 from java.lang import Math
 from com.sun.javafx.geom import Vec3f
 
@@ -34,6 +36,8 @@ class Player(EntityInterface):
 
         self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/player", 8)
 
+        self.lightSource = 0
+
 
     def init(self, entity):
         entity.collide = True
@@ -49,6 +53,9 @@ class Player(EntityInterface):
         self.staggerLength = entity.getProperties().getStaggerLength()
 
         entity.life = self.maxHealth
+
+        self.lightSource = LightSource(entity.x, entity.y, entity.getProperties())
+        entity.getProperties().getLevel().addLightSource(self.lightSource)
 
 
     def tick(self, entity):
@@ -115,6 +122,9 @@ class Player(EntityInterface):
         if entity.hasCollidedEntity("baseEnemy"):
             entity.life -= 1
             self.staggerTime = self.staggerLength
+
+
+        self.lightSource.move(entity.x, entity.y)
 
 
     def render(self, entity, screen):

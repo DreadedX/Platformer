@@ -1,7 +1,10 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
+import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.settings.Properties;
+import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
@@ -19,24 +22,25 @@ public class Screen {
 	public        int     yOffset  = 0;
 	public        boolean lighting = true;
 
-	private int lightTextureID;
-	private int lightBufferID;
+	private int lightsTextureID;
+	private int lightsBufferID;
 
 	public void initLight() {
-		lightBufferID = glGenFramebuffersEXT();
-		lightTextureID = glGenTextures();
-		int lightDepthBufferID = glGenRenderbuffersEXT();
+//		light buffer final
+		lightsBufferID = glGenFramebuffersEXT();
+		lightsTextureID = glGenTextures();
+		int lightsDepthBufferID = glGenRenderbuffersEXT();
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightsBufferID);
 
-		glBindTexture(GL_TEXTURE_2D, lightTextureID);
+		glBindTexture(GL_TEXTURE_2D, lightsTextureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width * scale, height * scale, 0, GL_RGBA, GL_INT, (ByteBuffer) null);
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, lightTextureID, 0);
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, lightsTextureID, 0);
 
-		glBindFramebufferEXT(GL_RENDERBUFFER_EXT, lightDepthBufferID);
+		glBindFramebufferEXT(GL_RENDERBUFFER_EXT, lightsDepthBufferID);
 		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width * scale, height * scale);
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, lightDepthBufferID);
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, lightsDepthBufferID);
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
@@ -193,7 +197,7 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public  void renderLight(int x, int y, Vec3f colour, int radius, float intensity) {
+	public  void renderLight(int x, int y, Vec3f colour, int radius, float intensity, Properties properties) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
@@ -219,35 +223,69 @@ public class Screen {
 
 //		TODO: Cast shadow's
 
-//		glColor3f(0.1f, 0.1f, 0.1f);
-//
-//		int scaleFactor = 16 * scale;
-//		Level level = properties.getLevel();
-//
-//		for (int xTile = (x-radius+xOffset)/scaleFactor; xTile < (x+radius+xOffset)/scaleFactor; xTile++) {
-//			for (int yTile = (y-radius+yOffset)/scaleFactor; yTile < (y+radius+yOffset)/scaleFactor; yTile++) {
-//				if (level.getTile(xTile, yTile).isSolid()) {
-//					glBegin(GL_TRIANGLE_FAN);
-//						glVertex2f(x, y);
-//						glVertex2f(xTile * scaleFactor - xOffset * scale, yTile * scaleFactor - yOffset * scale);
-//						glVertex2f((xTile + 1) * scaleFactor - xOffset * scale, yTile * scaleFactor - yOffset * scale);
-//					glEnd();
-//				}
-//			}
-//		}
-//
-//		glColor3f(1f, 1f, 1f);
+
+		int scaleFactor = 16 * scale;
+		Level level = properties.getLevel();
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		for (int xTile = (x-radius+xOffset*scale)/scaleFactor; xTile < (x+radius+xOffset*scale)/scaleFactor; xTile++) {
+			for (int yTile = (y-radius+yOffset*scale)/scaleFactor; yTile < (y+radius+yOffset*scale)/scaleFactor; yTile++) {
+				if (level.getTile(xTile, yTile).isSolid()) {
+					int dx1 = (xTile * scaleFactor - xOffset * scale)-x;
+					int dy1 = (yTile * scaleFactor - yOffset * scale)-y;
+
+					int dx2 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
+					int dy2 = (yTile * scaleFactor - yOffset * scale)-y;
+
+					int dx3 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
+					int dy3 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
+
+					int dx4 = (xTile * scaleFactor - xOffset * scale)-x;
+					int dy4 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
+
+					int dFactorX = 100;
+					int dFactorY = 100;
+
+					glColor3f(0.1f, 0.1f, 0.1f);
+//					glColor3f(1f, 1f, 1f);
+
+					glBegin(GL_QUAD_STRIP);
+						glVertex2f(x + dx1, y + dy1);
+						glVertex2f(x+ dx1 *dFactorX, y+ dy1 *dFactorY);
+
+						glVertex2f(x+ dx2, y+ dy2);
+						glVertex2f(x+ dx2 *dFactorX, y+ dy2 *dFactorY);
+
+						glVertex2f(x+ dx3, y+ dy3);
+						glVertex2f(x+ dx3 *dFactorX, y+ dy3 *dFactorY);
+
+						glVertex2f(x+ dx4, y+ dy4);
+						glVertex2f(x+ dx4 *dFactorX, y+ dy4 *dFactorY);
+					glEnd();
+
+					glBegin(GL_QUADS);
+						glVertex2f(x+ dx1, y+ dy1);
+						glVertex2f(x+ dx2, y+ dy2);
+						glVertex2f(x+ dx3, y+ dy3);
+						glVertex2f(x + dx4, y + dy4);
+					glEnd();
+				}
+			}
+		}
+
+		glBlendFunc(GL_DST_ALPHA, GL_ONE);
+		glColor3f(1f, 1f, 1f);
 	}
 
 	public void renderLightFBO(Screen screen, Level level) {
 		if (screen.lighting) {
 			Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
 
-			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightBufferID);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightsBufferID);
 			glClearColor(darkness.x, darkness.y, darkness.z, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			glBlendFunc(GL_DST_ALPHA, GL_ONE);
 			level.renderLights();
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -258,19 +296,19 @@ public class Screen {
 			}
 
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, lightTextureID);
+			glBindTexture(GL_TEXTURE_2D, lightsTextureID);
 			glBegin(GL_QUADS);
-			glTexCoord2f(0, 1);
-			glVertex2f(0, 0);
+				glTexCoord2f(0, 1);
+				glVertex2f(0, 0);
 
-			glTexCoord2f(1, 1);
-			glVertex2f(width * scale, 0);
+				glTexCoord2f(1, 1);
+				glVertex2f(width * scale, 0);
 
-			glTexCoord2f(1, 0);
-			glVertex2f(width * scale, height * scale);
+				glTexCoord2f(1, 0);
+				glVertex2f(width * scale, height * scale);
 
-			glTexCoord2f(0, 0);
-			glVertex2f(0, height * scale);
+				glTexCoord2f(0, 0);
+				glVertex2f(0, height * scale);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 			glColor3f(1.0f, 1.0f, 1.0f);

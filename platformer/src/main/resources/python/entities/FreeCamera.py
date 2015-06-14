@@ -15,7 +15,7 @@ class FreeCamera(EntityInterface):
         self.input = entity.getProperties().getInput()
 
         self.lightSource = LightSource(entity.x, entity.y, entity.getProperties())
-        entity.getProperties().getLevel().addLightSource(self.lightSource)
+        # entity.getProperties().getLevel().addLightSource(self.lightSource)
 
     def tick(self, entity):
         if self.input.isPressed(Settings.KEY_MOD):
@@ -35,7 +35,7 @@ class FreeCamera(EntityInterface):
         if self.input.isPressed(Settings.KEY_DOWN):
             entity.y += self.speed
 
-        self.lightSource.move(entity.x, entity.y)
+        # self.lightSource.move(entity.x, entity.y)
 
     def render(self, entity, screen):
         screen.drawRectangle(entity.x-4-screen.xOffset, entity.y-4-screen.yOffset, entity.x+4-screen.xOffset, entity.y+4-screen.yOffset, Vec4f(0, 0, 0, 0.5))

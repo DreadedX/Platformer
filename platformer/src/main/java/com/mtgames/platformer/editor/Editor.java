@@ -35,6 +35,7 @@ public class Editor extends Game {
 		Command.set(level, screen);
 		Command.queue("load debug_level");
 		Command.queue("lighting");
+		Command.execute();
 	}
 
 	protected void tick() {

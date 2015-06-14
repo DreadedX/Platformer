@@ -11,6 +11,7 @@ public class LightSource {
 	private final float intensity;
 	private       int   x;
 	private       int   y;
+	private Properties properties;
 
 	public LightSource(int x, int y, Properties properties) {
 		this.colour = properties.getColour();
@@ -18,6 +19,7 @@ public class LightSource {
 		this.intensity = properties.getIntensity();
 		this.x = x;
 		this.y = y;
+		this.properties = properties;
 	}
 
 	public void move(int x, int y) {
@@ -31,7 +33,7 @@ public class LightSource {
 	}
 
 	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, colour, radius-life, intensity);
+		screen.renderLight(x, y, colour, radius-life, intensity, properties);
 	}
 
 	public boolean isAlive() {

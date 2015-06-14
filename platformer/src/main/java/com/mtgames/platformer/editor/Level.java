@@ -13,7 +13,9 @@ public class Level extends com.mtgames.platformer.level.Level{
 			reload = false;
 		}
 
-		entities.get(0).tick();
+		if (entities.size() > 1) {
+			entities.get(0).tick();
+		}
 	}
 
 	private void load(String path) {
