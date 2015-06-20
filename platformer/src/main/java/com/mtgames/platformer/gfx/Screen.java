@@ -221,57 +221,54 @@ public class Screen {
 
 		glColor3f(1f, 1f, 1f);
 
-//		TODO: Cast shadow's
-
-
-		int scaleFactor = 16 * scale;
-		Level level = properties.getLevel();
-
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		for (int xTile = (x-radius+xOffset*scale)/scaleFactor; xTile < (x+radius+xOffset*scale)/scaleFactor; xTile++) {
-			for (int yTile = (y-radius+yOffset*scale)/scaleFactor; yTile < (y+radius+yOffset*scale)/scaleFactor; yTile++) {
-				if (level.getTile(xTile, yTile).isSolid()) {
-					int dx1 = (xTile * scaleFactor - xOffset * scale)-x;
-					int dy1 = (yTile * scaleFactor - yOffset * scale)-y;
-
-					int dx2 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
-					int dy2 = (yTile * scaleFactor - yOffset * scale)-y;
-
-					int dx3 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
-					int dy3 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
-
-					int dx4 = (xTile * scaleFactor - xOffset * scale)-x;
-					int dy4 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
-
-					int dFactorX = 100;
-					int dFactorY = 100;
-
-					glColor3f(0.1f, 0.1f, 0.1f);
-//					glColor3f(1f, 1f, 1f);
-
-					glBegin(GL_QUAD_STRIP);
-						glVertex2f(x + dx1, y + dy1);
-						glVertex2f(x+ dx1 *dFactorX, y+ dy1 *dFactorY);
-
-						glVertex2f(x+ dx2, y+ dy2);
-						glVertex2f(x+ dx2 *dFactorX, y+ dy2 *dFactorY);
-
-						glVertex2f(x+ dx3, y+ dy3);
-						glVertex2f(x+ dx3 *dFactorX, y+ dy3 *dFactorY);
-
-						glVertex2f(x+ dx4, y+ dy4);
-						glVertex2f(x+ dx4 *dFactorX, y+ dy4 *dFactorY);
-					glEnd();
-
-					glBegin(GL_QUADS);
-						glVertex2f(x+ dx1, y+ dy1);
-						glVertex2f(x+ dx2, y+ dy2);
-						glVertex2f(x+ dx3, y+ dy3);
-						glVertex2f(x + dx4, y + dy4);
-					glEnd();
-				}
-			}
-		}
+//		int scaleFactor = 16 * scale;
+//		Level level = properties.getLevel();
+//
+//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//		for (int xTile = (x-radius+xOffset*scale)/scaleFactor; xTile < (x+radius+xOffset*scale)/scaleFactor; xTile++) {
+//			for (int yTile = (y-radius+yOffset*scale)/scaleFactor; yTile < (y+radius+yOffset*scale)/scaleFactor; yTile++) {
+//				if (level.getTile(xTile, yTile).isSolid()) {
+//					int dx1 = (xTile * scaleFactor - xOffset * scale)-x;
+//					int dy1 = (yTile * scaleFactor - yOffset * scale)-y;
+//
+//					int dx2 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
+//					int dy2 = (yTile * scaleFactor - yOffset * scale)-y;
+//
+//					int dx3 = ((xTile+1) * scaleFactor - xOffset * scale)-x;
+//					int dy3 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
+//
+//					int dx4 = (xTile * scaleFactor - xOffset * scale)-x;
+//					int dy4 = ((yTile+1) * scaleFactor - yOffset * scale)-y;
+//
+//					int dFactorX = 100;
+//					int dFactorY = 100;
+//
+//					glColor3f(0.1f, 0.1f, 0.1f);
+////					glColor3f(1f, 1f, 1f);
+//
+//					glBegin(GL_QUAD_STRIP);
+//						glVertex2f(x + dx1, y + dy1);
+//						glVertex2f(x+ dx1 *dFactorX, y+ dy1 *dFactorY);
+//
+//						glVertex2f(x+ dx2, y+ dy2);
+//						glVertex2f(x+ dx2 *dFactorX, y+ dy2 *dFactorY);
+//
+//						glVertex2f(x+ dx3, y+ dy3);
+//						glVertex2f(x+ dx3 *dFactorX, y+ dy3 *dFactorY);
+//
+//						glVertex2f(x+ dx4, y+ dy4);
+//						glVertex2f(x+ dx4 *dFactorX, y+ dy4 *dFactorY);
+//					glEnd();
+//
+//					glBegin(GL_QUADS);
+//						glVertex2f(x+ dx1, y+ dy1);
+//						glVertex2f(x+ dx2, y+ dy2);
+//						glVertex2f(x+ dx3, y+ dy3);
+//						glVertex2f(x + dx4, y + dy4);
+//					glEnd();
+//				}
+//			}
+//		}
 
 		glBlendFunc(GL_DST_ALPHA, GL_ONE);
 		glColor3f(1f, 1f, 1f);
