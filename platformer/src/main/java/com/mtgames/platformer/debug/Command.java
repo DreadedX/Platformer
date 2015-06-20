@@ -2,6 +2,7 @@ package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.entities.AdvancedEntity;
+import com.mtgames.platformer.scripting.Jython;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.entities.particles.Torch;
@@ -219,6 +220,9 @@ public class Command {
 						level.create(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]));
 					}
 					break;
+
+				case "py":
+					Jython.run(command.substring(3));
 
 			}
 		});
