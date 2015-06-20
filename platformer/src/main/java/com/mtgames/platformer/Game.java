@@ -301,30 +301,27 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		screen.renderLightFBO(screen, level);
 
 		if (input.isPressed(KEY_MESSAGE)) {
-//			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[]"));
-//			GUI.add(() -> GUI.textBox("Debug text:", "ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] |ABCDEFGHIJKLMNOPQRSTUVWXY abcdefghijklmnopqrstuvwxyz 0123456789| .,:;'\"!?$%()-=+/*[]"));
-//			GUI.add(() -> GUI.textBox("Lorem Impsum", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui."));
-			GUI.add(() -> GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog."));
-			GUI.add(() -> GUI.textBox(level.name, level.description + "|By: " + level.author));
+			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
+			GUI.textBox(level.name, level.description + "|By: " + level.author);
 		}
 
 		GUI.render();
 
 		if (paused) {
-			GUI.add(() -> Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1));
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.queue("pause")));
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 214, "Restart", new Vec3f(0.1f, 0.5f, 0.5f), () -> {
+			Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1);
+			GUI.buttonText(WIDTH / 2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.queue("pause"));
+			GUI.buttonText(WIDTH / 2, 214, "Restart", new Vec3f(0.1f, 0.5f, 0.5f), () -> {
 				Command.queue("reload");
 				Command.queue("pause");
-			}));
-			GUI.add(() -> GUI.buttonText(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.queue("exit")));
+			});
+			GUI.buttonText(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.queue("exit"));
 			screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 		}
 
 		if (showDebug) {
-			GUI.add(() -> Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1));
-			GUI.add(() -> Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 11));
-			GUI.add(() -> Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 21));
+			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
+			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 11);
+			Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 21);
 		}
 
 		GUI.render();
