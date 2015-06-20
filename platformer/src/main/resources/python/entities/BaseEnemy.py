@@ -25,18 +25,24 @@ class BaseEnemy(EntityInterface):
     def tick(self, entity):
         xa = 0
 
+        if entity.x > entity.getProperties().getLevel().entities.get(0).x + 20:
+            entity.movingDir = 0
+
+        if entity.x < entity.getProperties().getLevel().entities.get(0).x - 20:
+            entity.movingDir = 1
+
         if not entity.hasCollided(3, -16) and entity.hasCollided(3,0):
             self.ya = -self.jumpSpeed
             xa += self.speed
         elif not entity.hasCollided(-3, -16) and entity.hasCollided(-3, 0):
             self.ya = -self.jumpSpeed
             xa -= self.speed
-        elif entity.hasCollided(-3, 0):
-            entity.movingDir = 1
-            xa += self.speed
-        elif entity.hasCollided(3, 0):
-            entity.movingDir = 0
-            xa -= self.speed
+        # elif entity.hasCollided(-3, 0):
+        #     entity.movingDir = 1
+        #     xa += self.speed
+        # elif entity.hasCollided(3, 0):
+        #     entity.movingDir = 0
+        #     xa -= self.speed
         else:
             if entity.movingDir == 0:
                 xa -= self.speed
