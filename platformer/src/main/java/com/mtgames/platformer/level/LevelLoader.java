@@ -10,8 +10,8 @@ public class LevelLoader {
 
 	private static int    width;
 	private static int    height;
-	private static byte[] tiles;
-	private static byte[] tiles0;
+	private static int[][] tiles;
+	private static int[][] tiles0;
 
 	private static String name = "";
 	private static String description = "";
@@ -50,19 +50,24 @@ public class LevelLoader {
 		JSONObject objTiles = levelJSP.get("tiles");
 		width = objTiles.getInt("width");
 		height = objTiles.getInt("height");
-		JSONArray tilesJSON = objTiles.getJSONArray("tiles");
+		JSONObject tilesJSON = objTiles.getJSONObject("tiles");
 
-		tiles = new byte[width*height];
-		for (int i = 0; i < tilesJSON.length(); i++) {
-			tiles[i] = (byte) tilesJSON.optInt(i);
+		tiles = new int[width][height];
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				tiles[x][y] = tilesJSON.getInt(x + "." + y);
+			}
 		}
 
-		tiles0 = new byte[width * height];
+		tiles0 = new int[width][height];
 		if (objTiles.has("tiles0")) {
-			JSONArray tiles0JSON = objTiles.getJSONArray("tiles0");
+			JSONObject tiles0JSON = objTiles.getJSONObject("tiles0");
 
-			for (int i = 0; i < tiles0JSON.length(); i++) {
-				tiles0[i] = (byte) tiles0JSON.optInt(i);
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					tiles0[x][y] = tiles0JSON.getInt(x + "." + y);
+				}
 			}
 		} else {
 			Debug.log(path + " has no tiles0", Debug.DEBUG);
@@ -109,11 +114,11 @@ public class LevelLoader {
 		return author;
 	}
 
-	public byte[] getTiles() {
+	public int[][] getTiles() {
 		return tiles;
 	}
 
-	public byte[] getTiles0() {
+	public int[][] getTiles0() {
 		return tiles0;
 	}
 

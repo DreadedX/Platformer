@@ -44,18 +44,18 @@ public class Editor extends Game {
 		if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
 			if (input.isPressed(KEY_TILE_PLACE)) {
 				if (layer == 0) {
-					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
+					level.tiles0[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = tile;
 				}
 				if (layer == 1) {
-					level.tiles[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = (byte) tile;
+					level.tiles[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = tile;
 				}
 			}
 			if (input.isPressed(KEY_TILE_REMOVE)) {
 				if (layer == 0) {
-					level.tiles0[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = 1;
+					level.tiles0[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = 1;
 				}
 				if (layer == 1) {
-					level.tiles[(mx + screen.xOffset >> 4) + (my + screen.yOffset >> 4) * level.width] = 1;
+					level.tiles[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = 1;
 				}
 			}
 		}

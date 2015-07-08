@@ -19,8 +19,8 @@ public class Level {
 	protected final List<Background>  backgrounds  = new ArrayList<>();
 	protected final List<LightSource> lightSources = new ArrayList<>();
 
-	public    byte[] tiles;
-	public    byte[] tiles0;
+	public    int[][] tiles;
+	public    int[][] tiles0;
 	public    int    width;
 	protected int    height;
 
@@ -117,13 +117,13 @@ public class Level {
 	public Tile getTile(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return Tile.VOID;
-		return Tile.tiles[tiles[x + y * width]];
+		return Tile.tiles[tiles[x][y]];
 	}
 
 	private Tile getTile0(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return Tile.VOID;
-		return Tile.tiles[tiles0[x + y * width]];
+		return Tile.tiles[tiles0[x][y]];
 	}
 
 	public void addEntity(Entity entity) {
@@ -182,16 +182,20 @@ public class Level {
 	public void create(int width, int height) {
 		this.width = width;
 		this.height = height;
-		tiles = new byte[width*height];
+		tiles = new int[width][height];
 
-		for (int i = 0; i < tiles.length; i++) {
-			tiles[i] = 1;
+		for (int x = 0; x < tiles.length; x++) {
+			for (int y = 0; y < tiles[0].length; y++) {
+				tiles[x][y] = 1;
+			}
 		}
 
-		tiles0 = new byte[width*height];
+		tiles0 = new int[width][height];
 
-		for (int i = 0; i < tiles0.length; i++) {
-			tiles0[i] = 1;
+		for (int x = 0; x < tiles0.length; x++) {
+			for (int y = 0; y < tiles0[0].length; y++) {
+				tiles0[x][y] = 1;
+			}
 		}
 
 		if (this.entities.size() > 0) {

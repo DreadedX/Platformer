@@ -197,37 +197,22 @@ public class Command {
 
 				case "tile":
 					if (commands.length == 4) {
-						level.tiles[Integer.parseInt(commands[2]) + Integer.parseInt(commands[3]) * level.width] = Byte.parseByte((commands[1]));
+						level.tiles[Integer.parseInt(commands[2])][Integer.parseInt(commands[3])] = Byte.parseByte((commands[1]));
 					}
 					break;
 
 				case "export":
-					int[][] tiles2D = new int[64][48];
-					int[][] tiles02D = new int[64][48];
-
-					for(int x = 0; x < 64; x++) {
-						for (int y = 0; y < 48; y++) {
-							tiles2D[x][y] = level.tiles[x + y * 64];
-						}
-					}
-
-					for(int x = 0; x < 64; x++) {
-						for (int y = 0; y < 48; y++) {
-							tiles02D[x][y] = level.tiles0[x + y * 64];
-						}
-					}
-
 					String export = "{\"width\":64,\"height\":48,\"tiles\":{";
-					for(int x = 0; x < tiles2D.length; x++) {
-						for (int y = 0; y < tiles2D[0].length; y++) {
-							export += x + "." + y + ":" + tiles2D[x][y] + ",";
+					for(int x = 0; x < level.tiles.length; x++) {
+						for (int y = 0; y < level.tiles[0].length; y++) {
+							export += "\"" + x + "." + y + "\":" + level.tiles[x][y] + ",";
 						}
 					}
 					export = export.substring(0, export.length()-1);
 					export += "},tiles0:{";
-					for(int x = 0; x < tiles02D.length; x++) {
-						for (int y = 0; y < tiles02D[0].length; y++) {
-							export += x + "." + y + ":" + tiles02D[x][y] + ",";
+					for(int x = 0; x < level.tiles0.length; x++) {
+						for (int y = 0; y < level.tiles0[0].length; y++) {
+							export += "\"" + x + "." + y + "\":" + level.tiles0[x][y] + ",";
 						}
 					}
 					export = export.substring(0, export.length()-1);
