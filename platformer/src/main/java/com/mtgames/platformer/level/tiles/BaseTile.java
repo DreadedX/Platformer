@@ -10,8 +10,9 @@ class BaseTile extends Tile {
 	private final int size;
 	private final int loc;
 
-	BaseTile(int id, String name, int size, int part, boolean visible) {
-		super(id, false);
+	BaseTile(String name, int size, int part, boolean visible) {
+		super(name);
+		this.solid = false;
 		this.visible = visible;
 		this.size = size;
 		this.loc = part;
@@ -20,16 +21,18 @@ class BaseTile extends Tile {
 		}
 	}
 
-	BaseTile(int id, String name, int size, int part) {
-		super(id, false);
+	BaseTile(String name, int size, int part) {
+		super(name);
+		this.solid = false;
 		this.visible = true;
 		this.size = size;
 		this.loc = part;
 		this.textureID = TextureLoader.loadTexture("/assets/graphics/tiles/" + name + ".png");
 	}
 
-	public BaseTile(int id, String name, boolean visible) {
-		super(id, false);
+	public BaseTile(String name, boolean visible) {
+		super(name);
+		this.solid = false;
 		this.visible = visible;
 		this.size = 16;
 		this.loc = 0;
@@ -38,8 +41,9 @@ class BaseTile extends Tile {
 		}
 	}
 
-	BaseTile(int id, String name) {
-		super(id, false);
+	BaseTile(String name) {
+		super(name);
+		this.solid = false;
 		this.visible = true;
 		this.size = 16;
 		this.loc = 0;

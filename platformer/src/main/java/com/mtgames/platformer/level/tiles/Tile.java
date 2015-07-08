@@ -1,72 +1,36 @@
 package com.mtgames.platformer.level.tiles;
 
 import com.mtgames.platformer.gfx.Screen;
+import com.mtgames.utils.Debug;
+
+import java.io.File;
 
 @SuppressWarnings("UnusedDeclaration") public abstract class Tile {
 
 	private static final int SMALL = 8;
 	private static final int BIG   = 32;
 
-	public static final Tile[] tiles = new Tile[1024];
-	public static final Tile   VOID  = new BaseSolidTile(0, "void", false);
-	public static final Tile   GRID  = new BaseTile(1, "grid", false);
+	private static final int size = 1024;
+	private static int idCount = 0;
 
-	//	BRICKS
-	public static final Tile BRICK   = new BaseTile(2, "brick");
-	public static final Tile BRICK_S = new BaseSolidTile(3, "brick_solid");
-	//	public static final Tile BRICK       = new BaseTile(1002, "brick");
-	//	public static final Tile BRICK_S = new BaseSolidTile(1003, "brick_solid");
-
-	//	WINDOW
-	public static final Tile WINDOW_TTLL = new BaseTile(4, "window", 4 * 16, 0);
-	public static final Tile WINDOW_TTL  = new BaseTile(5, "window", 4 * 16, 1);
-	public static final Tile WINDOW_TTR  = new BaseTile(6, "window", 4 * 16, 2);
-	public static final Tile WINDOW_TTRR = new BaseTile(7, "window", 4 * 16, 3);
-
-	public static final Tile WINDOW_TML = new BaseTile(8, "window", 4 * 16, 4);
-	public static final Tile WINDOW_BL  = new BaseTile(9, "window", 4 * 16, 5);
-	public static final Tile WINDOW_BR  = new BaseTile(10, "window", 4 * 16, 6);
-	public static final Tile WINDOW_TMR = new BaseTile(11, "window", 4 * 16, 7);
-
-	public static final Tile WINDOW_ML = new BaseTile(12, "window", 4 * 16, 8);
-	public static final Tile WINDOW_BC = new BaseTile(13, "window", 4 * 16, 9);
-	public static final Tile WINDOW_TC = new BaseTile(14, "window", 4 * 16, 10);
-	public static final Tile WINDOW_MR = new BaseTile(15, "window", 4 * 16, 11);
-
-	//	FLAG
-	public static final Tile FLAG_TL = new BaseTile(16, "flag", 4 * 16, 0);
-	public static final Tile FLAG_TC = new BaseTile(17, "flag", 4 * 16, 1);
-	public static final Tile FLAG_TR = new BaseTile(18, "flag", 4 * 16, 2);
-
-	public static final Tile FLAG_ML = new BaseTile(19, "flag", 4 * 16, 4);
-	public static final Tile FLAG_C  = new BaseTile(20, "flag", 4 * 16, 5);
-	public static final Tile FLAG_MR = new BaseTile(21, "flag", 4 * 16, 6);
-
-	public static final Tile FLAG_BLT = new BaseTile(22, "flag", 4 * 16, 8);
-	public static final Tile FLAG_BSL = new BaseTile(23, "flag", 4 * 16, 9);
-	public static final Tile FLAG_BRT = new BaseTile(24, "flag", 4 * 16, 10);
-
-	public static final Tile FLAG_BLB = new BaseTile(25, "flag", 4 * 16, 12);
-	public static final Tile FLAG_BSR = new BaseTile(26, "flag", 4 * 16, 13);
-	public static final Tile FLAG_BRB = new BaseTile(27, "flag", 4 * 16, 14);
-
-	//	PILLAR
-	public static final Tile PILLAR = new BaseTile(28, "pillar");
-
-	//	BLOCK
-	public static final Tile BLOCK = new BaseSolidTile(29, "block");
+	public static Tile[] tiles = new Tile[size];
 
 	private final byte id;
+	protected final String name;
 	boolean solid;
 
-	Tile(int id, boolean isSolid) {
+	Tile(String name) {
+		int id = idCount;
+		idCount++;
 		this.id = (byte) id;
 		if (tiles[id] != null) {
 			throw new RuntimeException("Tile id already exists: " + id);
 		}
+		this.name = name;
 
-		this.solid = isSolid;
 		tiles[id] = this;
+
+		Debug.log(this.name, Debug.DEBUG);
 	}
 
 	public byte getId() {
@@ -75,6 +39,80 @@ import com.mtgames.platformer.gfx.Screen;
 
 	public boolean isSolid() {
 		return solid;
+	}
+
+	public static void clear() {
+		tiles = new Tile[size];
+		idCount = 0;
+
+		new BaseTileSolid("void", false);
+		new BaseTile("grid", false);
+
+
+		new BaseTile("brickLight");
+		new BaseTileSolid("brickDark");
+
+
+		new BaseTile("window", 4 * 16, 0);
+		new BaseTile("window", 4 * 16, 1);
+		new BaseTile("window", 4 * 16, 2);
+		new BaseTile("window", 4 * 16, 3);
+
+		new BaseTile("window", 4 * 16, 4);
+		new BaseTile("window", 4 * 16, 5);
+		new BaseTile("window", 4 * 16, 6);
+		new BaseTile("window", 4 * 16, 7);
+
+		new BaseTile("window", 4 * 16, 8);
+		new BaseTile("window", 4 * 16, 9);
+		new BaseTile("window", 4 * 16, 10);
+		new BaseTile("window", 4 * 16, 11);
+
+
+		new BaseTile("flag", 4 * 16, 0);
+		new BaseTile("flag", 4 * 16, 1);
+		new BaseTile("flag", 4 * 16, 2);
+
+		new BaseTile("flag", 4 * 16, 4);
+		new BaseTile("flag", 4 * 16, 5);
+		new BaseTile("flag", 4 * 16, 6);
+
+		new BaseTile("flag", 4 * 16, 8);
+		new BaseTile("flag", 4 * 16, 9);
+		new BaseTile("flag", 4 * 16, 10);
+
+		new BaseTile("flag", 4 * 16, 12);
+		new BaseTile("flag", 4 * 16, 13);
+		new BaseTile("flag", 4 * 16, 14);
+
+
+		new BaseTile("pillar");
+
+
+		new BaseTileSolid("block");
+
+		load("base");
+	}
+
+	private static void load(String path) {
+		String basePath = "assets/graphics/tiles/";
+		File[] files = new File(ClassLoader.getSystemResource(basePath + path).getFile()).listFiles();
+		for (File file : files) {
+			if (file.isFile()) {
+				String name = file.getName();
+				if (name.substring(name.length()-4, name.length()).toLowerCase().equals(".png")) {
+					name = name.substring(0, name.length() - 4);
+					name = path + "/" + name;
+
+					if (ClassLoader.getSystemResource(basePath + name + ".solid") != null) {
+						new BaseTileSolid(name);
+						Debug.log("Solid", Debug.DEBUG);
+					} else {
+						new BaseTile(name);
+					}
+				}
+			}
+		}
 	}
 
 	public abstract void render(Screen screen, int x, int y);

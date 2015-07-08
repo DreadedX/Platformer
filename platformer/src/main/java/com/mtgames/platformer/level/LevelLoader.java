@@ -2,6 +2,7 @@ package com.mtgames.platformer.level;
 
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Background;
+import com.mtgames.platformer.level.tiles.Tile;
 import com.mtgames.utils.Debug;
 import com.mtgames.utils.JSP;
 import org.json.*;
@@ -46,6 +47,8 @@ public class LevelLoader {
 			int speed = objBackground.getJSONObject(String.valueOf(i)).getInt("speed");
 			level.addBackground(new Background("/assets/graphics/backgrounds/" + name + ".png", speed));
 		}
+
+		Tile.clear();
 
 		JSONObject objTiles = levelJSP.get("tiles");
 		width = objTiles.getInt("width");
