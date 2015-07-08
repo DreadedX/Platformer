@@ -12,7 +12,6 @@ import com.mtgames.platformer.level.Level;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -203,8 +202,36 @@ public class Command {
 					break;
 
 				case "export":
-					String export =
-							"{\"width\": 64, \"height\": 48, \"tiles\": " + Arrays.toString(level.tiles) + ", \"tiles0\":" + Arrays.toString(level.tiles0) + "}";
+					int[][] tiles2D = new int[64][48];
+					int[][] tiles02D = new int[64][48];
+
+					for(int x = 0; x < 64; x++) {
+						for (int y = 0; y < 48; y++) {
+							tiles2D[x][y] = level.tiles[x + y * 64];
+						}
+					}
+
+					for(int x = 0; x < 64; x++) {
+						for (int y = 0; y < 48; y++) {
+							tiles02D[x][y] = level.tiles0[x + y * 64];
+						}
+					}
+
+					String export = "{\"width\":64,\"height\":48,\"tiles\":{";
+					for(int x = 0; x < tiles2D.length; x++) {
+						for (int y = 0; y < tiles2D[0].length; y++) {
+							export += x + "." + y + ":" + tiles2D[x][y] + ",";
+						}
+					}
+					export = export.substring(0, export.length()-1);
+					export += "},tiles0:{";
+					for(int x = 0; x < tiles02D.length; x++) {
+						for (int y = 0; y < tiles02D[0].length; y++) {
+							export += x + "." + y + ":" + tiles02D[x][y] + ",";
+						}
+					}
+					export = export.substring(0, export.length()-1);
+					export += "}}";
 					Debug.log(export, Debug.INFO);
 					try {
 						PrintWriter out = new PrintWriter("pack/export/tiles.json");
