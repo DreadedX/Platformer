@@ -46,7 +46,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	public static Level        level;
 
 	protected static boolean debug      = false;
-	private static   boolean showDebug  = false;
+	protected static boolean showDebug  = false;
 	public static    boolean lightDebug = false;
 
 	private int xOffset;
@@ -302,8 +302,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		if (input.isPressed(KEY_MESSAGE)) {
 //			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
-			GUI.textBox("Test","ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] ");
-//			GUI.textBox(level.name, level.description + "|By: " + level.author);
+			GUI.textBox(level.name, level.description + "|By: " + level.author);
 		}
 
 		GUI.render();

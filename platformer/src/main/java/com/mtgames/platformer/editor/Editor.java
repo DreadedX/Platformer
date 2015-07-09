@@ -87,7 +87,9 @@ public class Editor extends Game {
 			Tile.tiles[tile].render(screen, mxBox << 4, myBox << 4);
 			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset,
 					(myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
-			Font.render(Tile.tiles[tile].getName(), screen, screen.xOffset + 1, screen.yOffset + 1);
+			if (!showDebug) {
+				Font.render(Tile.tiles[tile].getName(), screen, screen.xOffset + 1, screen.yOffset + 1);
+			}
 			Font.render("Layer " + layer, screen, screen.width-56+screen.xOffset, screen.yOffset + 1);
 		}
 
