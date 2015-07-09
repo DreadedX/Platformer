@@ -56,41 +56,6 @@ public abstract class Tile {
 //		Special tiles
 		new BaseTileSolid("void", false, false);
 		new BaseTile("grid", false, false);
-
-//		new BaseTile("base/brickLight");
-//		new BaseTileSolid("base/brickDark");
-//
-//		new BaseTile("base/window00");
-//		new BaseTile("base/window01");
-//		new BaseTile("base/window02");
-//		new BaseTile("base/window03");
-//		new BaseTile("base/window04");
-//		new BaseTile("base/window05");
-//		new BaseTile("base/window06");
-//		new BaseTile("base/window07");
-//		new BaseTile("base/window08");
-//		new BaseTile("base/window09");
-//		new BaseTile("base/window10");
-//		new BaseTile("base/window11");
-//
-//		new BaseTile("base/flag00");
-//		new BaseTile("base/flag01");
-//		new BaseTile("base/flag02");
-//		new BaseTile("base/flag03");
-//		new BaseTile("base/flag04");
-//		new BaseTile("base/flag05");
-//		new BaseTile("base/flag06");
-//		new BaseTile("base/flag07");
-//		new BaseTile("base/flag08");
-//		new BaseTile("base/flag09");
-//		new BaseTile("base/flag10");
-//		new BaseTile("base/flag11");
-//
-//		new BaseTile("base/pillar");
-//
-//		new BaseTileSolid("base/block");
-
-//		load("base");
 	}
 
 	public static void load(String[] names) {
