@@ -1,10 +1,8 @@
 package com.mtgames.platformer.gfx;
 
 import com.mtgames.platformer.Game;
-import com.mtgames.platformer.entities.particles.DashParticle;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.settings.Properties;
-import com.mtgames.utils.Debug;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 

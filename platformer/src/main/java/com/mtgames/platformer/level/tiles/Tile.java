@@ -9,18 +9,18 @@ import java.util.Comparator;
 
 public abstract class Tile {
 
-//	private static final int SMALL = 8;
-//	private static final int BIG   = 32;
+	//	private static final int SMALL = 8;
+	//	private static final int BIG   = 32;
 
-	private static final int size = 1024;
-	private static int idCount = 0;
+	private static final int size    = 1024;
+	private static       int idCount = 0;
 
 	private static final String basePath = "assets/graphics/tiles/";
 
 	public static Tile[] tiles = new Tile[size];
 
-	private final byte id;
-	protected final String name;
+	private final byte   id;
+	private final String name;
 	boolean solid;
 
 	Tile(String name) {
@@ -34,7 +34,7 @@ public abstract class Tile {
 
 		tiles[id] = this;
 
-		Debug.log("Assigned " + this.id + " to " + this.name, Debug.INFO);
+//		Debug.log("Assigned " + this.id + " to " + this.name, Debug.DEBUG);
 	}
 
 	public byte getId() {
@@ -78,7 +78,6 @@ public abstract class Tile {
 					break;
 				}
 				if (tiles[p].getName().equals(name)) {
-					Debug.log(name + " is already assigned, skipping", Debug.INFO);
 					break;
 				}
 			}
@@ -114,7 +113,6 @@ public abstract class Tile {
 							break;
 						}
 						if (tiles[i].getName().equals(name)) {
-							Debug.log(name + " is already assigned, skipping", Debug.INFO);
 							break;
 						}
 					}
@@ -133,7 +131,7 @@ public abstract class Tile {
 
 	public abstract void render(Screen screen, int x, int y);
 
-	public static Comparator<Tile> TileNameComparator = (tile1, tile2) -> {
+	public static final Comparator<Tile> TileNameComparator = (tile1, tile2) -> {
 		if (tile1 == null || tile2 == null) {
 			return 0;
 		}

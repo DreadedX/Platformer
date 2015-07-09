@@ -6,12 +6,12 @@ import com.sun.javafx.geom.Vec3f;
 
 public class LightSource {
 	private int life = 0;
-	private final Vec3f colour;
-	private final int   radius;
-	private final float intensity;
-	private       int   x;
-	private       int   y;
-	private Properties properties;
+	private final Vec3f      colour;
+	private final int        radius;
+	private final float      intensity;
+	private       int        x;
+	private       int        y;
+	private final Properties properties;
 
 	public LightSource(int x, int y, Properties properties) {
 		this.colour = properties.getColour();

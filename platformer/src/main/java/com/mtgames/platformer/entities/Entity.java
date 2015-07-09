@@ -13,11 +13,11 @@ public abstract class Entity {
 	int ya;
 	protected final Level      level;
 	private final   Properties properties;
-	protected String name;
-	private   int     gravityWait = 0;
-	protected int     life        = -10;
-	public    boolean persistent  = false;
-	protected boolean collide     = false;
+	protected final String     name;
+	private         int     gravityWait = 0;
+	protected       int     life        = -10;
+	public final    boolean persistent  = false;
+	protected final boolean collide     = false;
 
 	int xMin = 0;
 	int xMax = 0;

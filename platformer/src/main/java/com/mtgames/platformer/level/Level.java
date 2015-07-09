@@ -21,18 +21,18 @@ public class Level {
 
 	public    int[][] tiles;
 	public    int[][] tiles0;
-	public    int    width;
-	protected int    height;
+	protected int     width;
+	protected int     height;
 
 	public String  path;
 	public boolean reload;
 
 	public boolean renderLayer0 = true;
-	public boolean renderLayer = true;
+	public boolean renderLayer  = true;
 
-	public String name = "";
+	public String name        = "";
 	public String description = "";
-	public String author = "";
+	public String author      = "";
 
 	private final Screen screen = Game.screen;
 

@@ -9,16 +9,15 @@ import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 import static com.mtgames.platformer.settings.Settings.*;
 
 public class Editor extends Game {
 
-	private static int tile = 3;
+	private static int tile  = 3;
 	private static int layer = 0;
 
-	Tile[] tilesSort = new Tile[Tile.tiles.length];
+	private Tile[] tilesSort = new Tile[Tile.tiles.length];
 
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {

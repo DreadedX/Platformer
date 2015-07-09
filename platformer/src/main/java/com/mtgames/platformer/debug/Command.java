@@ -23,7 +23,7 @@ public class Command {
 	private static Level  level  = null;
 	private static Screen screen = null;
 
-	private static List<Runnable> queue = new ArrayList<>();
+	private static final List<Runnable> queue = new ArrayList<>();
 
 	public static void execute() {
 		for (int i = 0; i < queue.size(); i++) {

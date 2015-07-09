@@ -1,6 +1,6 @@
 package com.mtgames.platformer.level.tiles;
 
-public class BaseTileSolid extends BaseTile {
+class BaseTileSolid extends BaseTile {
 
 	public BaseTileSolid(String name, boolean visible, boolean external) {
 		super(name, visible, external);
