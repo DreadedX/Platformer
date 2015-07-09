@@ -5,6 +5,7 @@ import com.mtgames.utils.Debug;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public abstract class Tile {
 
@@ -166,5 +167,16 @@ public abstract class Tile {
 	}
 
 	public abstract void render(Screen screen, int x, int y);
+
+	public static Comparator<Tile> TileNameComparator = (tile1, tile2) -> {
+		if (tile1 == null || tile2 == null) {
+			return 0;
+		}
+
+		String tile1Name = tile1.getName();
+		String tile2Name = tile2.getName();
+
+		return tile1Name.compareTo(tile2Name);
+	};
 
 }

@@ -18,6 +18,8 @@ public class Editor extends Game {
 	private static int tile = 3;
 	private static int layer = 0;
 
+	Tile[] tilesSort = new Tile[Tile.tiles.length];
+
 	public static void main(String[] args) {
 		if (Integer.getInteger("com.mtgames.scale") != null) {
 			Game.scale = Integer.getInteger("com.mtgames.scale");
@@ -75,6 +77,14 @@ public class Editor extends Game {
 			level.renderLayer0 = true;
 			level.renderLayer = true;
 		}
+
+		if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
+			tilesSort = new Tile[Tile.tiles.length];
+
+			System.arraycopy(Tile.tiles, 0, tilesSort, 0, tilesSort.length);
+
+			Arrays.sort(tilesSort, Tile.TileNameComparator);
+		}
 	}
 
 	protected void render() {
@@ -94,12 +104,12 @@ public class Editor extends Game {
 		}
 
 		if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
-			for (int i = 2; i < Tile.tiles.length; i++) {
-				if (Tile.tiles[i] == null) {
+			for (int i = 0; i < tilesSort.length; i++) {
+				if (tilesSort[i] == null) {
 					return;
 				}
 				final int finalI = i;
-				GUI.button(8 + 16 * (finalI - 2), 8, 16, 16, () -> Tile.tiles[finalI].render(screen, 16 * (finalI - 2) + screen.xOffset, screen.yOffset), () -> tile = Tile.tiles[finalI].getId());
+				GUI.button(8 + 16 * (finalI), 8, 16, 16, () -> tilesSort[finalI].render(screen, 16 * (finalI) + screen.xOffset, screen.yOffset), () -> tile = tilesSort[finalI].getId());
 			}
 		}
 
