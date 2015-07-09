@@ -99,7 +99,7 @@ public class Screen {
 		x *= scale;
 		y *= scale;
 
-		float partSize = 1.0f / (charCount-1);
+		float partSize = 1.0f / (charCount);
 
 		float partX1 = partSize * index;
 		float partX2 = partSize * (index+1);

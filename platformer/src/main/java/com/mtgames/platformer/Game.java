@@ -301,8 +301,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		screen.renderLightFBO(screen, level);
 
 		if (input.isPressed(KEY_MESSAGE)) {
-			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
-			GUI.textBox(level.name, level.description + "|By: " + level.author);
+//			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
+			GUI.textBox("Test","ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;'\"!?$%()-=+/*[] ");
+//			GUI.textBox(level.name, level.description + "|By: " + level.author);
 		}
 
 		GUI.render();

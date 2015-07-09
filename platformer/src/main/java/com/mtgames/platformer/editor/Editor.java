@@ -8,6 +8,9 @@ import com.mtgames.platformer.level.tiles.Tile;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static com.mtgames.platformer.settings.Settings.*;
 
 public class Editor extends Game {
@@ -82,7 +85,9 @@ public class Editor extends Game {
 
 		if (!paused && !input.isPressed(KEY_TILE_SELECT)) {
 			Tile.tiles[tile].render(screen, mxBox << 4, myBox << 4);
-			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset, (myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
+			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset,
+					(myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
+			Font.render(Tile.tiles[tile].getName(), screen, screen.xOffset + 1, screen.yOffset + 1);
 			Font.render("Layer " + layer, screen, screen.width-56+screen.xOffset, screen.yOffset + 1);
 		}
 
@@ -92,7 +97,7 @@ public class Editor extends Game {
 					return;
 				}
 				final int finalI = i;
-				GUI.button(8 + 16 * (finalI - 2), 8, 16, 16, () -> Tile.tiles[finalI].render(screen, 16 * (finalI - 2) + screen.xOffset, screen.yOffset), () -> tile = finalI);
+				GUI.button(8 + 16 * (finalI - 2), 8, 16, 16, () -> Tile.tiles[finalI].render(screen, 16 * (finalI - 2) + screen.xOffset, screen.yOffset), () -> tile = Tile.tiles[finalI].getId());
 			}
 		}
 

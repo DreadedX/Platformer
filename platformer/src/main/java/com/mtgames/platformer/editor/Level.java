@@ -52,6 +52,10 @@ public class Level extends com.mtgames.platformer.level.Level{
 
 			tiles = loader.getTiles();
 			tiles0 = loader.getTiles0();
+
+			name = loader.getName();
+			description = loader.getDescription();
+			author = loader.getAuthor();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
