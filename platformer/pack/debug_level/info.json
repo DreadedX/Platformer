@@ -1,6 +1,7 @@
 {
-  "version": "2.1",
+  "version": "3.0",
   "name": "Debug level",
   "description": "This level is used to debug the game",
   "author": "Dreaded_X"
+  }
 }

@@ -2,6 +2,7 @@ package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.entities.AdvancedEntity;
+import com.mtgames.platformer.level.tiles.Tile;
 import com.mtgames.platformer.scripting.Jython;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.platformer.entities.particles.DashParticle;
@@ -202,17 +203,32 @@ public class Command {
 					break;
 
 				case "export":
-					String export = "{\"width\":64,\"height\":48,\"tiles\":{";
+					String export = "{\"tileId\":{";
+
+					for (int i = 2; i < Tile.tiles.length; i++) {
+						if (Tile.tiles[i] == null) {
+							break;
+						}
+						export += "\"" + Tile.tiles[i].getId() + "\":\"" + Tile.tiles[i].getName() + "\",";
+					}
+
+					export = export.substring(0, export.length()-1);
+
+					export += "},\"width\":64,\"height\":48,\"tiles\":{";
 					for(int x = 0; x < level.tiles.length; x++) {
 						for (int y = 0; y < level.tiles[0].length; y++) {
-							export += "\"" + x + "." + y + "\":" + level.tiles[x][y] + ",";
+							if (level.tiles[x][y] != 1) {
+								export += "\"" + x + "." + y + "\":" + level.tiles[x][y] + ",";
+							}
 						}
 					}
 					export = export.substring(0, export.length()-1);
-					export += "},tiles0:{";
+					export += "},\"tiles0\":{";
 					for(int x = 0; x < level.tiles0.length; x++) {
 						for (int y = 0; y < level.tiles0[0].length; y++) {
-							export += "\"" + x + "." + y + "\":" + level.tiles0[x][y] + ",";
+							if (level.tiles0[x][y] != 1) {
+								export += "\"" + x + "." + y + "\":" + level.tiles0[x][y] + ",";
+							}
 						}
 					}
 					export = export.substring(0, export.length()-1);

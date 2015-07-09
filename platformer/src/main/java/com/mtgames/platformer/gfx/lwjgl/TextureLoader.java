@@ -1,6 +1,7 @@
 package com.mtgames.platformer.gfx.lwjgl;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -14,10 +15,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextureLoader {
 	private static final int BYTES_PER_PIXEL = 4;//3 for RGB, 4 for RGBA
-	public static int loadTexture(String loc){
+
+	public static int loadTexture(String loc) {
+		return loadTexture(loc, false);
+	}
+
+	public static int loadTexture(String loc, boolean external){
 		BufferedImage image;
 		try {
-			image = loadImage(loc);
+			image = loadImage(loc, external);
 
 			int[] pixels = new int[image.getWidth() * image.getHeight()];
 			image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -63,17 +69,25 @@ public class TextureLoader {
 	}
 
 	public static int[] loadTextureArray(String loc, int size) {
+		return loadTextureArray(loc, size, false);
+	}
+
+	public static int[] loadTextureArray(String loc, int size, boolean external) {
 		int[] textureID = new int[size];
 
 		for (int i = 0; i < size; i++) {
-			textureID[i] = loadTexture(loc + "/" + i + ".png");
+			textureID[i] = loadTexture(loc + "/" + i + ".png", external);
 		}
 
 		return textureID;
 
 	}
 
-	private static BufferedImage loadImage(String loc) throws IOException {
-		return ImageIO.read(Game.class.getResource(loc));
+	private static BufferedImage loadImage(String loc, boolean external) throws IOException {
+		if (external) {
+			return ImageIO.read(new File("platformer/" + loc));
+		} else {
+			return ImageIO.read(Game.class.getResource(loc));
+		}
 	}
 }

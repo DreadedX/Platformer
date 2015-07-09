@@ -26,7 +26,7 @@ public class LevelLoader {
 		if (!objInfo.has("version")) {
 			Debug.log(path + " is not a valid level file, not loading", Debug.WARNING);
 			return;
-		} else if (!objInfo.getString("version").equals("2.1")) {
+		} else if (!objInfo.getString("version").equals("3.0")) {
 			Debug.log(path + " is an outdated level file, not loading", Debug.WARNING);
 			return;
 		}
@@ -48,18 +48,33 @@ public class LevelLoader {
 			level.addBackground(new Background("/assets/graphics/backgrounds/" + name + ".png", speed));
 		}
 
-		Tile.clear();
-
 		JSONObject objTiles = levelJSP.get("tiles");
 		width = objTiles.getInt("width");
 		height = objTiles.getInt("height");
 		JSONObject tilesJSON = objTiles.getJSONObject("tiles");
+		JSONObject tileIdJSON = objTiles.getJSONObject("tileId");
+
+		Tile.clear();
+
+		String[] tileId = new String[tileIdJSON.length()];
+		for (int i = 0; i < tileIdJSON.length(); i++) {
+			if (tileIdJSON.has(String.valueOf(i+2))) {
+				tileId[i] = tileIdJSON.getString(String.valueOf(i+2));
+			}
+		}
+
+		Tile.load(tileId);
+		Tile.load("base");
 
 		tiles = new int[width][height];
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				tiles[x][y] = tilesJSON.getInt(x + "." + y);
+				if (tilesJSON.has(x + "." + y)) {
+					tiles[x][y] = tilesJSON.getInt(x + "." + y);
+				} else {
+					tiles[x][y] = 1;
+				}
 			}
 		}
 
@@ -69,7 +84,11 @@ public class LevelLoader {
 
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
-					tiles0[x][y] = tiles0JSON.getInt(x + "." + y);
+					if (tiles0JSON.has(x + "." + y)) {
+						tiles0[x][y] = tiles0JSON.getInt(x + "." + y);
+					} else {
+						tiles0[x][y] = 1;
+					}
 				}
 			}
 		} else {
