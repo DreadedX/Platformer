@@ -1,2 +1,5 @@
-py from com.mtgames.platformer.level.tiles import Tile
-py Tile.load("demo")
+//Load tile custom tile on the fly
+py from com.mtgames.platformer.level.tiles import Tile & py Tile.load("demo")
+
+//Switch between editor mode
+py from com.mtgames.platformer import Game & py Game.editor = not Game.editor & lighting & reload

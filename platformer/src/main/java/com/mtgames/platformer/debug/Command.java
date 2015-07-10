@@ -30,6 +30,13 @@ public class Command {
 	}
 
 	public static void queue(String command) {
+		String[] commands2 = command.split(" & ");
+		if (commands2.length > 1) {
+			for (int i = 0; i < commands2.length; i++) {
+				queue(commands2[i]);
+			}
+			return;
+		}
 		queue.add(() -> {
 			String[] commands = command.split(" ");
 
