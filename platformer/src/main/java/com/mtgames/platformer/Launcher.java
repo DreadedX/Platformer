@@ -1,7 +1,6 @@
 package com.mtgames.platformer;
 
 import com.mtgames.platformer.debug.Command;
-import com.mtgames.platformer.editor.Editor;
 import com.mtgames.utils.Debug;
 import com.mtgames.utils.LauncherBase;
 import javafx.collections.FXCollections;
@@ -45,10 +44,12 @@ public class Launcher extends LauncherBase {
 
 		if (editor.isSelected()) {
 			Debug.log("Launching editor", Debug.INFO);
-			Editor.main(new String[] { "" });
-		} else {
-			Game.main(new String[] { "" });
+			Game.editor = true;
+//			Editor.main(new String[] { "" });
+//		} else {
+//			Game.main(new String[] { "" });
 		}
+		Game.main(new String[] { "" });
 	}
 
 	@Override protected void consoleCommand(String s) {

@@ -1,7 +1,6 @@
 package com.mtgames.platformer.settings;
 
 import com.mtgames.platformer.InputHandler;
-import com.mtgames.platformer.level.Level;
 import com.mtgames.utils.JSP;
 import com.sun.javafx.geom.Vec3f;
 import org.json.JSONObject;
@@ -24,7 +23,6 @@ public class Properties {
 
 	private String name = "";
 
-	private final Level        level = com.mtgames.platformer.Game.level;
 	private final InputHandler input = com.mtgames.platformer.Game.input;
 
 	private static final JSP jsp = new JSP("assets/game.jsp", false);
@@ -147,10 +145,6 @@ public class Properties {
 
 	public String getName() {
 		return name;
-	}
-
-	public Level getLevel() {
-		return level;
 	}
 
 	public InputHandler getInput() {

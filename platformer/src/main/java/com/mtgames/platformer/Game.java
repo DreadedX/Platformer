@@ -5,6 +5,7 @@ import com.mtgames.platformer.gfx.Font;
 import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.Level;
+import com.mtgames.platformer.level.tiles.Tile;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.InitInterface;
 import com.mtgames.platformer.settings.Settings;
@@ -21,6 +22,7 @@ import org.lwjgl.opengl.GLContext;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.util.Arrays;
 
 import static com.mtgames.platformer.settings.Settings.*;
 
@@ -41,8 +43,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	public static int scale;
 	private int fps = 0;
 
+	public static boolean editor = false;
+
 	public static InputHandler input;
-	public static Level        level;
 
 	protected static boolean debug      = false;
 	protected static boolean showDebug  = false;
@@ -53,6 +56,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	public static int mx;
 	public static int my;
+
+	private static int tile  = 3;
+	private static int layer = 0;
+
+	private Tile[] tilesSort = new Tile[Tile.tiles.length];
 
 	public static boolean paused = false;
 
@@ -77,15 +85,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	protected void init() {
 		input = new InputHandler();
-		level = new Level();
 
 		new Settings();
 
 		xOffset = Screen.width / 2;
 		yOffset = Screen.height / 2;
 
-		//		Initialize command system
-		Command.set(level);
 		//		Load debug level
 		Command.queue("load debug_level");
 		//		Command.exec("load white");
@@ -121,6 +126,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		InitInterface ii = (InitInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.InitInterface", "Init.py");
 		if (!ii.init()) {
 			Debug.log("Failed to initialize jython", Debug.ERROR);
+		}
+
+		if (editor) {
+			Command.queue("lighting");
+			Command.execute();
 		}
 	}
 
@@ -264,7 +274,49 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	protected void tick() {
 		if (!paused) {
-			level.tick();
+			Level.tick();
+		}
+
+		if (editor) {
+			if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
+				if (input.isPressed(KEY_TILE_PLACE)) {
+					if (layer == 0) {
+						Level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
+					}
+					if (layer == 1) {
+						Level.tiles[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
+					}
+				}
+				if (input.isPressed(KEY_TILE_REMOVE)) {
+					if (layer == 0) {
+						Level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = 1;
+					}
+					if (layer == 1) {
+						Level.tiles[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = 1;
+					}
+				}
+			}
+
+			if (input.isPressed(KEY_LAYER0)) {
+				layer = 0;
+				Level.renderLayer0 = true;
+				Level.renderLayer = false;
+			} else if (input.isPressed(KEY_LAYER1)) {
+				layer = 1;
+				Level.renderLayer0 = false;
+				Level.renderLayer = true;
+			} else {
+				Level.renderLayer0 = true;
+				Level.renderLayer = true;
+			}
+
+			if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
+				tilesSort = new Tile[Tile.tiles.length];
+
+				System.arraycopy(Tile.tiles, 0, tilesSort, 0, tilesSort.length);
+
+				Arrays.sort(tilesSort, Tile.TileNameComparator);
+			}
 		}
 	}
 
@@ -274,33 +326,33 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (level.entities.size() > 0) {
-			if (level.entities.get(0).x > xOffset + Screen.width /2 + 50) {
-				xOffset = level.entities.get(0).x - (Screen.width /2 + 50);
+		if (Level.entities.size() > 0) {
+			if (Level.entities.get(0).x > xOffset + Screen.width /2 + 50) {
+				xOffset = Level.entities.get(0).x - (Screen.width /2 + 50);
 			}
 
-			if (level.entities.get(0).x < xOffset + Screen.width / 2 - 50) {
-				xOffset = level.entities.get(0).x - (Screen.width / 2 - 50);
+			if (Level.entities.get(0).x < xOffset + Screen.width / 2 - 50) {
+				xOffset = Level.entities.get(0).x - (Screen.width / 2 - 50);
 			}
 
-			if (level.entities.get(0).y > yOffset + Screen.height /2 + 50) {
-				yOffset = level.entities.get(0).y - (Screen.height / 2 + 50);
+			if (Level.entities.get(0).y > yOffset + Screen.height /2 + 50) {
+				yOffset = Level.entities.get(0).y - ((Screen.height / 2) + 50);
 			}
 
-			if (level.entities.get(0).y < yOffset + Screen.height / 2 - 50) {
-				yOffset = level.entities.get(0).y - (Screen.height /2 - 50);
+			if (Level.entities.get(0).y < yOffset + Screen.height / 2 - 50) {
+				yOffset = Level.entities.get(0).y - (Screen.height /2 - 50);
 			}
 		}
 
-		level.renderBackground();
-		level.renderTiles(xOffset, yOffset);
-		level.renderEntities();
+		Level.renderBackground();
+		Level.renderTiles(xOffset, yOffset);
+		Level.renderEntities();
 
-		Screen.renderLightFBO(level);
+		Screen.renderLightFBO();
 
 		if (input.isPressed(KEY_MESSAGE)) {
 //			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
-			GUI.textBox(level.name, level.description + "|By: " + level.author);
+			GUI.textBox(Level.name, Level.description + "|By: " + Level.author);
 		}
 
 		GUI.render();
@@ -318,10 +370,41 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		if (showDebug) {
 			Font.render("fps: " + fps, Screen.xOffset + 1, Screen.yOffset + 1);
-			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, Screen.xOffset + 1, Screen.yOffset + 11);
+			Font.render("x: " + Level.entities.get(0).x + " y: " + Level.entities.get(0).y, Screen.xOffset + 1, Screen.yOffset + 11);
 			Font.render("mx: " + mx + " my: " + my, Screen.xOffset + 1, Screen.yOffset + 21);
 		}
 
 		GUI.render();
+
+		if (editor) {
+			int mxBox = (mx + Screen.xOffset) >> 4;
+			int myBox = (my + Screen.yOffset) >> 4;
+
+			if (!paused && !input.isPressed(KEY_TILE_SELECT)) {
+				Tile.tiles[tile].render(mxBox << 4, myBox << 4);
+				Screen.drawRectangle((mxBox << 4) - Screen.xOffset, (myBox << 4) - Screen.yOffset, (mxBox << 4) + 16 - Screen.xOffset,
+						(myBox << 4) + 16 - Screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
+				if (!showDebug) {
+					Font.render(Tile.tiles[tile].getName(), Screen.xOffset + 1, Screen.yOffset + 1);
+				}
+				Font.render("Layer " + layer, Screen.width -56+ Screen.xOffset, Screen.yOffset + 1);
+			}
+
+			if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
+				for (int i = 0; i < tilesSort.length; i++) {
+					if (tilesSort[i] == null) {
+						return;
+					}
+					final int finalI = i;
+					GUI.button(8 + 16 * (finalI), 8, 16, 16, () -> tilesSort[finalI].render(16 * (finalI) + Screen.xOffset, Screen.yOffset), () -> tile = tilesSort[finalI].getId());
+				}
+			}
+
+			if (paused) {
+				GUI.buttonText(WIDTH / 2, 184, "Export", new Vec3f(0.2f, 0.2f, 0.7f), () -> Command.queue("export"));
+			}
+
+			GUI.render();
+		}
 	}
 }

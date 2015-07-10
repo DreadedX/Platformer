@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.level import Level
 
 class AutoScroll(EntityInterface):
     def __init__(self):
@@ -10,7 +11,7 @@ class AutoScroll(EntityInterface):
     def tick(self, entity):
         entity.x += self.speed
 
-        entity.y = entity.getProperties().getLevel().entities.get(1).y
+        entity.y = Level.entities.get(1).y
 
     def render(self, entity):
         pass

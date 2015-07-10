@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.level import Level
 from com.mtgames.platformer.entities import LightSource
 from com.mtgames.platformer.settings import Properties
 
@@ -14,7 +15,7 @@ class Bullet(EntityInterface):
         properties = Properties("dashParticle")
 
         self.lightSource = LightSource(entity.x, entity.y, properties)
-        entity.getProperties().getLevel().addLightSource(self.lightSource)
+        Level.addLightSource(self.lightSource)
 
     def tick(self, entity):
         entity.move(self.speed, 0)

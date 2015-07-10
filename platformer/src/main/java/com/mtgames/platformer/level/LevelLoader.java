@@ -18,7 +18,7 @@ public class LevelLoader {
 	private static String description = "";
 	private static String author = "";
 
-	public LevelLoader(Level level, String path, boolean external) {
+	public LevelLoader(String path, boolean external) {
 
 		JSP levelJSP = new JSP(path, external);
 
@@ -45,7 +45,7 @@ public class LevelLoader {
 		for (int i = 0; i < objBackground.length(); i++) {
 			String name = objBackground.getJSONObject(String.valueOf(i)).getString("name");
 			int speed = objBackground.getJSONObject(String.valueOf(i)).getInt("speed");
-			level.addBackground(new Background("/assets/graphics/backgrounds/" + name + ".png", speed));
+			Level.addBackground(new Background("/assets/graphics/backgrounds/" + name + ".png", speed));
 		}
 
 		JSONObject objTiles = levelJSP.get("tiles");

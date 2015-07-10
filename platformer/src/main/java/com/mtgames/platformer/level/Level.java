@@ -1,5 +1,7 @@
 package com.mtgames.platformer.level;
 
+import com.mtgames.platformer.Game;
+import com.mtgames.platformer.debug.Command;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.Entity;
 import com.mtgames.platformer.gfx.Background;
@@ -14,55 +16,61 @@ import java.util.List;
 
 public class Level {
 
-	public final    List<Entity>      entities     = new ArrayList<>();
-	protected final List<Background>  backgrounds  = new ArrayList<>();
-	protected final List<LightSource> lightSources = new ArrayList<>();
+	public static final    List<Entity>      entities     = new ArrayList<>();
+	protected static final List<Background>  backgrounds  = new ArrayList<>();
+	protected static final List<LightSource> lightSources = new ArrayList<>();
 
-	public    int[][] tiles;
-	public    int[][] tiles0;
-	protected int     width;
-	protected int     height;
+	public static    int[][] tiles;
+	public static    int[][] tiles0;
+	protected static int     width;
+	protected static int     height;
 
-	public String  path;
-	public boolean reload;
+	public static String  path;
+	public static boolean reload;
 
-	public boolean renderLayer0 = true;
-	public boolean renderLayer  = true;
+	public static boolean renderLayer0 = true;
+	public static boolean renderLayer  = true;
 
-	public String name        = "";
-	public String description = "";
-	public String author      = "";
+	public static String name        = "";
+	public static String description = "";
+	public static String author      = "";
 
-	public void tick() {
+	public static void tick() {
 		if (reload) {
 			load(path);
 			reload = false;
 		}
 
-		lightSources.forEach(LightSource::tick);
+		if (!Game.editor) {
+			lightSources.forEach(LightSource::tick);
 
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
+			for (int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
 
-			e.tick();
-		}
-
-		Iterator<Entity> iteratorParticles = entities.iterator();
-		while (iteratorParticles.hasNext()) {
-			Entity current = iteratorParticles.next();
-			if (!current.isAlive() && !current.persistent) {
-				iteratorParticles.remove();
+				e.tick();
 			}
-		}
-		Iterator<LightSource> iteratorLightSources = lightSources.iterator();
-		while (iteratorLightSources.hasNext()) {
-			if (!iteratorLightSources.next().isAlive()) {
-				iteratorLightSources.remove();
+
+			Iterator<Entity> iteratorParticles = entities.iterator();
+			while (iteratorParticles.hasNext()) {
+				Entity current = iteratorParticles.next();
+				if (!current.isAlive() && !current.persistent) {
+					iteratorParticles.remove();
+				}
+			}
+			Iterator<LightSource> iteratorLightSources = lightSources.iterator();
+			while (iteratorLightSources.hasNext()) {
+				if (!iteratorLightSources.next().isAlive()) {
+					iteratorLightSources.remove();
+				}
+			}
+		} else {
+			if (entities.size() > 1) {
+				entities.get(0).tick();
 			}
 		}
 	}
 
-	public void renderTiles(int xOffset, int yOffset) {
+	public static void renderTiles(int xOffset, int yOffset) {
 		if (xOffset < 0) {
 			xOffset = 0;
 		}
@@ -93,49 +101,49 @@ public class Level {
 		}
 	}
 
-	public void renderBackground() {
+	public static void renderBackground() {
 		for (Background b : backgrounds) {
 			b.render(width, height);
 		}
 	}
 
-	public void renderEntities() {
+	public static void renderEntities() {
 		for (Entity e : entities) {
 			e.render();
 		}
 	}
 
-	public void renderLights() {
+	public static void renderLights() {
 		for (LightSource l : lightSources) {
 			l.render();
 		}
 	}
 
-	public Tile getTile(int x, int y) {
+	public static Tile getTile(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return Tile.tiles[0];
 		return Tile.tiles[tiles[x][y]];
 	}
 
-	private Tile getTile0(int x, int y) {
+	private static Tile getTile0(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return Tile.tiles[0];
 		return Tile.tiles[tiles0[x][y]];
 	}
 
-	public void addEntity(Entity entity) {
-		this.entities.add(entity);
+	public static void addEntity(Entity entity) {
+		entities.add(entity);
 	}
 
-	public void addBackground(Background background) {
-		this.backgrounds.add(background);
+	public static void addBackground(Background background) {
+		backgrounds.add(background);
 	}
 
-	public void addLightSource(LightSource lightSource) {
-		this.lightSources.add(lightSource);
+	public static void addLightSource(LightSource lightSource) {
+		lightSources.add(lightSource);
 	}
 
-	private void load(String path) {
+	private static void load(String path) {
 		boolean external = false;
 
 		if (ClassLoader.getSystemResource(path) == null) {
@@ -148,20 +156,24 @@ public class Level {
 			}
 		}
 
-		if (this.entities.size() > 0) {
-			this.entities.clear();
+		if (entities.size() > 0) {
+			entities.clear();
 		}
 
-		if (this.backgrounds.size() > 0) {
-			this.backgrounds.clear();
+		if (backgrounds.size() > 0) {
+			backgrounds.clear();
 		}
 
-		if (this.lightSources.size() > 0) {
-			this.lightSources.clear();
+		if (lightSources.size() > 0) {
+			lightSources.clear();
+		}
+
+		if (Game.editor) {
+			Command.queue("spawn freeCamera 0 0");
 		}
 
 		try {
-			LevelLoader loader = new LevelLoader(this, path, external);
+			LevelLoader loader = new LevelLoader(path, external);
 			width = loader.getWidth();
 			height = loader.getHeight();
 
@@ -176,9 +188,9 @@ public class Level {
 		}
 	}
 
-	public void create(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public static void create(int width, int height) {
+		Level.width = width;
+		Level.height = height;
 		tiles = new int[width][height];
 
 		for (int x = 0; x < tiles.length; x++) {
@@ -195,16 +207,20 @@ public class Level {
 			}
 		}
 
-		if (this.entities.size() > 0) {
-			this.entities.clear();
+		if (entities.size() > 0) {
+			entities.clear();
 		}
 
-		if (this.backgrounds.size() > 0) {
-			this.backgrounds.clear();
+		if (backgrounds.size() > 0) {
+			backgrounds.clear();
 		}
 
-		if (this.lightSources.size() > 0) {
-			this.lightSources.clear();
+		if (lightSources.size() > 0) {
+			lightSources.clear();
+		}
+
+		if (Game.editor) {
+			Command.queue("spawn freeCamera 0 0");
 		}
 	}
 }

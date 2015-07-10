@@ -20,8 +20,6 @@ import com.mtgames.utils.Debug;
 import org.json.JSONObject;
 
 public class Command {
-	private static Level  level  = null;
-
 	private static final List<Runnable> queue = new ArrayList<>();
 
 	public static void execute() {
@@ -42,8 +40,8 @@ public class Command {
 
 				case "load":
 					if (commands.length == 2) {
-						level.path = "assets/levels/" + commands[1] + ".jsp";
-						level.reload = true;
+						Level.path = "assets/levels/" + commands[1] + ".jsp";
+						Level.reload = true;
 					} else {
 						Debug.log("Invalid arguments, usage: load <level name>", Debug.WARNING);
 					}
@@ -51,7 +49,7 @@ public class Command {
 
 				case "reload":
 					if (commands.length == 1) {
-						level.reload = true;
+						Level.reload = true;
 					} else {
 						Debug.log("Invalid arguments, usage: load", Debug.WARNING);
 					}
@@ -60,13 +58,13 @@ public class Command {
 				case "move":
 					if (commands.length == 4) {
 						if (Objects.equals(commands[1], "*")) {
-							for (int i = 0; i < level.entities.size(); i++) {
-								level.entities.get(i).x = Integer.parseInt(commands[2]);
-								level.entities.get(i).y = Integer.parseInt(commands[3]);
+							for (int i = 0; i < Level.entities.size(); i++) {
+								Level.entities.get(i).x = Integer.parseInt(commands[2]);
+								Level.entities.get(i).y = Integer.parseInt(commands[3]);
 							}
-						} else if (Integer.parseInt(commands[1]) < level.entities.size()) {
-							level.entities.get(Integer.parseInt(commands[1])).x = Integer.parseInt(commands[2]);
-							level.entities.get(Integer.parseInt(commands[1])).y = Integer.parseInt(commands[3]);
+						} else if (Integer.parseInt(commands[1]) < Level.entities.size()) {
+							Level.entities.get(Integer.parseInt(commands[1])).x = Integer.parseInt(commands[2]);
+							Level.entities.get(Integer.parseInt(commands[1])).y = Integer.parseInt(commands[3]);
 						} else {
 							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 						}
@@ -80,11 +78,11 @@ public class Command {
 					if (commands.length == 4 || commands.length == 5) {
 
 						if (commands[2].equals("~")) {
-							commands[2] = String.valueOf(level.entities.get(0).x);
+							commands[2] = String.valueOf(Level.entities.get(0).x);
 						}
 
 						if (commands[3].equals("~")) {
-							commands[3] = String.valueOf(level.entities.get(0).y);
+							commands[3] = String.valueOf(Level.entities.get(0).y);
 						}
 
 						Properties properties;
@@ -97,7 +95,7 @@ public class Command {
 						String type = commands[1];
 						properties = new Properties(type.split("\\.")[0]);
 						properties.set(obj);
-						level.addEntity(
+						Level.addEntity(
 								new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), "entities/" + type + ".py"));
 					} else {
 						Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
@@ -108,11 +106,11 @@ public class Command {
 					if (commands.length == 4 || commands.length == 5) {
 
 						if (commands[2].equals("~")) {
-							commands[2] = String.valueOf(level.entities.get(0).x);
+							commands[2] = String.valueOf(Level.entities.get(0).x);
 						}
 
 						if (commands[3].equals("~")) {
-							commands[3] = String.valueOf(level.entities.get(0).y);
+							commands[3] = String.valueOf(Level.entities.get(0).y);
 						}
 
 						Properties properties;
@@ -129,13 +127,13 @@ public class Command {
 							case "torch":
 								properties = new Properties("torch");
 								properties.set(obj);
-								level.addEntity(new Torch(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
+								Level.addEntity(new Torch(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 								break;
 
 							case "dashParticle":
 								properties = new Properties("dashParticle");
 								properties.set(obj);
-								level.addEntity(new DashParticle(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
+								Level.addEntity(new DashParticle(Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), properties));
 								break;
 
 						}
@@ -146,8 +144,8 @@ public class Command {
 
 				case "kill":
 					if (commands.length == 2) {
-						if (Integer.parseInt(commands[1]) < level.entities.size()) {
-							level.entities.remove(Integer.parseInt(commands[1]));
+						if (Integer.parseInt(commands[1]) < Level.entities.size()) {
+							Level.entities.remove(Integer.parseInt(commands[1]));
 						} else {
 							Debug.log("'" + commands[1] + "' is not a valid id", Debug.WARNING);
 						}
@@ -197,7 +195,7 @@ public class Command {
 
 				case "tile":
 					if (commands.length == 4) {
-						level.tiles[Integer.parseInt(commands[2])][Integer.parseInt(commands[3])] = Byte.parseByte((commands[1]));
+						Level.tiles[Integer.parseInt(commands[2])][Integer.parseInt(commands[3])] = Byte.parseByte((commands[1]));
 					}
 					break;
 
@@ -214,19 +212,19 @@ public class Command {
 					export = export.substring(0, export.length()-1);
 
 					export += "},\"width\":64,\"height\":48,\"tiles\":{";
-					for(int x = 0; x < level.tiles.length; x++) {
-						for (int y = 0; y < level.tiles[0].length; y++) {
-							if (level.tiles[x][y] != 1) {
-								export += "\"" + x + "." + y + "\":" + level.tiles[x][y] + ",";
+					for(int x = 0; x < Level.tiles.length; x++) {
+						for (int y = 0; y < Level.tiles[0].length; y++) {
+							if (Level.tiles[x][y] != 1) {
+								export += "\"" + x + "." + y + "\":" + Level.tiles[x][y] + ",";
 							}
 						}
 					}
 					export = export.substring(0, export.length()-1);
 					export += "},\"tiles0\":{";
-					for(int x = 0; x < level.tiles0.length; x++) {
-						for (int y = 0; y < level.tiles0[0].length; y++) {
-							if (level.tiles0[x][y] != 1) {
-								export += "\"" + x + "." + y + "\":" + level.tiles0[x][y] + ",";
+					for(int x = 0; x < Level.tiles0.length; x++) {
+						for (int y = 0; y < Level.tiles0[0].length; y++) {
+							if (Level.tiles0[x][y] != 1) {
+								export += "\"" + x + "." + y + "\":" + Level.tiles0[x][y] + ",";
 							}
 						}
 					}
@@ -244,7 +242,7 @@ public class Command {
 
 				case "new":
 					if (commands.length == 3) {
-						level.create(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]));
+						Level.create(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]));
 					}
 					break;
 
@@ -253,9 +251,5 @@ public class Command {
 
 			}
 		});
-	}
-
-	public static void set(Level level) {
-		Command.level = level;
 	}
 }

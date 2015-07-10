@@ -272,7 +272,7 @@ public class Screen {
 		glColor3f(1f, 1f, 1f);
 	}
 
-	public static void renderLightFBO(Level level) {
+	public static void renderLightFBO() {
 		if (Screen.lighting) {
 			Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
 
@@ -281,7 +281,7 @@ public class Screen {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glBlendFunc(GL_DST_ALPHA, GL_ONE);
-			level.renderLights();
+			Level.renderLights();
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);

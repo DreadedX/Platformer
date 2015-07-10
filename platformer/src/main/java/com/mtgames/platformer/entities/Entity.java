@@ -10,7 +10,6 @@ public abstract class Entity {
 	public int y;
 	int xa;
 	int ya;
-	protected final Level      level;
 	private final   Properties properties;
 	protected final String     name;
 	private         int     gravityWait = 0;
@@ -24,7 +23,6 @@ public abstract class Entity {
 	int yMax = 0;
 
 	Entity(Properties properties) {
-		this.level = properties.getLevel();
 		this.properties = properties;
 		this.name = properties.getName();
 	}
@@ -69,11 +67,8 @@ public abstract class Entity {
 	}
 
 	boolean isSolidTile(int xa, int ya, int x, int y) {
-		if (level == null)
-			return false;
-
-		Tile lastTile = level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
-		Tile newTile = level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
+		Tile lastTile = Level.getTile((this.x + x) >> 4, (this.y + y) >> 4);
+		Tile newTile = Level.getTile((this.x + x + xa) >> 4, (this.y + y + ya) >> 4);
 
 		return !lastTile.equals(newTile) && newTile.isSolid();
 

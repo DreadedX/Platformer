@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.level import Level
 from com.mtgames.platformer.gfx import Screen
 from com.mtgames.platformer.gfx.lwjgl import TextureLoader
 from com.mtgames.platformer.settings import Settings
@@ -55,7 +56,7 @@ class Player(EntityInterface):
         entity.life = self.maxHealth
 
         self.lightSource = LightSource(entity.x, entity.y, entity.getProperties())
-        entity.getProperties().getLevel().addLightSource(self.lightSource)
+        Level.addLightSource(self.lightSource)
 
 
     def tick(self, entity):

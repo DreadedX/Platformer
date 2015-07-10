@@ -1,5 +1,6 @@
 package com.mtgames.platformer.entities;
 
+import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
@@ -138,8 +139,8 @@ public class AdvancedEntity extends Entity {
 
 //	TODO: This code is not completly correct
 	public boolean hasCollidedEntity(String name) {
-		for (int i = 0; i < level.entities.size(); i++) {
-			Entity e = level.entities.get(i);
+		for (int i = 0; i < Level.entities.size(); i++) {
+			Entity e = Level.entities.get(i);
 			if (!e.collide) {
 				continue;
 			}
