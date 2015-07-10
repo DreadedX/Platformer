@@ -45,8 +45,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	public static boolean editor = false;
 
-	public static InputHandler input;
-
 	protected static boolean debug      = false;
 	protected static boolean showDebug  = false;
 	public static    boolean lightDebug = false;
@@ -84,7 +82,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	}
 
 	protected void init() {
-		input = new InputHandler();
+		new Input();
 
 		new Settings();
 
@@ -111,8 +109,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
 
-		glfwSetKeyCallback(window, keyCallback = input.keyCallback);
-		glfwSetMouseButtonCallback(window, mouseButtonCallback = input.mouseButtonCallback);
+		glfwSetKeyCallback(window, keyCallback = Input.keyCallback);
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = Input.mouseButtonCallback);
 
 		ByteBuffer videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
@@ -221,14 +219,14 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				glFlush();
 			}
 
-			if (input.isPressed(KEY_PAUSE)) {
+			if (Input.isPressed(KEY_PAUSE)) {
 				Command.queue("pause");
-				input.unset(KEY_PAUSE);
+				Input.unset(KEY_PAUSE);
 			}
 
-			if (input.isPressed(KEY_DEBUG) && debug) {
+			if (Input.isPressed(KEY_DEBUG) && debug) {
 				showDebug = !showDebug;
-				input.unset(KEY_DEBUG);
+				Input.unset(KEY_DEBUG);
 			}
 
 			/* Determine current fps */
@@ -278,8 +276,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		}
 
 		if (editor) {
-			if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
-				if (input.isPressed(KEY_TILE_PLACE)) {
+			if (!Input.isPressed(KEY_TILE_SELECT) && !paused) {
+				if (Input.isPressed(KEY_TILE_PLACE)) {
 					if (layer == 0) {
 						Level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
 					}
@@ -287,7 +285,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 						Level.tiles[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
 					}
 				}
-				if (input.isPressed(KEY_TILE_REMOVE)) {
+				if (Input.isPressed(KEY_TILE_REMOVE)) {
 					if (layer == 0) {
 						Level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = 1;
 					}
@@ -297,11 +295,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				}
 			}
 
-			if (input.isPressed(KEY_LAYER0)) {
+			if (Input.isPressed(KEY_LAYER0)) {
 				layer = 0;
 				Level.renderLayer0 = true;
 				Level.renderLayer = false;
-			} else if (input.isPressed(KEY_LAYER1)) {
+			} else if (Input.isPressed(KEY_LAYER1)) {
 				layer = 1;
 				Level.renderLayer0 = false;
 				Level.renderLayer = true;
@@ -310,7 +308,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				Level.renderLayer = true;
 			}
 
-			if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
+			if (!paused	&& Input.isPressed(KEY_TILE_SELECT)) {
 				tilesSort = new Tile[Tile.tiles.length];
 
 				System.arraycopy(Tile.tiles, 0, tilesSort, 0, tilesSort.length);
@@ -350,7 +348,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		Screen.renderLightFBO();
 
-		if (input.isPressed(KEY_MESSAGE)) {
+		if (Input.isPressed(KEY_MESSAGE)) {
 //			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
 			GUI.textBox(Level.name, Level.description + "|By: " + Level.author);
 		}
@@ -380,7 +378,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 			int mxBox = (mx + Screen.xOffset) >> 4;
 			int myBox = (my + Screen.yOffset) >> 4;
 
-			if (!paused && !input.isPressed(KEY_TILE_SELECT)) {
+			if (!paused && !Input.isPressed(KEY_TILE_SELECT)) {
 				Tile.tiles[tile].render(mxBox << 4, myBox << 4);
 				Screen.drawRectangle((mxBox << 4) - Screen.xOffset, (myBox << 4) - Screen.yOffset, (mxBox << 4) + 16 - Screen.xOffset,
 						(myBox << 4) + 16 - Screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
@@ -390,7 +388,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 				Font.render("Layer " + layer, Screen.width -56+ Screen.xOffset, Screen.yOffset + 1);
 			}
 
-			if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
+			if (!paused	&& Input.isPressed(KEY_TILE_SELECT)) {
 				for (int i = 0; i < tilesSort.length; i++) {
 					if (tilesSort[i] == null) {
 						return;

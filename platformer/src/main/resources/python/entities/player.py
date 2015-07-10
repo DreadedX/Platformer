@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer import Input
 from com.mtgames.platformer.level import Level
 from com.mtgames.platformer.gfx import Screen
 from com.mtgames.platformer.gfx.lwjgl import TextureLoader
@@ -12,7 +13,6 @@ from com.sun.javafx.geom import Vec3f
 
 class Player(EntityInterface):
     def __init__(self):
-        self.input = 0
         self.speed = 0
         self.maxHealth = 0
         self.jumpWaitMax = 0
@@ -44,7 +44,6 @@ class Player(EntityInterface):
         entity.collide = True
         entity.persistent = True
 
-        self.input = entity.getProperties().getInput()
         self.speed = entity.getProperties().getSpeed()
         self.maxHealth = entity.getProperties().getMaxHealth()
         self.jumpWaitMax = entity.getProperties().getJumpWait()
@@ -73,26 +72,26 @@ class Player(EntityInterface):
             if not entity.hasCollided(0, 1):
                 self.canJump = False
 
-            if self.input.isPressed(Settings.KEY_JUMP) and self.canJump and entity.isAlive():
+            if Input.isPressed(Settings.KEY_JUMP) and self.canJump and entity.isAlive():
                 self.ya = -self.jumpSpeed
                 self.canJump = False
                 entity.animationFrame = 0
 
-            if self.input.isPressed(Settings.KEY_DASH) and self.canDash and entity.isAlive():
+            if Input.isPressed(Settings.KEY_DASH) and self.canDash and entity.isAlive():
                 self.xaDash = self.dashSpeed
                 self.canDash = False
                 self.dashDeplete = True
                 entity.animationFrame = 0
 
-            if self.input.isPressed(Settings.KEY_LEFT) and entity.isAlive() and not self.isDashing:
+            if Input.isPressed(Settings.KEY_LEFT) and entity.isAlive() and not self.isDashing:
                 self.xa -= self.speed
 
-            if self.input.isPressed(Settings.KEY_RIGHT) and entity.isAlive() and not self.isDashing:
+            if Input.isPressed(Settings.KEY_RIGHT) and entity.isAlive() and not self.isDashing:
                 self.xa += self.speed
 
-            if self.input.isPressed(Settings.KEY_TORCH) and entity.isAlive():
+            if Input.isPressed(Settings.KEY_TORCH) and entity.isAlive():
                 Command.queue("light torch %d %d {\"colour\":%d}" % (entity.x, entity.y, int((Math.random() * 0xffffff))))
-                self.input.unset(Settings.KEY_TORCH)
+                Input.unset(Settings.KEY_TORCH)
 
         else:
             self.staggerTime -=1

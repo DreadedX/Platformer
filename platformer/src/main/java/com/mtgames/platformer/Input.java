@@ -5,12 +5,12 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class InputHandler {
+public class Input {
 	private static final boolean[] keys = new boolean[65535];
-	public GLFWKeyCallback keyCallback = null;
-	public GLFWMouseButtonCallback mouseButtonCallback = null;
+	public static GLFWKeyCallback keyCallback = null;
+	public static GLFWMouseButtonCallback mouseButtonCallback = null;
 
-	public InputHandler() {
+	public Input() {
 		keyCallback = new GLFWKeyCallback() {
 			@Override public void invoke(long window, int key, int scancode, int action, int mods) {
 //				if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -28,11 +28,11 @@ public class InputHandler {
 	}
 
 
-	public boolean isPressed(int key) {
+	public static boolean isPressed(int key) {
 		return keys[key];
 	}
 
-	public void unset(int key) {
+	public static void unset(int key) {
 		keys[key] = false;
 	}
 }
