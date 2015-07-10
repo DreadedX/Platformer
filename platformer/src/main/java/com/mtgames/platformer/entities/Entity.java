@@ -16,8 +16,8 @@ public abstract class Entity {
 	protected final String     name;
 	private         int     gravityWait = 0;
 	protected       int     life        = -10;
-	public final    boolean persistent  = false;
-	protected final boolean collide     = false;
+	public boolean persistent  = false;
+	protected boolean collide     = false;
 
 	int xMin = 0;
 	int xMax = 0;

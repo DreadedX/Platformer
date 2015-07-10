@@ -98,8 +98,8 @@ public class Command {
 						String type = commands[1];
 						properties = new Properties(type.split("\\.")[0]);
 						properties.set(obj);
-						level.addEntity(new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]),
-								"entities/" + Character.toUpperCase(type.charAt(0)) + type.substring(1) + ".py"));
+						level.addEntity(
+								new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), "entities/" + type + ".py"));
 					} else {
 						Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
 					}
