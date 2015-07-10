@@ -1,0 +1,2 @@
+py from com.mtgames.platformer.level.tiles import Tile
+py Tile.load("demo")
