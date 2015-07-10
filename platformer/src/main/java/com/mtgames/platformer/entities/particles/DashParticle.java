@@ -2,7 +2,6 @@ package com.mtgames.platformer.entities.particles;
 
 import com.mtgames.platformer.entities.BasicEntity;
 import com.mtgames.platformer.settings.Properties;
-import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.entities.LightSource;
 
 public class DashParticle extends BasicEntity {
@@ -25,6 +24,6 @@ public class DashParticle extends BasicEntity {
 	}
 
 
-	public void render(Screen screen) {
+	public void render() {
 	}
 }

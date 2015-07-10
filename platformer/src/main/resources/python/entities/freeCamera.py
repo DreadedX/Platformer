@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.gfx import Screen
 from com.mtgames.platformer.entities import LightSource
 from com.mtgames.platformer.settings import Settings
 
@@ -37,5 +38,5 @@ class FreeCamera(EntityInterface):
 
         # self.lightSource.move(entity.x, entity.y)
 
-    def render(self, entity, screen):
-        screen.drawRectangle(entity.x-4-screen.xOffset, entity.y-4-screen.yOffset, entity.x+4-screen.xOffset, entity.y+4-screen.yOffset, Vec4f(0, 0, 0, 0.5))
+    def render(self, entity):
+        Screen.drawRectangle(entity.x-4-Screen.xOffset, entity.y-4-Screen.yOffset, entity.x+4-Screen.xOffset, entity.y+4-Screen.yOffset, Vec4f(0, 0, 0, 0.5))

@@ -40,7 +40,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 	public static int scale;
 	private int fps = 0;
-	public static Screen screen;
 
 	public static InputHandler input;
 	public static Level        level;
@@ -77,17 +76,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 	}
 
 	protected void init() {
-		screen = new Screen();
 		input = new InputHandler();
 		level = new Level();
 
 		new Settings();
 
-		xOffset = screen.width / 2;
-		yOffset = screen.height / 2;
+		xOffset = Screen.width / 2;
+		yOffset = Screen.height / 2;
 
 		//		Initialize command system
-		Command.set(level, screen);
+		Command.set(level);
 		//		Load debug level
 		Command.queue("load debug_level");
 		//		Command.exec("load white");
@@ -170,7 +168,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glShadeModel(GL_SMOOTH);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-		screen.initLight();
+		Screen.initLight();
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -277,20 +275,20 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		if (level.entities.size() > 0) {
-			if (level.entities.get(0).x > xOffset + screen.width/2 + 50) {
-				xOffset = level.entities.get(0).x - (screen.width/2 + 50);
+			if (level.entities.get(0).x > xOffset + Screen.width /2 + 50) {
+				xOffset = level.entities.get(0).x - (Screen.width /2 + 50);
 			}
 
-			if (level.entities.get(0).x < xOffset + screen.width / 2 - 50) {
-				xOffset = level.entities.get(0).x - (screen.width / 2 - 50);
+			if (level.entities.get(0).x < xOffset + Screen.width / 2 - 50) {
+				xOffset = level.entities.get(0).x - (Screen.width / 2 - 50);
 			}
 
-			if (level.entities.get(0).y > yOffset + screen.height/2 + 50) {
-				yOffset = level.entities.get(0).y - (screen.height / 2 + 50);
+			if (level.entities.get(0).y > yOffset + Screen.height /2 + 50) {
+				yOffset = level.entities.get(0).y - (Screen.height / 2 + 50);
 			}
 
-			if (level.entities.get(0).y < yOffset + screen.height / 2 - 50) {
-				yOffset = level.entities.get(0).y - (screen.height/2 - 50);
+			if (level.entities.get(0).y < yOffset + Screen.height / 2 - 50) {
+				yOffset = level.entities.get(0).y - (Screen.height /2 - 50);
 			}
 		}
 
@@ -298,7 +296,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		level.renderTiles(xOffset, yOffset);
 		level.renderEntities();
 
-		screen.renderLightFBO(screen, level);
+		Screen.renderLightFBO(level);
 
 		if (input.isPressed(KEY_MESSAGE)) {
 //			GUI.textBox("The fox", "The quick brown fox jumps over the lazy dog.");
@@ -308,20 +306,20 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		GUI.render();
 
 		if (paused) {
-			Font.render("Paused", screen, screen.xOffset + screen.width - 49, screen.yOffset + 1);
+			Font.render("Paused", Screen.xOffset + Screen.width - 49, Screen.yOffset + 1);
 			GUI.buttonText(WIDTH / 2, 199, "Resume", new Vec3f(0.1f, 0.5f, 0.1f), () -> Command.queue("pause"));
 			GUI.buttonText(WIDTH / 2, 214, "Restart", new Vec3f(0.1f, 0.5f, 0.5f), () -> {
 				Command.queue("reload");
 				Command.queue("pause");
 			});
 			GUI.buttonText(WIDTH / 2, 229, "Quit", new Vec3f(0.5f, 0.5f, 0.1f), () -> Command.queue("exit"));
-			screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
+			Screen.drawRectangle(0, 0, WIDTH, HEIGHT, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 		}
 
 		if (showDebug) {
-			Font.render("fps: " + fps, screen, screen.xOffset + 1, screen.yOffset + 1);
-			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, screen, screen.xOffset + 1, screen.yOffset + 11);
-			Font.render("mx: " + mx + " my: " + my, screen, screen.xOffset + 1, screen.yOffset + 21);
+			Font.render("fps: " + fps, Screen.xOffset + 1, Screen.yOffset + 1);
+			Font.render("x: " + level.entities.get(0).x + " y: " + level.entities.get(0).y, Screen.xOffset + 1, Screen.yOffset + 11);
+			Font.render("mx: " + mx + " my: " + my, Screen.xOffset + 1, Screen.yOffset + 21);
 		}
 
 		GUI.render();

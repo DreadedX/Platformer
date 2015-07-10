@@ -41,11 +41,11 @@ public class GlowStick extends BasicEntity {
 		lightSource.move(x, y);
 	}
 
-	public void render(Screen screen) {
+	public void render() {
 		if (modifier < 0xff) {
-			screen.renderTile(x - 8, y - 8, textureID[0]);
+			Screen.renderTile(x - 8, y - 8, textureID[0]);
 		} else {
-			screen.renderTile(x - 8, y - 8, textureID[1]);
+			Screen.renderTile(x - 8, y - 8, textureID[1]);
 		}
 	}
 }

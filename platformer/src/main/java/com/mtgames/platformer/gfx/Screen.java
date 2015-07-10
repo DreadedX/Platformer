@@ -13,18 +13,18 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Screen {
 
-	public final  int     width    = Game.WIDTH;
-	public final  int     height   = Game.HEIGHT;
-	private final int     scale    = Game.scale;
-	public        int     xOffset  = 0;
-	public        int     yOffset  = 0;
-	public        boolean lighting = true;
+	public static final  int     width    = Game.WIDTH;
+	public static final  int     height   = Game.HEIGHT;
+	private static final int     scale    = Game.scale;
+	public static        int     xOffset  = 0;
+	public static        int     yOffset  = 0;
+	public static        boolean lighting = true;
 
-	private int lightsTextureID;
-	private int lightsBufferID;
+	private static int lightsTextureID;
+	private static int lightsBufferID;
 
-	public void initLight() {
-//		light buffer final
+	public static void initLight() {
+		//		light buffer final
 		lightsBufferID = glGenFramebuffersEXT();
 		lightsTextureID = glGenTextures();
 		int lightsDepthBufferID = glGenRenderbuffersEXT();
@@ -43,11 +43,11 @@ public class Screen {
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
 
-	public void renderTile(int x, int y, int textureID) {
+	public static void renderTile(int x, int y, int textureID) {
 		renderTile(x, y, textureID, 16, 0);
 	}
 
-	public void renderTile(int x, int y, int textureID, int size, int part) {
+	public static void renderTile(int x, int y, int textureID, int size, int part) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
@@ -91,7 +91,7 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public void renderFont(int x, int y, int textureID, int charCount, int index) {
+	public static void renderFont(int x, int y, int textureID, int charCount, int index) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
@@ -120,7 +120,7 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public void renderEntity(int x, int y, int textureID, int size, boolean flipX) {
+	public static void renderEntity(int x, int y, int textureID, int size, boolean flipX) {
 		x -= xOffset + size / 2;
 		y -= yOffset + size / 2;
 		x *= scale;
@@ -163,7 +163,7 @@ public class Screen {
 //		glDeleteTextures(textureID);
 	}
 
-	public void renderBackground(int textureID, int speed, int levelWidth, int levelHeight, int backgroundWidth, int backgroundHeight) {
+	public static void renderBackground(int textureID, int speed, int levelWidth, int levelHeight, int backgroundWidth, int backgroundHeight) {
 		int xOffsetSpeed = 0;
 		int yOffsetSpeed = 0;
 		if (speed != 0) {
@@ -195,7 +195,7 @@ public class Screen {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	public  void renderLight(int x, int y, Vec3f colour, int radius, float intensity, Properties properties) {
+	public static void renderLight(int x, int y, Vec3f colour, int radius, float intensity, Properties properties) {
 		x -= xOffset;
 		y -= yOffset;
 		x *= scale;
@@ -272,8 +272,8 @@ public class Screen {
 		glColor3f(1f, 1f, 1f);
 	}
 
-	public void renderLightFBO(Screen screen, Level level) {
-		if (screen.lighting) {
+	public static void renderLightFBO(Level level) {
+		if (Screen.lighting) {
 			Vec3f darkness = new Vec3f(0.1f, 0.1f, 0.1f);
 
 			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, lightsBufferID);
@@ -311,7 +311,7 @@ public class Screen {
 		}
 	}
 
-	public void drawRectangle(int x1, int y1, int x2, int y2, Vec4f colour) {
+	public static void drawRectangle(int x1, int y1, int x2, int y2, Vec4f colour) {
 		x1 *= scale;
 		x2 *= scale;
 		y1 *= scale;
@@ -327,8 +327,8 @@ public class Screen {
 		glColor3f(1.0f, 1.0f, 1.0f);
 	}
 
-	public void setOffset(int xOffset, int yOffset) {
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
+	public static void setOffset(int xOffset, int yOffset) {
+		Screen.xOffset = xOffset;
+		Screen.yOffset = yOffset;
 	}
 }

@@ -30,9 +30,9 @@ class BaseTile extends Tile {
 		this.textureID = TextureLoader.loadTexture("/assets/graphics/tiles/" + name + ".png", external);
 	}
 
-	public void render(Screen screen, int x, int y) {
+	public void render(int x, int y) {
 		if (visible) {
-			screen.renderTile(x, y, textureID, size, loc);
+			Screen.renderTile(x, y, textureID, size, loc);
 		}
 	}
 }

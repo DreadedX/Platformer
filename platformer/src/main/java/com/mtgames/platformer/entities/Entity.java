@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.level.tiles.Tile;
 import com.mtgames.platformer.settings.Properties;
@@ -32,7 +31,7 @@ public abstract class Entity {
 
 	public abstract void tick();
 
-	public abstract void render(Screen screen);
+	public abstract void render();
 
 	protected abstract boolean hasCollided(int xa, int ya);
 

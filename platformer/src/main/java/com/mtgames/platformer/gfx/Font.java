@@ -11,7 +11,7 @@ public class Font {
 		textureID = TextureLoader.loadTexture("/assets/graphics/font/font.png");
 	}
 
-	public static void render(String msg, Screen screen, int x, int y) {
+	public static void render(String msg, int x, int y) {
 		int line = 0;
 		int location = 0;
 		for (int i = 0; i < msg.length(); i++) {
@@ -24,7 +24,7 @@ public class Font {
 
 			int charIndex = chars.indexOf(msg.charAt(i));
 			if (charIndex >= 0) {
-				screen.renderFont(x + (location * 8), y + 11 * line, textureID, charCount, charIndex);
+				Screen.renderFont(x + (location * 8), y + 11 * line, textureID, charCount, charIndex);
 			}
 			location++;
 		}

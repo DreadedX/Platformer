@@ -33,7 +33,7 @@ public class Background {
 		textureID = TextureLoader.loadTexture(path);
 	}
 
-	public void render(Screen screen, int levelWidth, int levelHeight) {
-		screen.renderBackground(textureID, speed, levelWidth, levelHeight, width, height);
+	public void render(int levelWidth, int levelHeight) {
+		Screen.renderBackground(textureID, speed, levelWidth, levelHeight, width, height);
 	}
 }

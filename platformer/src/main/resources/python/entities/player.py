@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.gfx import Screen
 from com.mtgames.platformer.gfx.lwjgl import TextureLoader
 from com.mtgames.platformer.settings import Settings
 from com.mtgames.platformer.debug import Command
@@ -126,7 +127,7 @@ class Player(EntityInterface):
         self.lightSource.move(entity.x, entity.y)
 
 
-    def render(self, entity, screen):
+    def render(self, entity):
         xtile = 0
         flipx = False
 
@@ -144,7 +145,7 @@ class Player(EntityInterface):
 
         xtile += entity.animationFrame
 
-        screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 16, flipx)
+        Screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 16, flipx)
 
         GUI.add(lambda : GUI.progressBar(80, 13, 16, 150, float(entity.life) / self.maxHealth, Vec3f(0.4, 0.1, 0.1)))
         dashratio = float(self.dashWait)/self.dashWaitMax
@@ -153,7 +154,7 @@ class Player(EntityInterface):
         else:
             colour = Vec3f(0.1, 0.1, 0.4)
 
-        GUI.add(lambda : GUI.progressBar(screen.width-80, 12, 16, 150, dashratio, colour))
+        GUI.progressBar(Screen.width-80, 12, 16, 150, dashratio, colour)
 
         # TODO: Temp death code
         if not entity.isAlive():

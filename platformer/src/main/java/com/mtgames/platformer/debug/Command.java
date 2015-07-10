@@ -21,7 +21,6 @@ import org.json.JSONObject;
 
 public class Command {
 	private static Level  level  = null;
-	private static Screen screen = null;
 
 	private static final List<Runnable> queue = new ArrayList<>();
 
@@ -174,7 +173,7 @@ public class Command {
 
 				case "lighting":
 					if (commands.length == 1) {
-						screen.lighting = !screen.lighting;
+						Screen.lighting = !Screen.lighting;
 					} else {
 						Debug.log("Invalid arguments, usage: lighting", Debug.WARNING);
 					}
@@ -256,8 +255,7 @@ public class Command {
 		});
 	}
 
-	public static void set(Level level, Screen screen) {
+	public static void set(Level level) {
 		Command.level = level;
-		Command.screen = screen;
 	}
 }

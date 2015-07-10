@@ -33,8 +33,8 @@ public class BaseMovingPlatform extends BasicEntity {
 		}
 	}
 
-	@Override public void render(Screen screen) {
-		screen.renderEntity(x, y, TextureID, 32, false);
+	@Override public void render() {
+		Screen.renderEntity(x, y, TextureID, 32, false);
 	}
 
 	private boolean betterHasCollided() {

@@ -22,5 +22,5 @@ class Bullet(EntityInterface):
         if entity.hasCollided(1, 0) or entity.hasCollided(-1, 0) or entity.hasCollidedEntity("baseEnemy"):
             entity.life = 0
 
-    def render(self, entity, screen):
+    def render(self, entity):
         pass

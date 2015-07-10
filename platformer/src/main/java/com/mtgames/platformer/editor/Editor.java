@@ -3,6 +3,7 @@ package com.mtgames.platformer.editor;
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.debug.Command;
 import com.mtgames.platformer.gfx.Font;
+import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.gfx.gui.GUI;
 import com.mtgames.platformer.level.tiles.Tile;
 import com.sun.javafx.geom.Vec3f;
@@ -36,7 +37,7 @@ public class Editor extends Game {
 	protected void init() {
 		super.init();
 		level = new Level();
-		Command.set(level, screen);
+		Command.set(level);
 		Command.queue("load debug_level");
 		Command.queue("lighting");
 		Command.execute();
@@ -48,18 +49,18 @@ public class Editor extends Game {
 		if (!input.isPressed(KEY_TILE_SELECT) && !paused) {
 			if (input.isPressed(KEY_TILE_PLACE)) {
 				if (layer == 0) {
-					level.tiles0[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = tile;
+					level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
 				}
 				if (layer == 1) {
-					level.tiles[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = tile;
+					level.tiles[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = tile;
 				}
 			}
 			if (input.isPressed(KEY_TILE_REMOVE)) {
 				if (layer == 0) {
-					level.tiles0[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = 1;
+					level.tiles0[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = 1;
 				}
 				if (layer == 1) {
-					level.tiles[(mx + screen.xOffset >> 4)][(my + screen.yOffset >> 4)] = 1;
+					level.tiles[(mx + Screen.xOffset >> 4)][(my + Screen.yOffset >> 4)] = 1;
 				}
 			}
 		}
@@ -89,17 +90,17 @@ public class Editor extends Game {
 	protected void render() {
 		super.render();
 
-		int mxBox = (mx + screen.xOffset) >> 4;
-		int myBox = (my + screen.yOffset) >> 4;
+		int mxBox = (mx + Screen.xOffset) >> 4;
+		int myBox = (my + Screen.yOffset) >> 4;
 
 		if (!paused && !input.isPressed(KEY_TILE_SELECT)) {
-			Tile.tiles[tile].render(screen, mxBox << 4, myBox << 4);
-			screen.drawRectangle((mxBox << 4) - screen.xOffset, (myBox << 4) - screen.yOffset, (mxBox << 4) + 16 - screen.xOffset,
-					(myBox << 4) + 16 - screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
+			Tile.tiles[tile].render(mxBox << 4, myBox << 4);
+			Screen.drawRectangle((mxBox << 4) - Screen.xOffset, (myBox << 4) - Screen.yOffset, (mxBox << 4) + 16 - Screen.xOffset,
+					(myBox << 4) + 16 - Screen.yOffset, new Vec4f(1.0f, 1.0f, 1.0f, 0.3f));
 			if (!showDebug) {
-				Font.render(Tile.tiles[tile].getName(), screen, screen.xOffset + 1, screen.yOffset + 1);
+				Font.render(Tile.tiles[tile].getName(), Screen.xOffset + 1, Screen.yOffset + 1);
 			}
-			Font.render("Layer " + layer, screen, screen.width-56+screen.xOffset, screen.yOffset + 1);
+			Font.render("Layer " + layer, Screen.width -56+ Screen.xOffset, Screen.yOffset + 1);
 		}
 
 		if (!paused	&& input.isPressed(KEY_TILE_SELECT)) {
@@ -108,7 +109,7 @@ public class Editor extends Game {
 					return;
 				}
 				final int finalI = i;
-				GUI.button(8 + 16 * (finalI), 8, 16, 16, () -> tilesSort[finalI].render(screen, 16 * (finalI) + screen.xOffset, screen.yOffset), () -> tile = tilesSort[finalI].getId());
+				GUI.button(8 + 16 * (finalI), 8, 16, 16, () -> tilesSort[finalI].render(16 * (finalI) + Screen.xOffset, Screen.yOffset), () -> tile = tilesSort[finalI].getId());
 			}
 		}
 

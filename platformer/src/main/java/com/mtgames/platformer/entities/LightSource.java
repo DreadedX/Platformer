@@ -32,8 +32,8 @@ public class LightSource {
 		life += 20;
 	}
 
-	public synchronized void render(Screen screen) {
-		screen.renderLight(x, y, colour, radius-life, intensity, properties);
+	public synchronized void render() {
+		Screen.renderLight(x, y, colour, radius - life, intensity, properties);
 	}
 
 	public boolean isAlive() {

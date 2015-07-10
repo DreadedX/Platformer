@@ -1,4 +1,5 @@
 from com.mtgames.platformer.scripting.interfaces import EntityInterface
+from com.mtgames.platformer.gfx import Screen
 from com.mtgames.platformer.gfx.lwjgl import TextureLoader
 from com.mtgames.platformer.entities import LightSource
 
@@ -54,7 +55,7 @@ class BaseEnemy(EntityInterface):
         self.ya = entity.gravity(self.ya)
         self.lightSource.move(entity.x, entity.y)
 
-    def render(self, entity, screen):
+    def render(self, entity):
         xtile = 0
         flipx = False
 
@@ -66,4 +67,4 @@ class BaseEnemy(EntityInterface):
 
         xtile += entity.animationFrame
 
-        screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 32, flipx)
+        Screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 32, flipx)

@@ -1,6 +1,5 @@
 package com.mtgames.platformer.level.tiles;
 
-import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.utils.Debug;
 
 import java.io.File;
@@ -129,7 +128,7 @@ public abstract class Tile {
 		}
 	}
 
-	public abstract void render(Screen screen, int x, int y);
+	public abstract void render(int x, int y);
 
 	public static final Comparator<Tile> TileNameComparator = (tile1, tile2) -> {
 		if (tile1 == null || tile2 == null) {

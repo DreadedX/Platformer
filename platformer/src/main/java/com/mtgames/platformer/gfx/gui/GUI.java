@@ -16,7 +16,6 @@ public class GUI {
 
 	private static boolean pressed = false;
 
-	private static final Screen         screen = Game.screen;
 	private static final List<Runnable> list   = new ArrayList<>();
 
 	public static void textBox(String title, String msgRaw) {
@@ -24,20 +23,20 @@ public class GUI {
 			//		msg = Text.wrap(msg, (screen.width >> 3) - 4);
 			String msg = Text.wrap(msgRaw, 72);
 
-			int xTitle = screen.xOffset + screen.width / 2 - title.length() * 4;
+			int xTitle = Screen.xOffset + Screen.width / 2 - title.length() * 4;
 			int height = msg.length() - msg.replace("|", "").length() + 1;
 
-			screen.drawRectangle(8, screen.height / 2 - 48, screen.width - 8, screen.height / 2 - 8 + 10 * height, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
-			Font.render(title.toUpperCase(), screen, xTitle, screen.yOffset + screen.height / 2 - 40);
-			Font.render(msg, screen, screen.xOffset + 16, screen.yOffset + screen.height / 2 - 24);
+			Screen.drawRectangle(8, Screen.height / 2 - 48, Screen.width - 8, Screen.height / 2 - 8 + 10 * height, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
+			Font.render(title.toUpperCase(), xTitle, Screen.yOffset + Screen.height / 2 - 40);
+			Font.render(msg, Screen.xOffset + 16, Screen.yOffset + Screen.height / 2 - 24);
 		});
 	}
 
 	public static void progressBar(int x, int y, int height, int length, float ratio, Vec3f colour) {
 		add(() -> {
-			screen.drawRectangle(x - length / 2, y - height / 2, x + length / 2, y + height / 2, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
+			Screen.drawRectangle(x - length / 2, y - height / 2, x + length / 2, y + height / 2, new Vec4f(0.1f, 0.1f, 0.1f, 1.0f));
 			float lengthRatio = length * ratio - length / 2;
-			screen.drawRectangle(x - length / 2, y - height / 2, (int) (x + lengthRatio), y + height / 2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
+			Screen.drawRectangle(x - length / 2, y - height / 2, (int) (x + lengthRatio), y + height / 2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
 		});
 	}
 
@@ -49,9 +48,9 @@ public class GUI {
 			int y2 = y + 6;
 
 			button(x, y, msg.length() * 8 + 4, 12, () -> {
-				screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
-				Font.render(msg, screen, screen.xOffset + x1 + 2, screen.yOffset + y - 5);
-				screen.drawRectangle(x1, y1, x2, y2 - 1, new Vec4f(1.0f, 1.0f, 1.0f, 0.15f));
+				Screen.drawRectangle(x1, y1, x2, y2, new Vec4f(colour.x, colour.y, colour.z, 1.0f));
+				Font.render(msg, Screen.xOffset + x1 + 2, Screen.yOffset + y - 5);
+				Screen.drawRectangle(x1, y1, x2, y2 - 1, new Vec4f(1.0f, 1.0f, 1.0f, 0.15f));
 			}, task);
 
 		});
@@ -78,12 +77,12 @@ public class GUI {
 			render.run();
 
 			if (hover && Game.input.isPressed(KEY_SELECT)) {
-				screen.drawRectangle(x1, y1, x2, y2, new Vec4f(0.0f, 0.0f, 0.0f, 0.1f));
+				Screen.drawRectangle(x1, y1, x2, y2, new Vec4f(0.0f, 0.0f, 0.0f, 0.1f));
 				pressed = true;
 			} else if (hover) {
-				screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
+				Screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f, 1.0f, 1.0f, 0.1f));
 			} else {
-				screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f, 1.0f, 1.0f, 0.0f));
+				Screen.drawRectangle(x1, y1, x2, y2, new Vec4f(1.0f, 1.0f, 1.0f, 0.0f));
 			}
 
 			if (hover && !Game.input.isPressed(KEY_SELECT) && pressed) {

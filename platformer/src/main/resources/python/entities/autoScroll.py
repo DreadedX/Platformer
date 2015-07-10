@@ -12,5 +12,5 @@ class AutoScroll(EntityInterface):
 
         entity.y = entity.getProperties().getLevel().entities.get(1).y
 
-    def render(self, entity, screen):
+    def render(self, entity):
         pass

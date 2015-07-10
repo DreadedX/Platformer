@@ -1,6 +1,5 @@
 package com.mtgames.platformer.level;
 
-import com.mtgames.platformer.Game;
 import com.mtgames.utils.Debug;
 import com.mtgames.platformer.entities.Entity;
 import com.mtgames.platformer.gfx.Background;
@@ -33,8 +32,6 @@ public class Level {
 	public String name        = "";
 	public String description = "";
 	public String author      = "";
-
-	private final Screen screen = Game.screen;
 
 	public void tick() {
 		if (reload) {
@@ -70,27 +67,27 @@ public class Level {
 			xOffset = 0;
 		}
 
-		if (xOffset > ((width << 4) - screen.width)) {
-			xOffset = (width << 4) - screen.width;
+		if (xOffset > ((width << 4) - Screen.width)) {
+			xOffset = (width << 4) - Screen.width;
 		}
 
 		if (yOffset < 0) {
 			yOffset = 0;
 		}
 
-		if (yOffset > ((height << 4) - screen.height)) {
-			yOffset = (height << 4) - screen.height;
+		if (yOffset > ((height << 4) - Screen.height)) {
+			yOffset = (height << 4) - Screen.height;
 		}
 
-		screen.setOffset(xOffset, yOffset);
+		Screen.setOffset(xOffset, yOffset);
 
-		for (int y = (yOffset >> 4); y <= (yOffset + screen.height >> 4); y++) {
-			for (int x = (xOffset >> 4); x <= (xOffset + screen.width >> 4); x++) {
+		for (int y = (yOffset >> 4); y <= (yOffset + Screen.height >> 4); y++) {
+			for (int x = (xOffset >> 4); x <= (xOffset + Screen.width >> 4); x++) {
 				if (renderLayer0) {
-					getTile0(x, y).render(screen, x << 4, y << 4);
+					getTile0(x, y).render(x << 4, y << 4);
 				}
 				if (renderLayer) {
-					getTile(x, y).render(screen, x << 4, y << 4);
+					getTile(x, y).render(x << 4, y << 4);
 				}
 			}
 		}
@@ -98,19 +95,19 @@ public class Level {
 
 	public void renderBackground() {
 		for (Background b : backgrounds) {
-			b.render(screen, width, height);
+			b.render(width, height);
 		}
 	}
 
 	public void renderEntities() {
 		for (Entity e : entities) {
-			e.render(screen);
+			e.render();
 		}
 	}
 
 	public void renderLights() {
 		for (LightSource l : lightSources) {
-			l.render(screen);
+			l.render();
 		}
 	}
 

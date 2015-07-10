@@ -1,6 +1,5 @@
 package com.mtgames.platformer.entities;
 
-import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
@@ -38,8 +37,8 @@ public class AdvancedEntity extends Entity {
 		entityInterface.tick(this);
 	}
 
-	public void render(Screen screen) {
-		entityInterface.render(this, screen);
+	public void render() {
+		entityInterface.render(this);
 
 	}
 
