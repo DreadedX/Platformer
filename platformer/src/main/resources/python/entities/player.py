@@ -123,6 +123,9 @@ class Player(EntityInterface):
             entity.life -= 1
             self.staggerTime = self.staggerLength
 
+        if entity.life < 0:
+            entity.life = 0
+
 
         self.lightSource.move(entity.x, entity.y)
 
@@ -147,7 +150,7 @@ class Player(EntityInterface):
 
         Screen.renderEntity(entity.x, entity.y, self.textureID[xtile], 16, flipx)
 
-        GUI.add(lambda : GUI.progressBar(80, 13, 16, 150, float(entity.life) / self.maxHealth, Vec3f(0.4, 0.1, 0.1)))
+        GUI.progressBar(80, 13, 16, 150, float(entity.life) / self.maxHealth, Vec3f(0.4, 0.1, 0.1))
         dashratio = float(self.dashWait)/self.dashWaitMax
         if dashratio == 1:
             colour = Vec3f(0.1, 0.1, 0.5)
@@ -158,7 +161,7 @@ class Player(EntityInterface):
 
         # TODO: Temp death code
         if not entity.isAlive():
-            GUI.add(lambda : GUI.textBox("You died!", ""))
+            GUI.textBox("You died!", "")
 
 
     def dash(self, entity):
