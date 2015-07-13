@@ -114,7 +114,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 		ByteBuffer videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-		glfwSetWindowPos(window, (GLFWvidmode.width(videoMode) - WIDTH) / 2, (GLFWvidmode.height(videoMode) - HEIGHT) / 2);
+		glfwSetWindowPos(window, (GLFWvidmode.width(videoMode) - (WIDTH * scale)) / 2, (GLFWvidmode.height(videoMode) - (HEIGHT * scale)) / 2);
+//		THIS IS ONLY HERE TO MAKE DEBUGGING EASIER ON TWO MONITORS
+		if (debug) {
+			glfwSetWindowPos(window, (GLFWvidmode.width(videoMode) - (WIDTH * scale)) / 2 + 1920, (GLFWvidmode.height(videoMode) - (HEIGHT * scale)) / 2);
+		}
+
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(0);
 //		glfwSwapInterval(1);
