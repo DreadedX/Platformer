@@ -82,7 +82,7 @@ public class Command {
 					break;
 
 				case "spawn":
-					if (commands.length == 4 || commands.length == 5) {
+					if (commands.length >= 4) {
 
 						if (commands[2].equals("~")) {
 							commands[2] = String.valueOf(Level.entities.get(0).x);
@@ -94,8 +94,12 @@ public class Command {
 
 						Properties properties;
 						JSONObject obj = new JSONObject("{}");
-						if (commands.length == 5) {
-							obj = new JSONObject(commands[4]);
+						if (commands.length >= 5) {
+							String objRaw = "";
+							for (int i = 4; i < commands.length; i++) {
+								objRaw += commands[i] + " ";
+							}
+							obj = new JSONObject(objRaw);
 						}
 
 						//					TODO: Add check to see if the entity type is valid

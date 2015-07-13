@@ -18,6 +18,7 @@ public class Properties {
 	private int   yMax          = 0;
 	private int   radius        = 80;
 	private float intensity     = 1.0f;
+	private String execute		= "";
 	private Vec3f colour        = new Vec3f(1.0f, 1.0f, 1.0f);
 
 	private String name = "";
@@ -72,6 +73,9 @@ public class Properties {
 		}
 		if (obj.has("intensity")) {
 			intensity = obj.getInt("intensity")/1000f;
+		}
+		if (obj.has("execute")) {
+			execute = obj.getString("execute");
 		}
 		if (obj.has("colour")) {
 			int hexColour = obj.getInt("colour");
@@ -134,6 +138,10 @@ public class Properties {
 
 	public float getIntensity() {
 		return intensity;
+	}
+
+	public String getExecute() {
+		return execute;
 	}
 
 	public Vec3f getColour() {

@@ -13,7 +13,7 @@ class Trigger(EntityInterface):
 
     def tick(self, entity):
         if entity.hasCollidedEntity("player"):
-           Debug.log("test", Debug.DEBUG)
+           Debug.log(entity.getProperties().getExecute(), Debug.DEBUG)
            entity.life = 0
 
     def render(self, entity):

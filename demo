@@ -5,4 +5,4 @@ py from com.mtgames.platformer.level.tiles import Tile & py Tile.load("demo")
 py from com.mtgames.platformer import Game & py Game.editor = not Game.editor & lighting & reload
 
 //Kill first enemy and spawn trigger
-kill 1 & spawn trigger 176 536 {"xMin":-32,"xMax":32}
+kill 1 & spawn trigger 176 536 {"xMin": -32, "xMax": 32, "execute": "Hello world!"}

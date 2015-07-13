@@ -31,8 +31,6 @@ public class AdvancedEntity extends Entity {
 
 		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", path);
 		entityInterface.init(this);
-
-		Debug.log(name, Debug.DEBUG);
 	}
 
 	public void tick() {
