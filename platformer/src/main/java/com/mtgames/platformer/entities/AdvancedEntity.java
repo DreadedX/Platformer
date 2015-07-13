@@ -6,6 +6,7 @@ import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class AdvancedEntity extends Entity {
@@ -137,7 +138,6 @@ public class AdvancedEntity extends Entity {
 		}
 	}
 
-//	TODO: This code is not completly correct
 	public boolean hasCollidedEntity(String name) {
 		for (int i = 0; i < Level.entities.size(); i++) {
 			Entity e = Level.entities.get(i);
@@ -145,7 +145,10 @@ public class AdvancedEntity extends Entity {
 				continue;
 			}
 			if (Objects.equals(e.getProperties().getName(), name)) {
-				if (x >= (e.xMin + e.x) && x <= (e.xMax + e.x) && y >= (e.yMin + e.y) && y <= (e.yMax + e.y)) {
+				Rectangle r = new Rectangle(x + xMin, y + yMin, xMax - xMin, yMax - yMin);
+				Rectangle p = new Rectangle(e.x + e.xMin, e.y + e.yMin, e.xMax - e.xMin, e.yMax - e.yMin);
+
+				if (r.intersects(p)) {
 					return true;
 				}
 			}
