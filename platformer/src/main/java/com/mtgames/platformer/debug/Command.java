@@ -2,6 +2,7 @@ package com.mtgames.platformer.debug;
 
 import com.mtgames.platformer.Game;
 import com.mtgames.platformer.entities.AdvancedEntity;
+import com.mtgames.platformer.entities.Entity;
 import com.mtgames.platformer.level.tiles.Tile;
 import com.mtgames.platformer.scripting.Jython;
 import com.mtgames.platformer.settings.Properties;
@@ -165,21 +166,6 @@ public class Command {
 					}
 					break;
 
-				//			case "freecam":
-				//				if (commands.length == 1) {
-				//					Properties properties = level.entities.get(0).getProperties();
-				//					if (level.entities.get(0) instanceof Player) {
-				//						level.entities.set(0, new FreeCamera(level.entities.get(0).x, level.entities.get(0).y, properties));
-				//					} else if (level.entities.get(0) instanceof FreeCamera) {
-				//						level.entities.set(0, new Player(level.entities.get(0).x, level.entities.get(0).y, properties));
-				//					} else {
-				//						Debug.log("entity 0 is not a Player or a FreeCamera: " + level.entities.get(0).getClass(), Debug.ERROR);
-				//					}
-				//				} else {
-				//					Debug.log("Invalid arguments, usage: freecam", Debug.WARNING);
-				//				}
-				//				break;
-
 				case "lighting":
 					if (commands.length == 1) {
 						Screen.lighting = !Screen.lighting;
@@ -267,6 +253,19 @@ public class Command {
 
 				case "py":
 					Jython.run(command.substring(3));
+					break;
+
+				case "freecam":
+					Entity eCam = Level.entities.get(0);
+					Properties propCam = eCam.getProperties();
+					Level.entities.set(0, new AdvancedEntity(propCam, eCam.x, eCam.y, "freeCamera"));
+					break;
+
+				case "god":
+					Entity eGod = Level.entities.get(0);
+					Properties propGod = eGod.getProperties();
+					Level.entities.set(0, new AdvancedEntity(propGod, eGod.x, eGod.y, "player.god"));
+					break;
 
 			}
 		});

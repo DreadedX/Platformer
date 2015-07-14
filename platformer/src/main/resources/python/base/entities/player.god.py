@@ -1,4 +1,4 @@
-from python import player
+from python.base.entities import player
 
 class Player(player.Player):
     def tick(self, entity):
