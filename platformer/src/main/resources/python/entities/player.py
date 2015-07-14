@@ -35,7 +35,7 @@ class Player(EntityInterface):
         self.isDashing = False
         self.dashDeplete = False
 
-        self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/player", 8)
+        self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/base/player", 8)
 
         self.lightSource = 0
 

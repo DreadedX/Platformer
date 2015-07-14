@@ -47,7 +47,7 @@ public class Command {
 
 				case "load":
 					if (commands.length == 2) {
-						Level.path = "assets/levels/" + commands[1] + ".jsp";
+						Level.path = "levels/" + commands[1] + ".jsp";
 						Level.reload = true;
 					} else {
 						Debug.log("Invalid arguments, usage: load <level name>", Debug.WARNING);

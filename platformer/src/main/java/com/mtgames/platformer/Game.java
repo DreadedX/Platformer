@@ -90,7 +90,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		yOffset = Screen.height / 2;
 
 		//		Load debug level
-		Command.queue("load debug_level");
+		Command.queue("load base/debug_level");
 		//		Command.exec("load white");
 		Command.execute();
 

@@ -13,7 +13,7 @@ class BaseEnemy(EntityInterface):
 
         self.ya = 0
 
-        self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/baseEnemy", 6)
+        self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/base/baseEnemy", 6)
 
     def init(self, entity):
         entity.collide = True
