@@ -23,7 +23,7 @@ public class Properties {
 
 	private String name = "";
 
-	private static final JSP jsp = new JSP("assets/game.jsp", false);
+	private static final JSP jsp = new JSP("base.jsp", false);
 
 	public Properties(String type) {
 		if (type.equals("")) {
