@@ -16,7 +16,17 @@
     "properties": {
       "xMin": -32,
       "xMax": 32,
-      "execute": "hidden"
+      "execute": "base/hidden"
+    }
+  },
+  "3": {
+    "type": "trigger",
+    "x": 776,
+    "y": 592,
+    "properties": {
+      "yMin": -48,
+      "yMax": 48,
+      "execute": "demo/trigger"
     }
   }
 }

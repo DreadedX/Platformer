@@ -65,7 +65,6 @@ public class LevelLoader {
 
 		Tile.load(tileId);
 		Tile.load("base");
-		Tile.load("test");
 
 		tiles = new int[width][height];
 

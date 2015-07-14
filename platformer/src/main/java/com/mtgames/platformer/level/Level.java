@@ -147,9 +147,9 @@ public class Level {
 		boolean external = false;
 
 		if (ClassLoader.getSystemResource(path) == null) {
-			if (new File("platformer/" + path).exists()) {
+			if (new File("platformer/assets/" + path).exists()) {
 				external = true;
-				path = "platformer/" + path;
+				path = "platformer/assets/" + path;
 			} else {
 				Debug.log("The file '" + path + "' does not exist", Debug.WARNING);
 				return;

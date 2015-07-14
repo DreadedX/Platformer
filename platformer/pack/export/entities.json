@@ -8,5 +8,15 @@
     "type": "baseEnemy",
     "x": 430,
     "y": 720
+  },
+  "2": {
+    "type": "trigger",
+    "x": 176,
+    "y": 536,
+    "properties": {
+      "xMin": -32,
+      "xMax": 32,
+      "execute": "hidden"
+    }
   }
 }
