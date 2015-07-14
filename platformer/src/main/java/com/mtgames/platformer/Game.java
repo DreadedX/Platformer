@@ -126,7 +126,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 		glfwShowWindow(window);
 
 		Debug.log("Initializing jython", Debug.INFO);
-		InitInterface ii = (InitInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.InitInterface", "Init.py");
+		InitInterface ii = (InitInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.InitInterface", "init.py");
 		if (!ii.init()) {
 			Debug.log("Failed to initialize jython", Debug.ERROR);
 		}

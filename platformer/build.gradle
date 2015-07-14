@@ -11,7 +11,8 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'application'
 
-mainClassName = 'com.mtgames.platformer.Launcher'
+// mainClassName = 'com.mtgames.Bootstrap'
+mainClassName = 'com.mtgames.Bootstrap'
 
 repositories {
     // mavenCentral()

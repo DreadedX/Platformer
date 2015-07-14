@@ -1,10 +1,17 @@
 package com.mtgames.platformer.level.tiles;
 
+import com.mtgames.platformer.Game;
 import com.mtgames.utils.Debug;
+import org.python.antlr.ast.Str;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public abstract class Tile {
 
@@ -86,7 +93,7 @@ public abstract class Tile {
 	public static void load(String path) {
 		File[] files;
 		boolean external = false;
-		if (ClassLoader.getSystemResource(basePath + path) == null) {
+		if (ClassLoader.getSystemResource(basePath + path + "/") == null) {
 			File dir = new File("platformer/" + basePath + path);
 			if (dir.exists()) {
 				files = dir.listFiles();
@@ -96,25 +103,69 @@ public abstract class Tile {
 				return;
 			}
 		} else {
-			files = new File(ClassLoader.getSystemResource(basePath + path).getFile()).listFiles();
+//			IDE
+			files = new File(ClassLoader.getSystemResource(basePath + path).getPath()).listFiles();
+//			/IDE
+
+			if (files == null) {
+				String[] fileNames = new String[1024];
+				int i = 0;
+				try {
+					CodeSource src = Game.class.getProtectionDomain().getCodeSource();
+					if (src != null) {
+						URL jar = src.getLocation();
+						ZipInputStream zip = new ZipInputStream(jar.openStream());
+						while (true) {
+							ZipEntry e = zip.getNextEntry();
+							if (e == null)
+								break;
+							String name = e.getName();
+							if (name.startsWith(basePath + path)) {
+								fileNames[i] = name;
+								i++;
+							}
+						}
+					} else {
+						Debug.log("FAIL", Debug.WARNING);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				for (int p = 1; p < fileNames.length; p++) {
+					if (fileNames[p] == null) {
+						break;
+					}
+					String name = fileNames[p].substring((basePath + path + "/").length());
+					addExt(name, path, false);
+				}
+				return;
+			}
 		}
-		Arrays.sort(files);
+
+//		IDE
+		assert files != null;
 		for (File file : files) {
 			if (file.isFile()) {
 				String name = file.getName();
-				if (name.substring(name.length()-4, name.length()).toLowerCase().equals(".png")) {
-					name = name.substring(0, name.length() - 4);
-					name = path + "/" + name;
+				addExt(name, path, external);
+			}
+		}
+//		/IDE
+	}
 
-					for (int i = 2; i < tiles.length; i++) {
-						if (tiles[i] == null) {
-							add(name, external);
-							break;
-						}
-						if (tiles[i].getName().equals(name)) {
-							break;
-						}
-					}
+	private static void addExt(String name, String path, boolean external) {
+		if (name.substring(name.length() - 4, name.length()).toLowerCase().equals(".png")) {
+			name = name.substring(0, name.length() - 4);
+			name = path + "/" + name;
+
+			for (int t = 2; t < tiles.length; t++) {
+				if (tiles[t] == null) {
+					add(name, external);
+					break;
+				}
+				if (tiles[t].getName().equals(name)) {
+					break;
 				}
 			}
 		}
