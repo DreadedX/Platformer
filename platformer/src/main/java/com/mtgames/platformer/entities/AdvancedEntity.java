@@ -29,7 +29,7 @@ public class AdvancedEntity extends Entity {
 		yMin = properties.getYMin();
 		yMax = properties.getYMax();
 
-		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", path);
+		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "/base/entities/" + path + ".py");
 		entityInterface.init(this);
 	}
 

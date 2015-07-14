@@ -107,7 +107,7 @@ public class Command {
 						properties = new Properties(type.split("\\.")[0]);
 						properties.set(obj);
 						Level.addEntity(
-								new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), "entities/" + type + ".py"));
+								new AdvancedEntity(properties, Integer.parseInt(commands[2]), Integer.parseInt(commands[3]), type));
 					} else {
 						Debug.log("Invalid arguments, usage: spawn <name> <x> <y>", Debug.WARNING);
 					}

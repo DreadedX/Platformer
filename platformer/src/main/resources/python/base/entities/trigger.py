@@ -14,7 +14,7 @@ class Trigger(EntityInterface):
     def tick(self, entity):
         if entity.hasCollidedEntity("player"):
             entity.life = 0
-            name = "python.triggers.%s" % entity.getProperties().getExecute()
+            name = "python.base.triggers.%s" % entity.getProperties().getExecute()
             try:
                 exec "import %s" % name
                 exec "%s.main()" % name
