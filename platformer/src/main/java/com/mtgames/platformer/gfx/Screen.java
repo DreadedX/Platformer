@@ -19,6 +19,7 @@ public class Screen {
 	public static        int     xOffset  = 0;
 	public static        int     yOffset  = 0;
 	public static        boolean lighting = true;
+	public static        boolean hitBox   = false;
 
 	private static int lightsTextureID;
 	private static int lightsBufferID;
@@ -323,6 +324,23 @@ public class Screen {
 			glVertex2f(x2, y1);
 			glVertex2f(x2, y2);
 			glVertex2f(x1, y2);
+		glEnd();
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
+
+	public static void drawOutile(int x1, int y1, int x2, int y2, Vec4f colour) {
+		x1 *= scale;
+		x2 *= scale;
+		y1 *= scale;
+		y2 *= scale;
+
+		glColor4f(colour.x, colour.y, colour.z, colour.w);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(x1, y1);
+		glVertex2f(x2, y1);
+		glVertex2f(x2, y2);
+		glVertex2f(x1, y2);
+		glVertex2f(x1, y1);
 		glEnd();
 		glColor3f(1.0f, 1.0f, 1.0f);
 	}

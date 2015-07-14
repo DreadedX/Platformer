@@ -188,6 +188,14 @@ public class Command {
 					}
 					break;
 
+				case "hitbox":
+					if (commands.length == 1) {
+						Screen.hitBox = !Screen.hitBox;
+					} else {
+						Debug.log("Invalid arguments, usage: hitbox", Debug.WARNING);
+					}
+					break;
+
 				//			TODO: These commands are not finished
 
 				case "debugl":

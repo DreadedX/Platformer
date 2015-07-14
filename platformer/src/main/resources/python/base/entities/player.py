@@ -41,7 +41,6 @@ class Player(EntityInterface):
 
 
     def init(self, entity):
-        entity.collide = True
         entity.persistent = True
 
         self.speed = entity.getProperties().getSpeed()
@@ -162,7 +161,6 @@ class Player(EntityInterface):
         # TODO: Temp death code
         if not entity.isAlive():
             GUI.textBox("You died!", "")
-
 
     def dash(self, entity):
         if self.dashWait >= self.dashWaitMax:

@@ -1,10 +1,12 @@
 package com.mtgames.platformer.entities;
 
+import com.mtgames.platformer.gfx.Screen;
 import com.mtgames.platformer.level.Level;
 import com.mtgames.platformer.scripting.JythonFactory;
 import com.mtgames.platformer.scripting.interfaces.EntityInterface;
 import com.mtgames.platformer.settings.Properties;
 import com.mtgames.utils.Debug;
+import com.sun.javafx.geom.Vec4f;
 
 import java.awt.*;
 import java.util.Objects;
@@ -29,6 +31,8 @@ public class AdvancedEntity extends Entity {
 		yMin = properties.getYMin();
 		yMax = properties.getYMax();
 
+		collide = true;
+
 		entityInterface = (EntityInterface) JythonFactory.getJythonObject("com.mtgames.platformer.scripting.interfaces.EntityInterface", "/base/entities/" + path + ".py");
 		entityInterface.init(this);
 	}
@@ -40,6 +44,9 @@ public class AdvancedEntity extends Entity {
 	public void render() {
 		entityInterface.render(this);
 
+		if (Screen.hitBox && collide) {
+			Screen.drawOutile(x + xMin - Screen.xOffset, y + yMin - Screen.yOffset, x + xMax - Screen.xOffset, y + yMax - Screen.yOffset, new Vec4f(1, 1, 1, 1));
+		}
 	}
 
 	protected void move(int xa, int ya) {
@@ -137,17 +144,18 @@ public class AdvancedEntity extends Entity {
 	}
 
 	public boolean hasCollidedEntity(String name) {
-		for (int i = 0; i < Level.entities.size(); i++) {
-			Entity e = Level.entities.get(i);
-			if (!e.collide) {
-				continue;
-			}
-			if (Objects.equals(e.getProperties().getName(), name)) {
-				Rectangle r = new Rectangle(x + xMin, y + yMin, xMax - xMin, yMax - yMin);
-				Rectangle p = new Rectangle(e.x + e.xMin, e.y + e.yMin, e.xMax - e.xMin, e.yMax - e.yMin);
+		if (collide) {
+			for (int i = 0; i < Level.entities.size(); i++) {
+				Entity e = Level.entities.get(i);
+				if (e.collide) {
+					if (Objects.equals(e.getProperties().getName(), name)) {
+						Rectangle r = new Rectangle(x + xMin, y + yMin, xMax - xMin, yMax - yMin);
+						Rectangle p = new Rectangle(e.x + e.xMin, e.y + e.yMin, e.xMax - e.xMin, e.yMax - e.yMin);
 
-				if (r.intersects(p)) {
-					return true;
+						if (r.intersects(p)) {
+							return true;
+						}
+					}
 				}
 			}
 		}

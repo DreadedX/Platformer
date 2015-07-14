@@ -16,8 +16,6 @@ class BaseEnemy(EntityInterface):
         self.textureID = TextureLoader.loadTextureArray("/assets/graphics/entities/base/baseEnemy", 6)
 
     def init(self, entity):
-        entity.collide = True
-
         self.speed = entity.getProperties().getSpeed()
         self.jumpSpeed = entity.getProperties().getJumpSpeed()
 
