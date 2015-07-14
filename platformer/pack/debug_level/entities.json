@@ -16,7 +16,7 @@
     "properties": {
       "xMin": -32,
       "xMax": 32,
-      "execute": "Hello world!"
+      "execute": "hidden"
     }
   }
 }

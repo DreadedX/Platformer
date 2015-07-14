@@ -13,9 +13,15 @@ class Trigger(EntityInterface):
 
     def tick(self, entity):
         if entity.hasCollidedEntity("player"):
-           Debug.log(entity.getProperties().getExecute(), Debug.DEBUG)
-           entity.life = 0
+            entity.life = 0
+            name = "python.triggers.%s" % entity.getProperties().getExecute()
+            try:
+                exec "import %s" % name
+                exec "%s.main()" % name
+            except ImportError:
+                Debug.log("The package %s does not exist" % name, Debug.DEBUG)
+            except SyntaxError:
+                Debug.log("%s is not a valid package name" % name, Debug.DEBUG)
 
     def render(self, entity):
         Screen.drawRectangle(entity.x+entity.xMin-Screen.xOffset, entity.y+entity.yMin-Screen.yOffset, entity.x+entity.xMax-Screen.xOffset, entity.y+entity.yMax-Screen.yOffset, Vec4f(1, 1, 1, 1))
-
